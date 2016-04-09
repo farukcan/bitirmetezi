@@ -3,13 +3,19 @@ function YSA(){
 	this.inputLayer = new YSA_Katman();
 	this.outputLayer = new YSA_Katman();
 	this.perceptronModu = false;
-	this.perceptron = function(){
+}
+YSA.prototype = {
+	perceptron : function(){
 		//  snapsisleri perceptrona göre oluşturur
 	}
 }
 
+
+
 function YSA_Katman(){
 	this.sinirler = [];
+	this.onceki;
+	this.sonraki;
 }
 
 function YSA_Sinir(){
@@ -17,18 +23,21 @@ function YSA_Sinir(){
 		toplama : YSA_f_toplam,
 		transfer : [YSA_f_sigmoid]
 	}
-	this.akson; // Sinir çıktısı saklanır
+	this.output; // Sinir çıktısı saklanır
 
 	// Sinirin bağlı olduğu şeyler
 	this.yollar = {
-		gelen = []
-		giden = []
+		dentrit = [];
+		akson = []
 	}
-	this.bagla = function (sinir){
-		sinir.gelen.push(this);
-		this.giden.push(sinir);
-	}
-	this.hesapla = function (){
+
+}
+YSA_Sinir.prototype = {
+	bagla : function (sinir){
+		sinir.dentrit.push(this);
+		this.akson.push(sinir);
+	},
+	hesapla : function (){
 
 	}
 }
