@@ -5,9 +5,11 @@ function World(){
     this.earthR = SABITLER.EARTHR;
     this.atmosphere = SABITLER.ATMOSPHERE;
     this.birds = [];
+    this.birdINC = 0;
     this.foods = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
+    this.serverSide = false;
 }
 
 World.prototype = {
@@ -38,8 +40,33 @@ World.prototype = {
     addBird : function(bird){
         bird.world = this;
         this.birds.push(bird);
+        bird.id = this.birdINC++;
+        if(this.serverSide) this.server.addBird(bird);
     },
     addFood : function(food){
         this.foods.push(food);
+        if(this.serverSide) this.server.addFood(food);
+    },
+    deleteBird : function(id){
+        // find in connections array and destrol
+        var m=-1;
+        this.birds.every(function(o,i){
+            if(id == o.id){
+                m = i;
+                return false;
+            }
+            return true;
+        });
+
+        if(m!=-1) {
+            if(this.serverSide) this.server.deleteBird(m);
+            this.birds[m].world = null;
+            this.birds.splice(m,1);
+        }
+
+    },
+    deleteFood : function(m){
+        if(this.serverSide) this.server.deleteFood(m);
+        this.foods.splice(m,1);
     }
 };

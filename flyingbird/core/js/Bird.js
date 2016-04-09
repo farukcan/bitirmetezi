@@ -9,6 +9,7 @@ function Bird(locx,locy){
     this.right = true;
     this.world;
     this.visible=true;
+    this.ad = "kartal"
 }
 
 Bird.prototype = {
@@ -17,19 +18,31 @@ Bird.prototype = {
 
         camera.begin();
 
-        r.color("orange");
 
         var angular = this.loc.Angular2Analitic();
 
         // origini değiştir
         r.translate(  angular.x, angular.y );
 
+
+
         // yeni orginde göndür
+        r.rotate(this.loc.x+Math.PI/2)
+
+        r.color("white");
+
+        r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+
+        r.color("orange");
+
+        r.rotate(-this.speed.y-Math.PI/2);
+
         if(this.right)
-            r.rotate(this.loc.x+Math.PI/2-this.speed.y);
+            r.rotate(Math.PI/2);
         else
-            r.rotate(this.loc.x-Math.PI/2);
+            r.rotate(-Math.PI/2);
         // mevcut origine göre koordinatlara çiz
+
 
         r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 

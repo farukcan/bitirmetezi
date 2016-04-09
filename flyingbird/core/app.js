@@ -85,6 +85,10 @@ var
     buildGame();
   },"build game");
 
+    cmdAdd("conn",function (dat) {
+        ct("connections :"+controller.connections.length);
+
+    },"conn s");
   cmdAdd("help",function () {
     ctt("Komut Listesi");
     cmdList.every( function(kmt){
@@ -126,9 +130,11 @@ var
  */
 
     eval(fs.readFileSync("../../js/lib/Vec2.js", 'utf8'));
+    eval(fs.readFileSync("js/Sabitler.js", 'utf8'));
     eval(fs.readFileSync("js/Bird.js", 'utf8'));
     eval(fs.readFileSync("js/Food.js", 'utf8'));
     eval(fs.readFileSync("js/World.js", 'utf8'));
+    eval(fs.readFileSync("js/Connection.js", 'utf8'));
 
 /*
  |--------------------------------------------------------------------------
@@ -138,13 +144,18 @@ var
  |
  */
 
+var jsp = require("uglify-js").parser;
+var pro = require("uglify-js").uglify;
 
+
+ var ultraZIP=false; // js dosyasını fena sıkıştırır
 
  var buildList = [
      '../../js/lib/CanvasRender.js',
      '../../js/lib/jquery-min.js',
      '../../js/lib/Vec2.js',
      'node_modules/socket.io/node_modules/socket.io-client/socket.io.js',
+     'js/Sabitler.js',
      'js/Bird.js',
      'js/Food.js',
      'js/Camera.js',
@@ -155,9 +166,11 @@ var
 // her açılışta game.jsyi oluştur
 buildGame();
 
+
 // her dosya değiştiğinde tekrar build et
     buildList.forEach(function(file){
         fs.watchFile(file,function(shuanki,xonceki){
+            ct("File Changed : "+file);
             buildGame();
         });
     });
@@ -169,6 +182,14 @@ buildGame();
      buildList.forEach(function(file){
          data+=fs.readFileSync(file).toString();
      });
+
+     if(ultraZIP){
+         var ast = jsp.parse(data); // parse code and get the initial AST
+         ast = pro.ast_mangle(ast); // get a new AST with mangled names
+         ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
+         data = pro.gen_code(ast); // compressed code here
+     }
+
 
 
      fs.writeFile("./sayfalar/game.js", data, function(err) {
@@ -243,8 +264,52 @@ sunucu.listen(ayar.port, function(){
 
 io = require('socket.io')(sunucu);
 
+var controller = new ConnectionController();
+
 io.on('connection', function(socket){
-    socket.on('hi',function(){
-        ct("client says hi");
+    var conn = controller.addConnection(socket);
+    var bird = birdCreator();
+    world.addBird(bird);
+
+    socket.on('disconnect', function(neden){
+        ct(conn.name+" is disconnected");
+        conn.disconnect();
+    });
+    socket.on('hi',function(name){
+        if(name)
+            conn.name=name;
+        ct(conn.name+" is connected");
     });
 });
+
+/*
+ |--------------------------------------------------------------------------
+ | Fizikler Dünya
+ |--------------------------------------------------------------------------
+ |
+ |
+ */
+
+var world = new World();
+world.serverSide = false;
+
+foodCreator();
+
+var delta,FPS=60,FPScache=Date.now(),FPSslow;
+
+setInterval(function(){
+    delta = (Date.now() - FPScache);
+    FPS = Math.floor(1000/delta);
+    FPScache=Date.now();
+    world.update(delta);
+    controller.update(); // send rt data to players
+},5);
+
+function birdCreator(){
+ return new Bird(Math.PI,5100);
+}
+function foodCreator(){
+    for(var i=0;i<100;i++){
+        world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
+    }
+}

@@ -7,15 +7,19 @@ function CanvasRender(canvasId){
 
 	this.clickElement = [];
 
+	this.updateInterval;
+
 
 }
 
 
 CanvasRender.prototype = {
 	setUpdateFunc : function (f,t){
-		setInterval(f,t);
+		this.updateInterval = setInterval(f,t);
 	},
-
+	removeUpdateFunc : function(){
+		clearInterval(this.updateInterval);
+	},
 
 	clear : function(){
 		this.context.clearRect(0, 0,this.canvas.width, this.canvas.height);
@@ -7403,6 +7407,13 @@ function toArray(list, index) {
 },{}]},{},[31])(31)
 });
 /**
+ * Created by Can on 10.4.2016.
+ */
+var SABITLER = {
+    "EARTHR" : 5000,
+    "ATMOSPHERE" : 1000,
+    "GRAVITY" : -0.00031
+}/**
  * Created by Can on 8.4.2016.
  */
 function Bird(locx,locy){
@@ -7413,6 +7424,7 @@ function Bird(locx,locy){
     this.right = true;
     this.world;
     this.visible=true;
+    this.ad = "kartal"
 }
 
 Bird.prototype = {
@@ -7421,19 +7433,31 @@ Bird.prototype = {
 
         camera.begin();
 
-        r.color("orange");
 
         var angular = this.loc.Angular2Analitic();
 
         // origini değiştir
         r.translate(  angular.x, angular.y );
 
+
+
         // yeni orginde göndür
+        r.rotate(this.loc.x+Math.PI/2)
+
+        r.color("white");
+
+        r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+
+        r.color("orange");
+
+        r.rotate(-this.speed.y-Math.PI/2);
+
         if(this.right)
-            r.rotate(this.loc.x+Math.PI/2-this.speed.y);
+            r.rotate(Math.PI/2);
         else
-            r.rotate(this.loc.x-Math.PI/2);
+            r.rotate(-Math.PI/2);
         // mevcut origine göre koordinatlara çiz
+
 
         r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 
@@ -7520,9 +7544,11 @@ function World(){
     this.earthR = SABITLER.EARTHR;
     this.atmosphere = SABITLER.ATMOSPHERE;
     this.birds = [];
+    this.birdINC = 0;
     this.foods = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
+    this.serverSide = false;
 }
 
 World.prototype = {
@@ -7553,9 +7579,34 @@ World.prototype = {
     addBird : function(bird){
         bird.world = this;
         this.birds.push(bird);
+        bird.id = this.birdINC++;
+        if(this.serverSide) this.server.addBird(bird);
     },
     addFood : function(food){
         this.foods.push(food);
+        if(this.serverSide) this.server.addFood(food);
+    },
+    deleteBird : function(id){
+        // find in connections array and destrol
+        var m=-1;
+        this.birds.every(function(o,i){
+            if(id == o.id){
+                m = i;
+                return false;
+            }
+            return true;
+        });
+
+        if(m!=-1) {
+            if(this.serverSide) this.server.deleteBird(m);
+            this.birds[m].world = null;
+            this.birds.splice(m,1);
+        }
+
+    },
+    deleteFood : function(m){
+        if(this.serverSide) this.server.deleteFood(m);
+        this.foods.splice(m,1);
     }
 };/**
  * Created by Can on 8.4.2016.
@@ -7570,22 +7621,17 @@ r.canvas.height = 768;
 // world
 var world;
 var camera;
+var bird;
+var socket;
 
-var SABITLER = {
-    "EARTHR" : 5000,
-    "ATMOSPHERE" : 1000,
-    "GRAVITY" : -0.00031
-}
+
 
 var imgbird = r.loadImage("img/kartal.svg");
 
 $(function(){
-    create();
-    r.setUpdateFunc(update);
+    //create();
 });
 
-var socket = io();
-socket.emit("hi");
 
 $(document).keydown(function(e){
     switch(e.keyCode) {
@@ -7633,18 +7679,51 @@ $(document).keydown(function(e){
     e.preventDefault();
 });
 
+var created;
 function create(){
-    world = new World();
-    camera = new Camera(new Vec2(0,0));
-    world.camera = camera;
-    camera.r = r;
-    world.addBird(new Bird(0,3100));
-    bird =new Bird(Math.PI,5100);
-    world.addBird(bird);
+    if(!created){
+        $("#gameInfo").hide();
+        $("#rules").hide();
 
-    for(var i=0;i<100;i++){
-        world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
+        socket = io();
+        socket.emit("hi");
+        socket.on("disconnect",destroy);
+
+        world = new World();
+        camera = new Camera(new Vec2(0,0));
+        world.camera = camera;
+        camera.r = r;
+        world.addBird(new Bird(0,3100));
+        bird =new Bird(Math.PI,5100);
+        world.addBird(bird);
+
+
+
+        FPScache=Date.now(); // update için hata oluşmasın diye
+        r.setUpdateFunc(update); //döngü
+
+        created=true;
     }
+}
+
+function destroy(){
+    if(created){
+        created = false;
+        $("#gameInfo").fadeIn(4000);
+        $("#rules").fadeIn();
+
+        r.removeUpdateFunc();
+        try{
+            socket.emit("disconnect");
+            socket.disconnect();
+        }catch(err){}
+        socket = null;
+        world = null;
+        camera = null;
+        bird = null;
+    }
+
+
 }
 
 var delta,FPS=60,FPScache=Date.now(),FPSslow;

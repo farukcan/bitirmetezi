@@ -7,15 +7,19 @@ function CanvasRender(canvasId){
 
 	this.clickElement = [];
 
+	this.updateInterval;
+
 
 }
 
 
 CanvasRender.prototype = {
 	setUpdateFunc : function (f,t){
-		setInterval(f,t);
+		this.updateInterval = setInterval(f,t);
 	},
-
+	removeUpdateFunc : function(){
+		clearInterval(this.updateInterval);
+	},
 
 	clear : function(){
 		this.context.clearRect(0, 0,this.canvas.width, this.canvas.height);

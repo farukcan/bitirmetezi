@@ -11,22 +11,17 @@ r.canvas.height = 768;
 // world
 var world;
 var camera;
+var bird;
+var socket;
 
-var SABITLER = {
-    "EARTHR" : 5000,
-    "ATMOSPHERE" : 1000,
-    "GRAVITY" : -0.00031
-}
+
 
 var imgbird = r.loadImage("img/kartal.svg");
 
 $(function(){
-    create();
-    r.setUpdateFunc(update);
+    //create();
 });
 
-var socket = io();
-socket.emit("hi");
 
 $(document).keydown(function(e){
     switch(e.keyCode) {
@@ -74,18 +69,51 @@ $(document).keydown(function(e){
     e.preventDefault();
 });
 
+var created;
 function create(){
-    world = new World();
-    camera = new Camera(new Vec2(0,0));
-    world.camera = camera;
-    camera.r = r;
-    world.addBird(new Bird(0,3100));
-    bird =new Bird(Math.PI,5100);
-    world.addBird(bird);
+    if(!created){
+        $("#gameInfo").hide();
+        $("#rules").hide();
 
-    for(var i=0;i<100;i++){
-        world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
+        socket = io();
+        socket.emit("hi");
+        socket.on("disconnect",destroy);
+
+        world = new World();
+        camera = new Camera(new Vec2(0,0));
+        world.camera = camera;
+        camera.r = r;
+        world.addBird(new Bird(0,3100));
+        bird =new Bird(Math.PI,5100);
+        world.addBird(bird);
+
+
+
+        FPScache=Date.now(); // update için hata oluşmasın diye
+        r.setUpdateFunc(update); //döngü
+
+        created=true;
     }
+}
+
+function destroy(){
+    if(created){
+        created = false;
+        $("#gameInfo").fadeIn(4000);
+        $("#rules").fadeIn();
+
+        r.removeUpdateFunc();
+        try{
+            socket.emit("disconnect");
+            socket.disconnect();
+        }catch(err){}
+        socket = null;
+        world = null;
+        camera = null;
+        bird = null;
+    }
+
+
 }
 
 var delta,FPS=60,FPScache=Date.now(),FPSslow;
