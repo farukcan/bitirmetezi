@@ -56,7 +56,10 @@ CanvasRender.prototype = {
 		this.context.font = f;
 	},
 	text : function (t,x,y,maxW){
-		this.context.fillText(t,x,y,maxW);
+		if(maxW)
+			this.context.fillText(t,x,y,maxW);
+		else
+			this.context.fillText(t,x,y);
 	},
 
 	textStroke : function (t,x,y,maxW){
@@ -114,7 +117,23 @@ CanvasRender.prototype = {
 	},
 	scale : function(w,h){
 		this.context.scale(w,h);
-	}
+	},
 
+	ellipse : function (cx, cy, w, h){
+		this.context.beginPath();
+		var lx = cx - w/2,
+			rx = cx + w/2,
+			ty = cy - h/2,
+			by = cy + h/2;
+		var magic = 0.551784;
+		var xmagic = magic*w/2;
+		var ymagic = h*magic/2;
+			this.context.moveTo(cx,ty);
+			this.context.bezierCurveTo(cx+xmagic,ty,rx,cy-ymagic,rx,cy);
+			this.context.bezierCurveTo(rx,cy+ymagic,cx+xmagic,by,cx,by);
+			this.context.bezierCurveTo(cx-xmagic,by,lx,cy+ymagic,lx,cy);
+			this.context.bezierCurveTo(lx,cy-ymagic,cx-xmagic,ty,cx,ty);
+			this.context.stroke();
+	},
 
 }

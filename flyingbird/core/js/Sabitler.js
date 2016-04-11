@@ -6,5 +6,7 @@ var SABITLER = {
     "ATMOSPHERE" : 1000,
     "GRAVITY" : -0.00031,
     "MAXSPEEDY" : 1,
-    "STANDARTSPEED" : Math.PI/(7200*8)
+    "STANDARTSPEED" : Math.PI/(7200*8),
+    "FPS" : 60,
+    "KUSORANI" : 1
 }

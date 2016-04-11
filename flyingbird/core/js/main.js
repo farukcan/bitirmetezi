@@ -5,14 +5,18 @@
 var r = new CanvasRender("mainCanvas");
 
 // çözünürlük
-r.canvas.width = window.innerWidth;
-r.canvas.height = window.innerHeight;
+var renderKalite = 1;
+r.canvas.width = window.innerWidth*renderKalite;
+r.canvas.height = window.innerHeight*renderKalite;
 
 // world
 var world;
 var camera;
 var bird;
 var socket;
+
+// debug mode
+var debug = true;
 
 
 
@@ -46,7 +50,7 @@ $(document).keydown(function(e){
             camera.loc.x+=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
             camera.loc.y-=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
             break;
-
+         */
         case 107:
             camera.scale-=0.1;
             break;
@@ -58,7 +62,7 @@ $(document).keydown(function(e){
             break;
         case 69: //e
             camera.setRota(camera.a-5);
-            break;*/
+            break;
         case 32: //space
             if(socket)
                 socket.emit("fly");
@@ -158,7 +162,7 @@ function destroy(){
 
 }
 
-var FPS = new FPSCalculator(),FPSslow,UPSslow,ping;
+var FPS = new FPSCalculator(),FPSslow=60,UPSslow=60,ping=16;
 function update(){
     FPS.calc();
 
@@ -169,20 +173,27 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
-    r.text("ALPHA TEST",50,20)
-    r.text("FPS: " + FPSslow,50,50);
-    r.text("UPS: " + UPSslow,50,70);
-    r.text("ping: " + ping,50,90);
-
+    r.text("ALPHA TEST",5,20)
+    r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
+    r.text("UPS: " + UPSslow,5,70);
+    r.text("ping: " + ping,5,90);
+    r.text("r: " + bird.loc.x,5,110);
 }
+
+var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
 
 setInterval(function(){
     FPSslow = FPS.FPS;
     UPSslow = UPS;
-},1000);
+    if(created){
+        topFPS+=FPSslow;
+        FPScount++;
+    }
+
+
+},500);
 
 var PINGstartTime;
-
 setInterval(function() {
     if(socket){
         console.log("ping")
@@ -190,4 +201,17 @@ setInterval(function() {
         socket.emit("p");
     }
 }, 5000);
+
+
+setInterval(function(){
+    topFPS = topFPS/FPScount;
+    renderKalite = Math.min(SABITLER.FPS,topFPS)/SABITLER.FPS;
+    if(Math.abs(topFPS-FPSbf)>5){
+        FPSbf=topFPS;
+        r.canvas.width = window.innerWidth*renderKalite;
+        r.canvas.height = window.innerHeight*renderKalite;
+    }
+    topFPS*=FPScount;
+},15000);
+
 

@@ -316,24 +316,26 @@ io.on('connection', function(socket){
  |
  |
  */
+var gameloop = require('node-gameloop');
+
 
 var world = new World();
 world.server.io = io;
 
 foodCreator();
 
-var FPS = new FPSCalculator();
-setInterval(function(){
-    FPS.calc();
-    world.update(FPS.delta);
+gameloop.setGameLoop(update, 1000 / SABITLER.FPS);
+
+function update(delta){
+    world.update(delta*1000);
     controller.update(world); // send rt data to players
-},5);
+}
 
 function birdCreator(){
  return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
 function foodCreator(){
-    for(var i=0;i<100;i++){
+    for(var i=0;i<50;i++){
         world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }
 }

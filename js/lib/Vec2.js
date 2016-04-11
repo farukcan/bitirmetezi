@@ -27,7 +27,7 @@ function Vec2(x,y){ // 2 boyutlu vektör sınıfı
 		return this.inverse().add(v).l();
 	}
 	this.l = function(){ // vektörün uzunluğu
-		return Math.sqrt(this.x*this.x+this.y*this.y);
+		return findLenght(this.x,this.y);
 	}
 	this.Angular2Analitic = function(){
 		return new Vec2(this.y*Math.cos(this.x),this.y*Math.sin(this.x));
@@ -36,8 +36,15 @@ function Vec2(x,y){ // 2 boyutlu vektör sınıfı
 		this.x = limit(this.x,min.x,max.y);
 		this.y = limit(this.x,min.x,max.y);
 	}
+	this.angleBetween = function (v) {
+		return Math.atan2(v.y - this.y, v.x - this.x);
+	}
 }
 
 function limit(x,min,max){
 	return Math.min(Math.max(x, min), max);
+}
+
+function findLenght(x,y){
+	return Math.sqrt(x*x+y*y);
 }

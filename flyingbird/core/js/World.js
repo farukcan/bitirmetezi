@@ -38,6 +38,7 @@ World.prototype = {
         this.birds.forEach(function(bird){
             bird.update(delta);
         });
+        this.server.detectCollisions(this,delta);
     },
     addBird : function(bird,i){
         bird.world = this;
@@ -87,5 +88,6 @@ World.prototype.server = {
     addBird : function (){},
     addFood : function (){},
     deleteBird : function (){},
-    deleteFood : function (){}
+    deleteFood : function (){},
+    detectCollisions : function(){}
 }

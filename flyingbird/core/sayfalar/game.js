@@ -56,7 +56,10 @@ CanvasRender.prototype = {
 		this.context.font = f;
 	},
 	text : function (t,x,y,maxW){
-		this.context.fillText(t,x,y,maxW);
+		if(maxW)
+			this.context.fillText(t,x,y,maxW);
+		else
+			this.context.fillText(t,x,y);
 	},
 
 	textStroke : function (t,x,y,maxW){
@@ -114,8 +117,24 @@ CanvasRender.prototype = {
 	},
 	scale : function(w,h){
 		this.context.scale(w,h);
-	}
+	},
 
+	ellipse : function (cx, cy, w, h){
+		this.context.beginPath();
+		var lx = cx - w/2,
+			rx = cx + w/2,
+			ty = cy - h/2,
+			by = cy + h/2;
+		var magic = 0.551784;
+		var xmagic = magic*w/2;
+		var ymagic = h*magic/2;
+			this.context.moveTo(cx,ty);
+			this.context.bezierCurveTo(cx+xmagic,ty,rx,cy-ymagic,rx,cy);
+			this.context.bezierCurveTo(rx,cy+ymagic,cx+xmagic,by,cx,by);
+			this.context.bezierCurveTo(cx-xmagic,by,lx,cy+ymagic,lx,cy);
+			this.context.bezierCurveTo(lx,cy-ymagic,cx-xmagic,ty,cx,ty);
+			this.context.stroke();
+	},
 
 }
 /*! jQuery v1.11.3 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
@@ -152,7 +171,7 @@ function Vec2(x,y){ // 2 boyutlu vektör sınıfı
 		return this.inverse().add(v).l();
 	}
 	this.l = function(){ // vektörün uzunluğu
-		return Math.sqrt(this.x*this.x+this.y*this.y);
+		return findLenght(this.x,this.y);
 	}
 	this.Angular2Analitic = function(){
 		return new Vec2(this.y*Math.cos(this.x),this.y*Math.sin(this.x));
@@ -161,10 +180,17 @@ function Vec2(x,y){ // 2 boyutlu vektör sınıfı
 		this.x = limit(this.x,min.x,max.y);
 		this.y = limit(this.x,min.x,max.y);
 	}
+	this.angleBetween = function (v) {
+		return Math.atan2(v.y - this.y, v.x - this.x);
+	}
 }
 
 function limit(x,min,max){
 	return Math.min(Math.max(x, min), max);
+}
+
+function findLenght(x,y){
+	return Math.sqrt(x*x+y*y);
 }(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.io = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 module.exports =  _dereq_('./lib/');
@@ -7425,7 +7451,9 @@ var SABITLER = {
     "ATMOSPHERE" : 1000,
     "GRAVITY" : -0.00031,
     "MAXSPEEDY" : 1,
-    "STANDARTSPEED" : Math.PI/(7200*8)
+    "STANDARTSPEED" : Math.PI/(7200*8),
+    "FPS" : 60,
+    "KUSORANI" : 1
 }/**
  * Created by Can on 11.4.2016.
  */
@@ -7493,15 +7521,36 @@ Bird.prototype = {
         // mevcut origine göre koordinatlara çiz
 
 
+        if(debug){
+            r.strokeStyle("white");
+            r.ellipse(0,0,this.size*this.aspect,this.size);
+        }
+
         r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 
-
-        //r.rect(-this.size/2,-this.size/2,this.size,this.size); // burası resim ile değiştirelecek
 
 
         camera.end();
 
-    },
+        if(debug){
+            camera.begin();
+            r.strokeStyle("white");
+            var bird= this;
+            this.world.foods.forEach(function(food,m) {
+                var birdLA = bird.loc.Angular2Analitic();
+                var foodLA = food.loc.Angular2Analitic();
+
+                var b = bird.right ? bird.loc.x - bird.speed.y : bird.loc.x + bird.speed.y;
+                var a =  birdLA.angleBetween(foodLA)-b;
+                var birdD = findLenght( - ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.sin(b) + ((bird.size/2) * Math.cos(a)) * Math.cos(b) ,((bird.size/2) * Math.cos(a)) * Math.sin(b) + ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.cos(b) );
+                if(foodLA.d(birdLA) < (birdD+food.size+500))
+                    r.line(foodLA.x,foodLA.y,birdLA.x - ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.sin(b) + ((bird.size/2) * Math.cos(a)) * Math.cos(b),birdLA.y+ ((bird.size/2) * Math.cos(a)) * Math.sin(b) + ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.cos(b));
+            });
+            camera.end();
+        }
+
+
+            },
     update : function(delta){
         if((this.loc.y-this.size/2)>this.world.earthR){
             if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
@@ -7616,6 +7665,7 @@ World.prototype = {
         this.birds.forEach(function(bird){
             bird.update(delta);
         });
+        this.server.detectCollisions(this,delta);
     },
     addBird : function(bird,i){
         bird.world = this;
@@ -7665,7 +7715,8 @@ World.prototype.server = {
     addBird : function (){},
     addFood : function (){},
     deleteBird : function (){},
-    deleteFood : function (){}
+    deleteFood : function (){},
+    detectCollisions : function(){}
 }
 /**
  * Created by Can on 8.4.2016.
@@ -7674,14 +7725,18 @@ World.prototype.server = {
 var r = new CanvasRender("mainCanvas");
 
 // çözünürlük
-r.canvas.width = window.innerWidth;
-r.canvas.height = window.innerHeight;
+var renderKalite = 1;
+r.canvas.width = window.innerWidth*renderKalite;
+r.canvas.height = window.innerHeight*renderKalite;
 
 // world
 var world;
 var camera;
 var bird;
 var socket;
+
+// debug mode
+var debug = true;
 
 
 
@@ -7715,7 +7770,7 @@ $(document).keydown(function(e){
             camera.loc.x+=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
             camera.loc.y-=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
             break;
-
+         */
         case 107:
             camera.scale-=0.1;
             break;
@@ -7727,7 +7782,7 @@ $(document).keydown(function(e){
             break;
         case 69: //e
             camera.setRota(camera.a-5);
-            break;*/
+            break;
         case 32: //space
             if(socket)
                 socket.emit("fly");
@@ -7827,7 +7882,7 @@ function destroy(){
 
 }
 
-var FPS = new FPSCalculator(),FPSslow,UPSslow,ping;
+var FPS = new FPSCalculator(),FPSslow=60,UPSslow=60,ping=16;
 function update(){
     FPS.calc();
 
@@ -7838,20 +7893,27 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
-    r.text("ALPHA TEST",50,20)
-    r.text("FPS: " + FPSslow,50,50);
-    r.text("UPS: " + UPSslow,50,70);
-    r.text("ping: " + ping,50,90);
-
+    r.text("ALPHA TEST",5,20)
+    r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
+    r.text("UPS: " + UPSslow,5,70);
+    r.text("ping: " + ping,5,90);
+    r.text("r: " + bird.loc.x,5,110);
 }
+
+var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
 
 setInterval(function(){
     FPSslow = FPS.FPS;
     UPSslow = UPS;
-},1000);
+    if(created){
+        topFPS+=FPSslow;
+        FPScount++;
+    }
+
+
+},500);
 
 var PINGstartTime;
-
 setInterval(function() {
     if(socket){
         console.log("ping")
@@ -7859,4 +7921,17 @@ setInterval(function() {
         socket.emit("p");
     }
 }, 5000);
+
+
+setInterval(function(){
+    topFPS = topFPS/FPScount;
+    renderKalite = Math.min(SABITLER.FPS,topFPS)/SABITLER.FPS;
+    if(Math.abs(topFPS-FPSbf)>5){
+        FPSbf=topFPS;
+        r.canvas.width = window.innerWidth*renderKalite;
+        r.canvas.height = window.innerHeight*renderKalite;
+    }
+    topFPS*=FPScount;
+},15000);
+
 
