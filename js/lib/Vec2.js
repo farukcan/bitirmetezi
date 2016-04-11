@@ -32,4 +32,12 @@ function Vec2(x,y){ // 2 boyutlu vektör sınıfı
 	this.Angular2Analitic = function(){
 		return new Vec2(this.y*Math.cos(this.x),this.y*Math.sin(this.x));
 	}
+	this.limit = function(min,max){
+		this.x = limit(this.x,min.x,max.y);
+		this.y = limit(this.x,min.x,max.y);
+	}
+}
+
+function limit(x,min,max){
+	return Math.min(Math.max(x, min), max);
 }

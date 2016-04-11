@@ -1,8 +1,8 @@
 var ayar = {};
 
 // host:port
-ayar.host = "localhost";
-ayar.port = 8080;
+ayar.host = "kartal.io";
+ayar.port = 80;
 
 
 
@@ -14,5 +14,6 @@ ayar.mysql =  {
       database : 'whoiswampire'
     };
 
+ayar.uglyjs = false;
 
 module.exports = ayar;

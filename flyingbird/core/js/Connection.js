@@ -14,8 +14,18 @@ ConnectionController.prototype = {
         this.connections.push(conn);
         return conn;
     },
-    update : function(){
+    update : function(world){
+        // her bir kuş için loc,speed,size gönder
+        // sadece görüş alanına girenlerin verisini gönder.
+        var data = {
+            birds: [],
+            time : Date.now()
+        };
 
+        world.birds.forEach(function(bird,i){
+            data.birds.push(rtBird(bird,i));
+        });
+        world.server.io.emit("update",data);
     }
 };
 
@@ -24,10 +34,10 @@ function Connection(socket,id){
     this.socket = socket
     this.controller;
     this.id = id;
-    this.name="Player"+Math.floor(Math.random()*50000);
+    this.name="";
 }
 Connection.prototype = {
-    disconnect : function(){
+    disconnect : function(bird){
         // num of disconnecteds ++
         this.controller.disconnected++;
 
@@ -42,6 +52,22 @@ Connection.prototype = {
             return true;
         });
         if(m!=-1) this.controller.connections.splice(m,1);
+
+        if(bird){
+            bird.world.deleteBird(bird.id);
+        }
+
+
+    },
+    sendBirds : function(world,you){
+        var socket = this.socket;
+        world.birds.forEach(function(bird,i){
+            socket.emit("addBird",svBird(bird,i));
+        });
+        world.foods.forEach(function(food,i){
+            socket.emit("addFood",svFood(food,i));
+        });
+        this.socket.emit("youare",you);
 
 
     }

@@ -14,11 +14,15 @@ var
   | kaynak kod değiştimi kendini kapatır. 
   | 
   */
+  var watchList = ["app.js","ayar.js"];
 
-  fs.watchFile("app.js",function(shuanki,xonceki){
-    ctt("Kaynak Kod Değişti, kapatılıyor...");
-    kapat();
+  watchList.forEach(function(file){
+      fs.watchFile(file,function(shuanki,xonceki){
+          ctt("Kaynak Kod Değişti, kapatılıyor...");
+          kapat();
+      });
   });
+
 
   function kapat () {
     process.exit(1);
@@ -131,10 +135,12 @@ var
 
     eval(fs.readFileSync("../../js/lib/Vec2.js", 'utf8'));
     eval(fs.readFileSync("js/Sabitler.js", 'utf8'));
+    eval(fs.readFileSync("js/FPS.js", 'utf8'));
     eval(fs.readFileSync("js/Bird.js", 'utf8'));
     eval(fs.readFileSync("js/Food.js", 'utf8'));
     eval(fs.readFileSync("js/World.js", 'utf8'));
     eval(fs.readFileSync("js/Connection.js", 'utf8'));
+    eval(fs.readFileSync("js/Server.js", 'utf8'));
 
 /*
  |--------------------------------------------------------------------------
@@ -148,14 +154,13 @@ var jsp = require("uglify-js").parser;
 var pro = require("uglify-js").uglify;
 
 
- var ultraZIP=false; // js dosyasını fena sıkıştırır
-
  var buildList = [
      '../../js/lib/CanvasRender.js',
      '../../js/lib/jquery-min.js',
      '../../js/lib/Vec2.js',
      'node_modules/socket.io/node_modules/socket.io-client/socket.io.js',
      'js/Sabitler.js',
+     'js/FPS.js',
      'js/Bird.js',
      'js/Food.js',
      'js/Camera.js',
@@ -183,7 +188,7 @@ buildGame();
          data+=fs.readFileSync(file).toString();
      });
 
-     if(ultraZIP){
+     if(ayar.uglyjs){
          var ast = jsp.parse(data); // parse code and get the initial AST
          ast = pro.ast_mangle(ast); // get a new AST with mangled names
          ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
@@ -268,17 +273,39 @@ var controller = new ConnectionController();
 
 io.on('connection', function(socket){
     var conn = controller.addConnection(socket);
-    var bird = birdCreator();
-    world.addBird(bird);
+    var bird=false;
 
     socket.on('disconnect', function(neden){
         ct(conn.name+" is disconnected");
-        conn.disconnect();
+        conn.disconnect(bird);
     });
     socket.on('hi',function(name){
-        if(name)
+        if(bird) return;
+        bird = birdCreator();
+        bird.conn = conn;
+        bird.lastFly=Date.now();
+        bird.flyable = function(){
+            return (this.lastFly+75)<Date.now();
+        }
+
+        if(typeof name == "string"){
             conn.name=name;
+        }
+        bird.ad=conn.name;
+        world.addBird(bird);
         ct(conn.name+" is connected");
+    });
+
+    socket.on('fly',function(){
+        if(bird.flyable()){
+            bird.speed.y+=0.2;
+            bird.lastFly=Date.now();
+        }
+
+    });
+
+    socket.on('p', function() {
+        socket.emit('pong');
     });
 });
 
@@ -291,22 +318,19 @@ io.on('connection', function(socket){
  */
 
 var world = new World();
-world.serverSide = false;
+world.server.io = io;
 
 foodCreator();
 
-var delta,FPS=60,FPScache=Date.now(),FPSslow;
-
+var FPS = new FPSCalculator();
 setInterval(function(){
-    delta = (Date.now() - FPScache);
-    FPS = Math.floor(1000/delta);
-    FPScache=Date.now();
-    world.update(delta);
-    controller.update(); // send rt data to players
+    FPS.calc();
+    world.update(FPS.delta);
+    controller.update(world); // send rt data to players
 },5);
 
 function birdCreator(){
- return new Bird(Math.PI,5100);
+ return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
 function foodCreator(){
     for(var i=0;i<100;i++){

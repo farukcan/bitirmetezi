@@ -6,6 +6,8 @@ function World(){
     this.atmosphere = SABITLER.ATMOSPHERE;
     this.birds = [];
     this.birdINC = 0;
+    this.leftCount = 0;
+    this.rightCount = 0;
     this.foods = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
@@ -37,15 +39,20 @@ World.prototype = {
             bird.update(delta);
         });
     },
-    addBird : function(bird){
+    addBird : function(bird,i){
         bird.world = this;
-        this.birds.push(bird);
+        if(typeof i == "undefined")
+            this.birds.push(bird);
+        else
+            this.birds[i] = bird;
         bird.id = this.birdINC++;
-        if(this.serverSide) this.server.addBird(bird);
+        if(bird.right) bird.world.rightCount++;
+        else bird.world.leftCount++;
+        this.server.addBird(bird,(this.birds.length-1));
     },
     addFood : function(food){
         this.foods.push(food);
-        if(this.serverSide) this.server.addFood(food);
+        this.server.addFood(food,(this.foods.length-1));
     },
     deleteBird : function(id){
         // find in connections array and destrol
@@ -59,14 +66,26 @@ World.prototype = {
         });
 
         if(m!=-1) {
-            if(this.serverSide) this.server.deleteBird(m);
-            this.birds[m].world = null;
-            this.birds.splice(m,1);
+            this.removeBird(m);
         }
 
     },
+    removeBird : function(m){
+        if(this.birds[m].right) this.birds[m].world.rightCount--;
+        else this.birds[m].world.leftCount--;
+        this.server.deleteBird(m);
+        this.birds[m].world = null;
+        this.birds.splice(m,1);
+    },
     deleteFood : function(m){
-        if(this.serverSide) this.server.deleteFood(m);
+        this.server.deleteFood(m);
         this.foods.splice(m,1);
     }
 };
+
+World.prototype.server = {
+    addBird : function (){},
+    addFood : function (){},
+    deleteBird : function (){},
+    deleteFood : function (){}
+}

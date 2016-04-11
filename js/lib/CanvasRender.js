@@ -2,7 +2,7 @@ function CanvasRender(canvasId){
 	/* var */
 	this.canvas = document.getElementById(canvasId);
 	this.context = this.canvas.getContext('2d');
-	this.standartFont = "18px Arial";
+	this.standartFont = "20px Arial";
 	this.font(this.standartFont); // default font
 
 	this.clickElement = [];
@@ -111,6 +111,9 @@ CanvasRender.prototype = {
 	},
 	rotate : function(r){
 		this.context.rotate(r);
+	},
+	scale : function(w,h){
+		this.context.scale(w,h);
 	}
 
 

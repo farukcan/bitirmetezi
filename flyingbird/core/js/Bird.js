@@ -1,12 +1,15 @@
 /**
  * Created by Can on 8.4.2016.
  */
-function Bird(locx,locy){
+function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
     this.aspect = 12200/4760;
-    this.speed = new Vec2(Math.PI/(7200*8),0);
-    this.right = true;
+    if(right)
+        this.speed = new Vec2(SABITLER.STANDARTSPEED,0);
+    else
+        this.speed = new Vec2(-SABITLER.STANDARTSPEED,0);
+    this.right = right;
     this.world;
     this.visible=true;
     this.ad = "kartal"
@@ -27,20 +30,23 @@ Bird.prototype = {
 
 
         // yeni orginde göndür
-        r.rotate(this.loc.x+Math.PI/2)
-
-        r.color("white");
-
-        r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+        r.rotate(this.loc.x+Math.PI/2);
 
         r.color("orange");
 
-        r.rotate(-this.speed.y-Math.PI/2);
 
         if(this.right)
-            r.rotate(Math.PI/2);
+            r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
         else
-            r.rotate(-Math.PI/2);
+            r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
+
+
+
+        if(!this.right)
+            r.scale(-1,1);
+
+        r.rotate(-this.speed.y);
+
         // mevcut origine göre koordinatlara çiz
 
 
@@ -54,8 +60,13 @@ Bird.prototype = {
 
     },
     update : function(delta){
-        this.speed.add(this.world.gravity.mul(delta,true));
-        this.loc.add(this.speed.mul(delta,true));
-
+        if((this.loc.y-this.size/2)>this.world.earthR){
+            if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
+            this.speed.add(this.world.gravity.mul(delta,true));
+            this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
+            this.loc.add(this.speed.mul(delta,true));
+        }else{
+            //çarptı ve öldü
+        }
     }
 }
