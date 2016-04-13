@@ -82,7 +82,7 @@ World.prototype.server = {
                 var birdD = findLenght( - ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.sin(b) + ((bird.size/2) * Math.cos(a)) * Math.cos(b) ,((bird.size/2) * Math.cos(a)) * Math.sin(b) + ((bird.size * bird.aspect /2) * Math.sin(a)) * Math.cos(b) );
 
                if(foodLA.d(birdLA) < (birdD+food.size)) {
-                   bird.size+=Math.sqrt(food.size);
+                   bird.size=Math.sqrt(bird.size*bird.size+food.size*food.size);
                    world.deleteFood(m);
                    world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
                }
@@ -111,7 +111,6 @@ World.prototype.server = {
                         //yönler farklıysa
                         //ikiside can kaybeder
                         bird.damage(anotherBird.size);
-                        anotherBird.damage(bird.size);
                     }
 
                 }

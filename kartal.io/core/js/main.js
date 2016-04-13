@@ -156,7 +156,7 @@ function destroy(){
             socket.emit("disconnect");
             socket.disconnect();
         }catch(err){}
-        highscore = Math.max(highscore,Math.floor(bird.size));
+        highscore = Math.max(highscore,Math.floor(bird.size)*10);
         $("#score").html("High Score<h1>"+highscore+"</h1>");
 
         socket = null;
@@ -197,6 +197,10 @@ function update(){
     //;
 
 }
+function full(){
+    document.requestFullscreen();
+}
+
 
 var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
 
@@ -206,7 +210,7 @@ setInterval(function(){
     if(created){
         topFPS+=FPSslow;
         FPScount++;
-        $("#score").html("Score<h1>"+Math.floor(bird.size)+"</h1>");
+        $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
     }
 
 

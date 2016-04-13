@@ -341,7 +341,7 @@ function birdCreator(){
  return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
 function foodCreator(){
-    for(var i=0;i<50;i++){
+    for(var i=0;i<SABITLER.FOODNUM;i++){
         world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }
 }
