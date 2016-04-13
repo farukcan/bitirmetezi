@@ -287,6 +287,10 @@ io.on('connection', function(socket){
         bird.flyable = function(){
             return (this.lastFly+75)<Date.now();
         }
+        bird.lastNitro=Date.now()-5000;
+        bird.nitroable = function(){
+            return (this.lastNitro+5000)<Date.now();
+        }
 
         if(typeof name == "string"){
             conn.name=name;
@@ -298,12 +302,20 @@ io.on('connection', function(socket){
 
     socket.on('fly',function(){
         if(bird.flyable()){
-            bird.speed.y+=0.2;
+            bird.a=0.005;
             bird.lastFly=Date.now();
         }
 
     });
-
+    socket.on('nitro',function(){
+        if(bird.nitroable()){
+            bird.lastNitro=Date.now();
+            bird.damage(1);
+            bird.size--;
+            bird.nitro = true;
+            bird.nitroTime=5000;
+        }
+    });
     socket.on('p', function() {
         socket.emit('pong');
     });

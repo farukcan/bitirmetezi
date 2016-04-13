@@ -3,7 +3,7 @@
  */
 function Food(locx,locy){
     this.loc = new Vec2(locx,locy);
-    this.size = 3+Math.random()*10;
+    this.size = 3+Math.random()*20;
     this.visible = true;
 }
 

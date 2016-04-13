@@ -5,16 +5,19 @@ function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
     this.aspect = 12200/4760;
+    this.rightPolar = -1;
     if(right)
-        this.speed = new Vec2(SABITLER.STANDARTSPEED,0);
-    else
-        this.speed = new Vec2(-SABITLER.STANDARTSPEED,0);
+        this.rightPolar = 1;
+    this.speed = new Vec2(this.rightPolar*SABITLER.STANDARTSPEED,0);
     this.right = right;
     this.world;
     this.visible=true;
     this.ad = "kartal";
     this.hp = 20;
     this.living = true;
+    this.a = 0;
+    this.nitro = false;
+    this.nitroTime = 0;
 }
 
 Bird.prototype = {
@@ -86,9 +89,20 @@ Bird.prototype = {
         if(!this.living) return; //yaşamıyorsa fizikselliği olmaz
         if((this.loc.y-this.size/2)>this.world.earthR){
             if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
+            this.speed.y+=this.a*delta;
             this.speed.add(this.world.gravity.mul(delta,true));
             this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
+            if(this.nitro) {
+                this.nitroTime -= delta;
+                if(this.nitroTime<=1){
+                    this.nitro=false;
+                }else{
+                    this.loc.x+=this.speed.x*this.nitroTime/100;
+                }
+            }
             this.loc.add(this.speed.mul(delta,true));
+            if(this.a!=0)
+                this.a += -this.a/Math.abs(this.a)*SABITLER.IVMESELDUSUS;
         }else{
             this.kill();
         }

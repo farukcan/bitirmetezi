@@ -27,6 +27,10 @@ $(function(){
     //create();
 });
 
+r.addClickListener(function(){
+    if(socket)
+        socket.emit("fly");
+});
 
 $(document).keydown(function(e){
     switch(e.keyCode) {
@@ -67,6 +71,10 @@ $(document).keydown(function(e){
         case 32: //space
             if(socket)
                 socket.emit("fly");
+            break;
+        case 17: //ctrl
+            if(socket)
+                socket.emit("nitro");
             break;
         default:
             console.log(e.keyCode);

@@ -10,5 +10,7 @@ var SABITLER = {
     "FPS" : 60,
     "KUSORANI" : 1,
     "DISTIME" : 1000,
-    "FOODNUM" : 75
+    "FOODNUM" : 80,
+    "IVMESELDUSUS" :    0.001,
+    "NITROIVME" :       0.001
 }
