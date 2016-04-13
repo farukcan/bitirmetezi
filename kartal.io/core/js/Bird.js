@@ -12,7 +12,9 @@ function Bird(locx,locy,right){
     this.right = right;
     this.world;
     this.visible=true;
-    this.ad = "kartal"
+    this.ad = "kartal";
+    this.hp = 20;
+    this.living = true;
 }
 
 Bird.prototype = {
@@ -81,13 +83,16 @@ Bird.prototype = {
 
             },
     update : function(delta){
+        if(!this.living) return; //yaşamıyorsa fizikselliği olmaz
         if((this.loc.y-this.size/2)>this.world.earthR){
             if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
             this.speed.add(this.world.gravity.mul(delta,true));
             this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
             this.loc.add(this.speed.mul(delta,true));
         }else{
-            //çarptı ve öldü
+            this.kill();
         }
     }
 }
+
+Bird.prototype.kill = function(){};

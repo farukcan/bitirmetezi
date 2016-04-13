@@ -3,7 +3,7 @@
  */
 
 var r = new CanvasRender("mainCanvas");
-
+r.font("50px Arial")
 // çözünürlük
 var renderKalite = 1;
 r.canvas.width = window.innerWidth*renderKalite;
@@ -13,6 +13,7 @@ r.canvas.height = window.innerHeight*renderKalite;
 var world;
 var camera;
 var bird;
+var highscore=0;
 var socket;
 
 // debug mode
@@ -116,9 +117,7 @@ function create(){
 
             data.birds.forEach(function(b){
                 if(world.birds[b.i]){
-
                     world.birds[b.i].speed.y = -(world.birds[b.i].loc.y-b.y)/Udelta;
-
                     world.birds[b.i].loc.x = b.x;
                     world.birds[b.i].loc.y = b.y;
                     world.birds[b.i].size = b.s;
@@ -127,6 +126,10 @@ function create(){
         });
         socket.on('pong', function() {
             ping = Date.now() - PINGstartTime;
+        });
+        socket.on('hp',function(hp){
+            console.log("#hp",hp);
+            bird.hp = hp;
         });
 
 
@@ -153,6 +156,9 @@ function destroy(){
             socket.emit("disconnect");
             socket.disconnect();
         }catch(err){}
+        highscore = Math.max(highscore,Math.floor(bird.size));
+        $("#score").html("High Score<h1>"+highscore+"</h1>");
+
         socket = null;
         world = null;
         camera = null;
@@ -173,11 +179,23 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
-    r.text("ALPHA TEST",5,20)
-    r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
-    r.text("UPS: " + UPSslow,5,70);
-    r.text("ping: " + ping,5,90);
-    r.text("r: " + bird.loc.x,5,110);
+
+    if(debug){
+        r.color("white")
+        r.text("ALPHA TEST",5,20)
+        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
+        r.text("UPS: " + UPSslow,5,70);
+        r.text("ping: " + ping,5,90);
+        r.text("r: " + bird.loc.x,5,110);
+    }
+
+
+    r.color("#EF7126");
+    r.rect(0,r.canvas.height-5,r.canvas.width,5);
+    r.color("#F9E559");
+    r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
+    //;
+
 }
 
 var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
@@ -188,6 +206,7 @@ setInterval(function(){
     if(created){
         topFPS+=FPSslow;
         FPScount++;
+        $("#score").html("Score<h1>"+Math.floor(bird.size)+"</h1>");
     }
 
 

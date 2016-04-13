@@ -1,5 +1,5 @@
 #mainCanvas  {
-    background-color : #87DBF4;
+    background-color : #84E0FF;
     position: absolute;
     top : 0px;
     bottom: 0px;
@@ -11,7 +11,7 @@
 
 #gameInfo {
     z-index: 999;
-    background-color : #00d6b2;
+    background-color : #F9E559;
     position: absolute;
     margin: auto;
     top : 0%;
@@ -23,6 +23,7 @@
     text-align: center;
     padding: 10px;
     border-radius: 50px;
+    color : #EF7126;
 }
 
 #gameInfo h1 {
@@ -31,7 +32,7 @@
 
 #rules {
     z-index: 998;
-    background-color : #00d6b2;
+    background-color : #7EDDFD;
     position: absolute;
     margin-left: auto;
     margin-right: auto;
@@ -47,7 +48,7 @@
     width: 50%;
     height: 50px;
     border-radius: 50px;
-    background-color: #00b3ee;
+    background-color: #17D736;
 }
 
 #nick{
@@ -57,4 +58,23 @@
     border-radius: 50px;
     height: 30px;
     text-align: center;
+}
+
+#score {
+    color : white;
+    font-size: 30px;
+    z-index: 998;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 500px;
+    text-align: center;
+}
+
+#score h1{
+    font-size: 50px;
 }

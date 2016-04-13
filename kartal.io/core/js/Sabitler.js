@@ -8,5 +8,6 @@ var SABITLER = {
     "MAXSPEEDY" : 1,
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
-    "KUSORANI" : 1
+    "KUSORANI" : 1,
+    "DISTIME" : 1000,
 }

@@ -7453,7 +7453,8 @@ var SABITLER = {
     "MAXSPEEDY" : 1,
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
-    "KUSORANI" : 1
+    "KUSORANI" : 1,
+    "DISTIME" : 1000,
 }/**
  * Created by Can on 11.4.2016.
  */
@@ -7483,7 +7484,9 @@ function Bird(locx,locy,right){
     this.right = right;
     this.world;
     this.visible=true;
-    this.ad = "kartal"
+    this.ad = "kartal";
+    this.hp = 20;
+    this.living = true;
 }
 
 Bird.prototype = {
@@ -7552,16 +7555,20 @@ Bird.prototype = {
 
             },
     update : function(delta){
+        if(!this.living) return; //yaşamıyorsa fizikselliği olmaz
         if((this.loc.y-this.size/2)>this.world.earthR){
             if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
             this.speed.add(this.world.gravity.mul(delta,true));
             this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
             this.loc.add(this.speed.mul(delta,true));
         }else{
-            //çarptı ve öldü
+            this.kill();
         }
     }
-}/**
+}
+
+Bird.prototype.kill = function(){};
+/**
  * Created by Can on 9.4.2016.
  */
 function Food(locx,locy){
@@ -7644,7 +7651,7 @@ function World(){
 World.prototype = {
     draw : function(r){
         this.camera.begin();
-        r.color("#9CE4F9");
+        r.color("#9CE4FC");
         r.circle(0,0,this.earthR+this.atmosphere);
         r.fill();
         r.color("#17D736");
@@ -7723,7 +7730,7 @@ World.prototype.server = {
  */
 
 var r = new CanvasRender("mainCanvas");
-
+r.font("50px Arial")
 // çözünürlük
 var renderKalite = 1;
 r.canvas.width = window.innerWidth*renderKalite;
@@ -7733,6 +7740,7 @@ r.canvas.height = window.innerHeight*renderKalite;
 var world;
 var camera;
 var bird;
+var highscore=0;
 var socket;
 
 // debug mode
@@ -7836,9 +7844,7 @@ function create(){
 
             data.birds.forEach(function(b){
                 if(world.birds[b.i]){
-
                     world.birds[b.i].speed.y = -(world.birds[b.i].loc.y-b.y)/Udelta;
-
                     world.birds[b.i].loc.x = b.x;
                     world.birds[b.i].loc.y = b.y;
                     world.birds[b.i].size = b.s;
@@ -7847,6 +7853,10 @@ function create(){
         });
         socket.on('pong', function() {
             ping = Date.now() - PINGstartTime;
+        });
+        socket.on('hp',function(hp){
+            console.log("#hp",hp);
+            bird.hp = hp;
         });
 
 
@@ -7873,6 +7883,9 @@ function destroy(){
             socket.emit("disconnect");
             socket.disconnect();
         }catch(err){}
+        highscore = Math.max(highscore,Math.floor(bird.size));
+        $("#score").html("High Score<h1>"+highscore+"</h1>");
+
         socket = null;
         world = null;
         camera = null;
@@ -7893,11 +7906,23 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
-    r.text("ALPHA TEST",5,20)
-    r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
-    r.text("UPS: " + UPSslow,5,70);
-    r.text("ping: " + ping,5,90);
-    r.text("r: " + bird.loc.x,5,110);
+
+    if(debug){
+        r.color("white")
+        r.text("ALPHA TEST",5,20)
+        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
+        r.text("UPS: " + UPSslow,5,70);
+        r.text("ping: " + ping,5,90);
+        r.text("r: " + bird.loc.x,5,110);
+    }
+
+
+    r.color("#EF7126");
+    r.rect(0,r.canvas.height-5,r.canvas.width,5);
+    r.color("#F9E559");
+    r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
+    //;
+
 }
 
 var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
@@ -7908,6 +7933,7 @@ setInterval(function(){
     if(created){
         topFPS+=FPSslow;
         FPScount++;
+        $("#score").html("Score<h1>"+Math.floor(bird.size)+"</h1>");
     }
 
 

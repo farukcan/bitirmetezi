@@ -17,7 +17,7 @@ function World(){
 World.prototype = {
     draw : function(r){
         this.camera.begin();
-        r.color("#9CE4F9");
+        r.color("#9CE4FC");
         r.circle(0,0,this.earthR+this.atmosphere);
         r.fill();
         r.color("#17D736");

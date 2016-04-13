@@ -331,6 +331,12 @@ function update(delta){
     controller.update(world); // send rt data to players
 }
 
+setInterval(function(){
+    world.birds.forEach(function(bird,i){
+        bird.heal();
+    });
+},2000)
+
 function birdCreator(){
  return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
@@ -339,3 +345,4 @@ function foodCreator(){
         world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }
 }
+
