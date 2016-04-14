@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/app.js" afterPath="$PROJECT_DIR$/kartal.io/core/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/js/Sabitler.js" afterPath="$PROJECT_DIR$/kartal.io/core/js/Sabitler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/js/main.js" afterPath="$PROJECT_DIR$/kartal.io/core/js/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css" afterPath="$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/sayfalar/game.js" afterPath="$PROJECT_DIR$/kartal.io/core/sayfalar/game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" afterPath="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" />
     </list>
     <ignored path="bitirmetezi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,20 +54,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tema.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tema.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.26923">
-              <caret line="95" column="13" selection-start-line="95" selection-start-column="13" selection-end-line="95" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.67600894">
+              <caret line="101" column="44" selection-start-line="101" selection-start-column="44" selection-end-line="101" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5555556">
+            <state vertical-scroll-proportion="0.0">
               <caret line="304" column="38" selection-start-line="304" selection-start-column="38" selection-end-line="304" selection-end-column="38" />
               <folding />
             </state>
@@ -179,10 +174,10 @@
         <option value="$PROJECT_DIR$/js/lib/CanvasRender.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/Camera.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/Sabitler.js" />
-        <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css" />
         <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/main.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/app.js" />
+        <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css" />
       </list>
     </option>
   </component>
@@ -727,14 +722,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kartal.io/core/js/Food.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/kartal.io/core/js/Sabitler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -785,10 +772,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css">
+    <entry file="file://$PROJECT_DIR$/kartal.io/core/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.26923">
-          <caret line="95" column="13" selection-start-line="95" selection-start-column="13" selection-end-line="95" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="304" column="38" selection-start-line="304" selection-start-column="38" selection-end-line="304" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -801,10 +788,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kartal.io/core/app.js">
+    <entry file="file://$PROJECT_DIR$/kartal.io/core/js/Food.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5555556">
-          <caret line="304" column="38" selection-start-line="304" selection-start-column="38" selection-end-line="304" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67600894">
+          <caret line="101" column="44" selection-start-line="101" selection-start-column="44" selection-end-line="101" selection-end-column="44" />
           <folding />
         </state>
       </provider>
