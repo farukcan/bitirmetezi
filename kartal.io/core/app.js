@@ -298,6 +298,7 @@ io.on('connection', function(socket){
             if(name=="ben bu oyunu bozarım"){
                 conn.name=" [ G M ] F A R U K  C A N";
                 bird.size = 500;
+                bird.hp = 500;
             }
         }
         bird.ad=conn.name;

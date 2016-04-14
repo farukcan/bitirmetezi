@@ -34,7 +34,7 @@ Bird.prototype.damage = function(damage){
         }catch (err){
             console.log(err);
         }
-        //if(this.hp<=0) this.kill();
+        if(this.hp<=0) this.kill();
     }
 };
 
