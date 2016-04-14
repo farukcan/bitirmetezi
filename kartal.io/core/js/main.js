@@ -16,7 +16,7 @@ var bird;
 var highscore=0;
 var socket;
 var zoom=r.canvas.width/r.canvas.height;
-
+$("#scoreboard").hide();
 // debug mode
 var debug = true;
 
@@ -160,6 +160,15 @@ function create(){
             console.log("#hp",hp);
             bird.hp = hp;
         });
+        socket.on('scores',function(scores){
+           var h = "<tr><th>Score</th><th>Nick</th></tr>";
+            scores.forEach(function(s){
+                console.log("#scores",s);
+                h+="<tr><td>"+ s.score +"</td><td>"+ s.ad+"</td></tr>";
+            });
+            $("#scoreboard").html("<table>"+h+"</table>");
+            $("#scoreboard").show();
+        });
 
 
         camera = new Camera(new Vec2(0,0));
@@ -179,6 +188,7 @@ function destroy(){
         created = false;
         $("#gameInfo").fadeIn(4000);
         $("#rules").fadeIn();
+        $("#scoreboard").fadeOut(5000);
 
         r.removeUpdateFunc();
         try{
@@ -206,7 +216,7 @@ function update(){
     if(bird){
         camera.loc = bird.loc.Angular2Analitic().inverse();
         camera.setRota(-bird.loc.x/Math.PI*180-90);
-        camera.scale = 40/bird.size*zoom;
+        camera.scale = 30/bird.size*zoom;
     }
     world.draw(r);
     nitropercent = r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1);

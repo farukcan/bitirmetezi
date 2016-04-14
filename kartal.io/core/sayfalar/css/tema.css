@@ -88,3 +88,26 @@
 #score h1{
     font-size: 50px;
 }
+
+#scoreboard {
+    color : white;
+    text-align: right;
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    z-index: 997;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+#scoreboard th {
+    font-size: 20px;
+}
+#scoreboard td {
+    padding-left: 5px;
+}

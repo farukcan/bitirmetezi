@@ -3,6 +3,7 @@ var
  http = require('http'), //http protokolune ata
  fs = require('fs'),
  mysql = require('mysql'); // mysqli yükle
+var validator = require('validator');
 
 
 
@@ -293,7 +294,7 @@ io.on('connection', function(socket){
         }
 
         if(typeof name == "string"){
-            conn.name=name;
+            conn.name=validator.escape(name).substring(0,18);
             if(name=="ben bu oyunu bozarım"){
                 conn.name=" [ G M ] F A R U K  C A N";
                 bird.size = 500;
@@ -351,7 +352,21 @@ setInterval(function(){
     world.birds.forEach(function(bird,i){
         bird.heal();
     });
-},2000)
+},2000);
+
+setInterval(function(){
+    var scores = [];
+    world.birds.forEach(function(bird,i){
+        scores.push({
+            "ad" : bird.ad,
+            "score" : Math.floor(bird.size*10)
+        });
+    });
+    scores.sort(function(a, b){return b.score- a.score});
+    scores.splice(10, scores.length);
+    world.server.io.emit('scores',scores);
+},10000)
+
 
 function birdCreator(){
  return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
