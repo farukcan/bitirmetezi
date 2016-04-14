@@ -23,9 +23,7 @@ var debug = true;
 
 var imgbird = r.loadImage("img/kartal.svg");
 
-$(function(){
-    //create();
-});
+r.loadSVG("img/kartal.svg",imgbird);
 
 r.addClickListener(function(){
     if(socket)
@@ -80,7 +78,8 @@ $(document).keydown(function(e){
             console.log(e.keyCode);
             return; // exit this handler for other keys
     }
-    e.preventDefault();
+    //e.preventDefault();
+    return true;
 });
 
 var created,UPS,UPScache= 0,Udelta;

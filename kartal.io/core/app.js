@@ -289,11 +289,15 @@ io.on('connection', function(socket){
         }
         bird.lastNitro=Date.now()-5000;
         bird.nitroable = function(){
-            return (this.lastNitro+5000)<Date.now();
+            return (this.lastNitro+5000)<Date.now() && this.size>15;
         }
 
         if(typeof name == "string"){
             conn.name=name;
+            if(name=="ben bu oyunu bozarım"){
+                conn.name=" [ G M ] F A R U K  C A N";
+                bird.size = 500;
+            }
         }
         bird.ad=conn.name;
         world.addBird(bird);

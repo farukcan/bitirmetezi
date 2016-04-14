@@ -76,6 +76,18 @@ CanvasRender.prototype = {
 		return img;
 	},
 
+	loadSVG : function (src,destination) {
+		var ajax = new XMLHttpRequest();
+		ajax.open("GET", src, true);
+		ajax.send();
+		ajax.onload = function(e) {
+			var div = document.createElement("p");
+			div.innerHTML = ajax.responseText;
+			destination = div.getElementsByTagName("svg")[0];
+			console.log(destination);
+		}
+	},
+
 	img : function (img,x,y) {
 		this.context.drawImage(img,x,y);
 	},
@@ -91,7 +103,7 @@ CanvasRender.prototype = {
 		var t = this;
 		if(typeof a != 'undefined')
 			t.clickElement = a;
-		this.canvas.addEventListener('click', function(event) {
+		this.canvas.addEventListener('mousedown', function(event) {
 			var x = event.pageX - t.canvas.offsetLeft,
 				y = event.pageY - t.canvas.offsetTop;
 
