@@ -90,6 +90,7 @@ World.prototype.server = {
             // kuşların birbirini yemesi
             world.birds.forEach(function(anotherBird,j){
                 if(!anotherBird.living) return;
+                if(i==j) return;
                 var anotherBirdLA = anotherBird.loc.Angular2Analitic();
                 var b = bird.right ? bird.loc.x - bird.speed.y : bird.loc.x + bird.speed.y;
                 var a =  birdLA.angleBetween(anotherBirdLA)-b;
@@ -97,7 +98,7 @@ World.prototype.server = {
                 b = anotherBird.right ? anotherBird.loc.x - anotherBird.speed.y : anotherBird.loc.x + anotherBird.speed.y;
                 a =  anotherBirdLA.angleBetween(birdLA)-b;
                 var anotherBirdD = findLenght( - ((anotherBird.size * anotherBird.aspect /2) * Math.sin(a)) * Math.sin(b) + ((anotherBird.size/2) * Math.cos(a)) * Math.cos(b) ,((anotherBird.size/2) * Math.cos(a)) * Math.sin(b) + ((anotherBird.size * anotherBird.aspect /2) * Math.sin(a)) * Math.cos(b) );
-                if(birdLA.d(anotherBirdLA) < ( birdD  + anotherBirdD) && i!=j){
+                if(birdLA.d(anotherBirdLA) < ( birdD  + anotherBirdD)){
 
                     if(bird.right==anotherBird.right){
                         // eğer yönler aynıysa
@@ -111,7 +112,6 @@ World.prototype.server = {
                         //yönler farklıysa
                         //ikiside can kaybeder
                         bird.damage(anotherBird.size);
-                        anotherBird.damage(bird.size);
                     }
 
                 }
