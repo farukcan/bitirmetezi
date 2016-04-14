@@ -52,6 +52,10 @@ CanvasRender.prototype = {
 		this.context.fill();
 	},
 
+	fillStyle : function(s){
+		this.context.fillStyle = s;
+	},
+
 	font : function (f){
 		this.context.font = f;
 	},

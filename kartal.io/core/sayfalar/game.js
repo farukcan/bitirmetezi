@@ -52,6 +52,10 @@ CanvasRender.prototype = {
 		this.context.fill();
 	},
 
+	fillStyle : function(s){
+		this.context.fillStyle = s;
+	},
+
 	font : function (f){
 		this.context.font = f;
 	},
@@ -7781,8 +7785,15 @@ var imgbird = r.loadImage("img/kartal.svg");
 
 r.loadSVG("img/kartal.svg",imgbird);
 
-r.addClickListener(fly);
+r.addClickListener(fly,[{
+    top : 0,
+    left : 0,
+    height : r.canvas.height/8,
+    width : r.canvas.width,
+    func : nitro
+}]);
 
+$("#score").click(nitro);
 r.canvas.oncontextmenu = function() {
     nitro();
     return false;
@@ -7848,9 +7859,13 @@ function fly(){
     if(socket)
         socket.emit("fly");
 }
+
+var lastNitro = Date.now();
 function nitro(){
-    if(socket)
+    if(socket){
         socket.emit("nitro");
+        lastNitro = Date.now();
+    }
 }
 
 var created,UPS,UPScache= 0,Udelta;
@@ -7957,6 +7972,9 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
+
+    r.fillStyle('rgba(237,28,36,0.9)');
+    r.rect(0,0, r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1), 5);
 
     if(debug){
         r.color("white")
