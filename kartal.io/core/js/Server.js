@@ -105,13 +105,13 @@ World.prototype.server = {
                             // biri diğerinde büyükse
                             //diğerini yer
                             bird.size+=anotherBird.size;
-                        }else {
-                            bird.damage(anotherBird.size);
+                            anotherBird.damage(bird.size);
                         }
                     }else{
                         //yönler farklıysa
                         //ikiside can kaybeder
                         bird.damage(anotherBird.size);
+                        anotherBird.damage(bird.size);
                     }
 
                 }
