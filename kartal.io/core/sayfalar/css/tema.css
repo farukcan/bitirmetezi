@@ -18,7 +18,7 @@
     bottom: 0px;
     left: 0px;
     right: 0px;
-    width: 50%;
+    width: 90%;
     max-width: 500px;
     height: 170px;
     text-align: center;
@@ -40,7 +40,7 @@
     bottom: 30px;
     left: 0px;
     right: 0px;
-    width: 50%;
+    width: 90%;
     max-width: 500px;
     border: 1px solid;
     border-radius: 10px;
@@ -73,7 +73,8 @@
     top: 0px;
     left: 0px;
     right: 0px;
-    width: 500px;
+    width: 60%;
+    max-width: 500px;
     text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
