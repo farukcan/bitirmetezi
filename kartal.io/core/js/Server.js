@@ -89,6 +89,7 @@ World.prototype.server = {
             });
             // kuşların birbirini yemesi
             world.birds.forEach(function(anotherBird,j){
+                if(!anotherBird.living) return;
                 var anotherBirdLA = anotherBird.loc.Angular2Analitic();
                 var b = bird.right ? bird.loc.x - bird.speed.y : bird.loc.x + bird.speed.y;
                 var a =  birdLA.angleBetween(anotherBirdLA)-b;
