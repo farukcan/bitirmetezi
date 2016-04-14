@@ -34,7 +34,7 @@ Bird.prototype.damage = function(damage){
         }catch (err){
             console.log(err);
         }
-        if(this.hp<=0) this.kill();
+        //if(this.hp<=0) this.kill();
     }
 };
 
@@ -112,6 +112,7 @@ World.prototype.server = {
                         //yönler farklıysa
                         //ikiside can kaybeder
                         bird.damage(anotherBird.size);
+                        anotherBird.damage(bird.size);
                     }
 
                 }
