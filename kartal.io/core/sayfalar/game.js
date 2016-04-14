@@ -7864,7 +7864,8 @@ var lastNitro = Date.now();
 function nitro(){
     if(socket){
         socket.emit("nitro");
-        lastNitro = Date.now();
+        if(lastNitro+5000<Date.now())
+            lastNitro = Date.now();
     }
 }
 
@@ -7961,7 +7962,7 @@ function destroy(){
 
 }
 
-var FPS = new FPSCalculator(),FPSslow=60,UPSslow=60,ping=16;
+var FPS = new FPSCalculator(),FPSslow=60,UPSslow=60,ping=16,nitropercent;
 function update(){
     FPS.calc();
 
@@ -7972,9 +7973,9 @@ function update(){
         camera.setRota(-bird.loc.x/Math.PI*180-90);
     }
     world.draw(r);
-
-    r.fillStyle('rgba(237,28,36,0.9)');
-    r.rect(0,0, r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1), 5);
+    nitropercent = r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1);
+    r.fillStyle('red');
+    r.rect(0,0,nitropercent , 5);
 
     if(debug){
         r.color("white")
@@ -8006,7 +8007,10 @@ setInterval(function(){
     if(created){
         topFPS+=FPSslow;
         FPScount++;
-        $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
+        if(nitropercent==0)
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
+        else
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
     }
 
 
@@ -8015,7 +8019,6 @@ setInterval(function(){
 var PINGstartTime;
 setInterval(function() {
     if(socket){
-        console.log("ping")
         PINGstartTime = Date.now();
         socket.emit("p");
     }
