@@ -7646,7 +7646,7 @@ Camera.prototype = {
         r.context.save();
         r.context.scale(this.scale,this.scale);
 
-        r.context.translate(r.canvas.width/2, r.canvas.height/2);
+        r.context.translate(r.canvas.width/2/this.scale, r.canvas.height/2/this.scale);
 
         r.context.rotate(this.rota);
 
@@ -7775,6 +7775,7 @@ var camera;
 var bird;
 var highscore=0;
 var socket;
+var zoom=r.canvas.width/r.canvas.height;
 
 // debug mode
 var debug = true;
@@ -7823,16 +7824,10 @@ $(document).keydown(function(e){
             break;
          */
         case 107:
-            camera.scale-=0.1;
+            zoom-=0.03;
             break;
         case 109:
-            camera.scale+=0.1;
-            break;
-        case 81: //q
-            camera.setRota(camera.a+5);
-            break;
-        case 69: //e
-            camera.setRota(camera.a-5);
+            zoom+=0.03;
             break;
         case 13:
             create();
@@ -7971,6 +7966,7 @@ function update(){
     if(bird){
         camera.loc = bird.loc.Angular2Analitic().inverse();
         camera.setRota(-bird.loc.x/Math.PI*180-90);
+        camera.scale = 40/bird.size*zoom;
     }
     world.draw(r);
     nitropercent = r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1);

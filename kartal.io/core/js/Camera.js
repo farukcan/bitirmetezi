@@ -19,7 +19,7 @@ Camera.prototype = {
         r.context.save();
         r.context.scale(this.scale,this.scale);
 
-        r.context.translate(r.canvas.width/2, r.canvas.height/2);
+        r.context.translate(r.canvas.width/2/this.scale, r.canvas.height/2/this.scale);
 
         r.context.rotate(this.rota);
 
