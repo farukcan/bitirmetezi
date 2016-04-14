@@ -25,11 +25,12 @@ var imgbird = r.loadImage("img/kartal.svg");
 
 r.loadSVG("img/kartal.svg",imgbird);
 
-r.addClickListener(function(){
-    if(socket)
-        socket.emit("fly");
-});
+r.addClickListener(fly);
 
+r.canvas.oncontextmenu = function() {
+    nitro();
+    return false;
+}
 $(document).keydown(function(e){
     switch(e.keyCode) {
         /*case 37: // left
@@ -66,13 +67,18 @@ $(document).keydown(function(e){
         case 69: //e
             camera.setRota(camera.a-5);
             break;
-        case 32: //space
-            if(socket)
-                socket.emit("fly");
+        case 13:
+            create();
             break;
+        case 38: //up
+        case 32: //space
+            fly();
+            break;
+        case 39: // left
+        case 40: // right
+        case 37:
         case 17: //ctrl
-            if(socket)
-                socket.emit("nitro");
+            nitro();
             break;
         default:
             console.log(e.keyCode);
@@ -81,6 +87,15 @@ $(document).keydown(function(e){
     //e.preventDefault();
     return true;
 });
+
+function fly(){
+    if(socket)
+        socket.emit("fly");
+}
+function nitro(){
+    if(socket)
+        socket.emit("nitro");
+}
 
 var created,UPS,UPScache= 0,Udelta;
 function create(){
