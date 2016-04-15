@@ -63,6 +63,7 @@
 }
 
 #score {
+    border-radius: 50px;
     color : white;
     font-size: 20px;
     z-index: 998;
@@ -70,7 +71,7 @@
     margin-left: auto;
     margin-right: auto;
     padding-top: 5px;
-    top: 0px;
+    top: 5px;
     left: 0px;
     right: 0px;
     width: 60%;
@@ -111,4 +112,21 @@
 }
 #scoreboard td {
     padding-left: 5px;
+}
+
+
+#zoomdiv {
+    color : white;
+    text-align: right;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 997;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
 }

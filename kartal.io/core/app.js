@@ -296,7 +296,7 @@ io.on('connection', function(socket){
         if(typeof name == "string"){
             conn.name=validator.escape(name).substring(0,18);
             if(name=="ben bu oyunu bozarım"){
-                conn.name=" [ G M ] F A R U K  C A N";
+                conn.name="[GM] F A R U K  C A N";
                 bird.size = 500;
                 bird.hp = 500;
             }

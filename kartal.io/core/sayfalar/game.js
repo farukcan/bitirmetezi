@@ -7824,10 +7824,10 @@ $(document).keydown(function(e){
             break;
          */
         case 107:
-            zoom-=0.03;
+            zoomin();
             break;
         case 109:
-            zoom+=0.03;
+            zoomout();
             break;
         case 13:
             create();
@@ -7859,11 +7859,19 @@ var lastNitro = Date.now();
 function nitro(){
     if(socket){
         socket.emit("nitro");
+        $("#score").css("background-color","transparent");
         if(lastNitro+5000<Date.now())
             lastNitro = Date.now();
     }
 }
 
+var zoomspeed=0.09;
+function zoomin(){
+    zoom+=zoomspeed;
+}
+function zoomout(){
+    zoom-=zoomspeed;
+}
 var created,UPS,UPScache= 0,Udelta;
 function create(){
     if(!created){
@@ -7985,11 +7993,11 @@ function update(){
 
     if(debug){
         r.color("white")
-        r.text("ALPHA TEST",5,20)
-        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5,50);
-        r.text("UPS: " + UPSslow,5,70);
-        r.text("ping: " + ping,5,90);
-        r.text("r: " + bird.loc.x,5,110);
+        r.text("ALPHA TEST",5, r.canvas.height-110)
+        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5, r.canvas.height-80);
+        r.text("UPS: " + UPSslow,5, r.canvas.height-60);
+        r.text("ping: " + ping,5, r.canvas.height-40);
+        r.text("r: " + bird.loc.x,5, r.canvas.height-20);
     }
 
 
@@ -8013,8 +8021,10 @@ setInterval(function(){
     if(created){
         topFPS+=FPSslow;
         FPScount++;
-        if(nitropercent==0)
+        if(nitropercent==0){
             $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
+            $("#score").css("background-color","rgba(255,0,0,0.03)");
+        }
         else
             $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
     }
