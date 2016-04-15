@@ -130,3 +130,8 @@
     user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
 }
+
+#zoomdiv img {
+    width: 32px;
+    height: 32px;
+}
