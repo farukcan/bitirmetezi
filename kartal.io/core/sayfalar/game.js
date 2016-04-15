@@ -7495,7 +7495,7 @@ function FPSCalculator(){
 function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
-    this.aspect = 12200/4760;
+    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4;
     this.rightPolar = -1;
     if(right)
         this.rightPolar = 1;
@@ -7509,6 +7509,8 @@ function Bird(locx,locy,right){
     this.a = 0;
     this.nitro = false;
     this.nitroTime = 0;
+    this.knti = 0;
+    this.kntdelay;
 }
 
 Bird.prototype = {
@@ -7553,7 +7555,11 @@ Bird.prototype = {
 
         r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 
-
+        if(this.speed.y<0) this.kntdelay = 600;
+        else this.kntdelay = Math.max(600/(this.speed.y+1),550);
+        this.knti=Math.floor(Date.now()%this.kntdelay/this.kntdelay*this.knts);
+        r.scale(-1,1);
+        r.imageClipped(kanat,this.kntx/this.knts*this.knti,0,this.kntx/this.knts,this.knty,-this.size/10*this.aspect,-this.size/2,this.size*this.kntx/this.knty/this.knts,this.size);
 
         camera.end();
 
@@ -7579,7 +7585,7 @@ Bird.prototype = {
     update : function(delta){
         if(!this.living) return; //yaşamıyorsa fizikselliği olmaz
         if((this.loc.y-this.size/2)>this.world.earthR){
-            if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y=-Math.abs(this.speed.y);
+            if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) (this.speed.y=-Math.abs(this.speed.y)) && (this.loc.y =this.world.earthR+this.world.atmosphere);
             this.speed.y+=this.a*delta;
             this.speed.add(this.world.gravity.mul(delta,true));
             this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
@@ -7783,8 +7789,9 @@ var debug = true;
 
 
 var imgbird = r.loadImage("img/kartal.svg");
+var kanat = r.loadImage("img/kanat.svg");
 
-r.loadSVG("img/kartal.svg",imgbird);
+
 
 r.addClickListener(fly,[{
     top : 0,
@@ -7801,28 +7808,6 @@ r.canvas.oncontextmenu = function() {
 }
 $(document).keydown(function(e){
     switch(e.keyCode) {
-        /*case 37: // left
-            camera.loc.x+=camera.speed*Math.cos(camera.rota);
-            camera.loc.y-=camera.speed*Math.sin(camera.rota);
-            bird.speed.x+=Math.PI/3600;
-            break;
-
-        case 38: // up
-            camera.loc.x-=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
-            camera.loc.y+=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
-            break;
-
-        case 39: // right
-            camera.loc.x-=camera.speed*Math.cos(camera.rota);
-            camera.loc.y+=camera.speed*Math.sin(camera.rota);
-            bird.speed.x-=Math.PI/3600;
-            break;
-
-        case 40: // down
-            camera.loc.x+=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
-            camera.loc.y-=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
-            break;
-         */
         case 107:
             zoomin();
             break;
@@ -7846,7 +7831,6 @@ $(document).keydown(function(e){
             console.log(e.keyCode);
             return; // exit this handler for other keys
     }
-    //e.preventDefault();
     return true;
 });
 

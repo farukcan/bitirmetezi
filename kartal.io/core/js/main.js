@@ -23,8 +23,9 @@ var debug = true;
 
 
 var imgbird = r.loadImage("img/kartal.svg");
+var kanat = r.loadImage("img/kanat.svg");
 
-r.loadSVG("img/kartal.svg",imgbird);
+
 
 r.addClickListener(fly,[{
     top : 0,
@@ -41,28 +42,6 @@ r.canvas.oncontextmenu = function() {
 }
 $(document).keydown(function(e){
     switch(e.keyCode) {
-        /*case 37: // left
-            camera.loc.x+=camera.speed*Math.cos(camera.rota);
-            camera.loc.y-=camera.speed*Math.sin(camera.rota);
-            bird.speed.x+=Math.PI/3600;
-            break;
-
-        case 38: // up
-            camera.loc.x-=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
-            camera.loc.y+=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
-            break;
-
-        case 39: // right
-            camera.loc.x-=camera.speed*Math.cos(camera.rota);
-            camera.loc.y+=camera.speed*Math.sin(camera.rota);
-            bird.speed.x-=Math.PI/3600;
-            break;
-
-        case 40: // down
-            camera.loc.x+=camera.speed*Math.cos((camera.a+90)*Math.PI/180);
-            camera.loc.y-=camera.speed*Math.sin((camera.a+90)*Math.PI/180);
-            break;
-         */
         case 107:
             zoomin();
             break;
@@ -86,7 +65,6 @@ $(document).keydown(function(e){
             console.log(e.keyCode);
             return; // exit this handler for other keys
     }
-    //e.preventDefault();
     return true;
 });
 
