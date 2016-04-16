@@ -15,17 +15,41 @@ var camera;
 var bird;
 var highscore=0;
 var socket;
-var zoom=r.canvas.width/r.canvas.height;
+var zoom=r.canvas.width/r.canvas.height*2/3;
 $("#scoreboard").hide();
 // debug mode
 var debug = true;
 
 
+var soundEagle = new buzz.sound("/ogg/eagle.ogg");
+var soundPoint = new buzz.sound("/ogg/point.ogg");
+var soundWing = new buzz.sound("/ogg/wing.ogg");
+var sounds = [soundEagle,soundPoint,soundWing]
 
-var imgbird = r.loadImage("img/kartal.svg");
+var mute = true;
+function togglemute(t){
+    sounds.forEach(function(s){s.toggleMute();})
+    mute=!mute;
+    if(mute) t.src = "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4Ij4KPGc+Cgk8cGF0aCBkPSJNMjc3LjU0OSwwaC00OGwtMTQ0LDE2MGgtNDhjLTE3LjY3MiwwLTMyLjM3NSwxNC4zMjYtMzIuMzc1LDMydjEyOGMwLDE3LjY3MiwxNC43MDMsMzIsMzIuMzc1LDMyaDQ4bDE0NCwxNjBoNDggICBjOC44MzYsMCwxNS42MjUtNy4xNjQsMTUuNjI1LTE2VjE2QzI5My4xNzQsNy4xNjQsMjg2LjM4NSwwLDI3Ny41NDksMHoiIGZpbGw9IiMwMDZERjAiLz4KCTxwYXRoIGQ9Ik0zODIuNDU2LDE4Ny45MDZjLTExLjEwOS0xMy43MjctMzEuMjk3LTE1Ljg5MS00NC45NjEtNC44NDRjLTEzLjc1LDExLjA0Ny0xNS45NDEsMzEuMjM0LTQuODc5LDQ1ICAgYzExLjc3LDE0LjYyNSwxMS43Nyw0MS4yNS0wLjAwOCw1NS44ODNjLTExLjA1NSwxMy43NTgtOC44NjMsMzMuOTQ1LDQuODgzLDQ0Ljk5MmM1LjY2NCw0LjU1NSwxMi43ODEsNy4wNjMsMjAuMDQzLDcuMDYzICAgYzkuNzYyLDAsMTguODU5LTQuMzUyLDI0Ljk1My0xMS45MzhDNDEzLjE4MiwyODUuODk4LDQxMy4xODIsMjI2LjEwMiwzODIuNDU2LDE4Ny45MDZ6IiBmaWxsPSIjMDA2REYwIi8+Cgk8cGF0aCBkPSJNNDU5LjkzNiwxMzguNTc4Yy02LjQyNi02LjY2NC0xNS4wNy0xMC40MTQtMjQuMzQtMTAuNTc4Yy05LjQ3NywwLjE0MS0xOC4wMzUsMy4yOTctMjQuNjg0LDkuNzI3ICAgYy0xMy43MzgsMTMuMjY2LTE0LjEzMywzNS4yNS0wLjg2Nyw0OS4wMjNjMzYuODc5LDM4LjE4LDM2Ljg3OSwxMDAuMzEzLTAuMDE2LDEzOC41MDhjLTEzLjI1LDEzLjc1OC0xMi44NTUsMzUuNzQyLDAuODU5LDQ4Ljk4NCAgIGM2LjQ4NCw2LjI5NywxNS4wNDMsOS43NTgsMjQuMDk4LDkuNzU4YzkuMzUyLDAsMTguNDQxLTMuODUyLDI0Ljk0OS0xMC41NzhDNTIyLjQ1NiwzMDguNjcyLDUyMi40NTYsMjAzLjMyLDQ1OS45MzYsMTM4LjU3OHoiIGZpbGw9IiMwMDZERjAiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K";
+    else t.src = "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4Ij4KPGc+Cgk8cGF0aCBkPSJNNDYxLjI1MywyNTZsMjUuMzc1LTI1LjM3NWMxMi40OTYtMTIuNDkyLDEyLjQ5Ni0zMi43NTgsMC00NS4yNWMtMTIuNS0xMi41LTMyLjc1OC0xMi41LTQ1LjI1OCwwbC0yNS4zNzEsMjUuMzcxICAgbC0yNS4zNzEtMjUuMzcxYy0xMi41LTEyLjUtMzIuNzU4LTEyLjUtNDUuMjU4LDBjLTEyLjQ5NiwxMi40OTItMTIuNDk2LDMyLjc1OCwwLDQ1LjI1TDM3MC43NDUsMjU2bC0yNS4zNzUsMjUuMzc1ICAgYy0xMi40OTYsMTIuNDkyLTEyLjQ5NiwzMi43NTgsMCw0NS4yNWM2LjI1LDYuMjUsMTQuNDM4LDkuMzc1LDIyLjYyOSw5LjM3NXMxNi4zNzktMy4xMjUsMjIuNjI5LTkuMzc1bDI1LjM3MS0yNS4zNzEgICBsMjUuMzcxLDI1LjM3MWM2LjI1LDYuMjUsMTQuNDM4LDkuMzc1LDIyLjYyOSw5LjM3NXMxNi4zNzktMy4xMjUsMjIuNjI5LTkuMzc1YzEyLjQ5Ni0xMi40OTIsMTIuNDk2LTMyLjc1OCwwLTQ1LjI1TDQ2MS4yNTMsMjU2eiIgZmlsbD0iIzAwNkRGMCIvPgoJPHBhdGggZD0iTTI4Ny45OTksMGgtNDhsLTE0NCwxNjBoLTQ4QzMwLjMyNywxNjAsMTYsMTc0LjMyNiwxNiwxOTJ2MTI4YzAsMTcuNjcyLDE0LjMyNywzMiwzMS45OTksMzJoNDhsMTQ0LDE2MGg0OCAgIGM4LjgzNiwwLDE2LjAwMS03LjE2NCwxNi4wMDEtMTZWMTZDMzA0LDcuMTY0LDI5Ni44MzUsMCwyODcuOTk5LDB6IiBmaWxsPSIjMDA2REYwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==";
+}
+
+var imgbird = [];
 var kanat = r.loadImage("img/kanat.svg");
 
 
+$.get("img/kartal.svg",function(data) {
+    BIRD_TYPES.forEach(function(t,i){
+        data.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
+        data.getElementById("id4").childNodes[1].setAttribute("fill", t.tail[0].toString());
+        data.getElementById("id5").childNodes[1].setAttribute("fill", t.tail[1].toString());
+        data.getElementById("id6").childNodes[1].setAttribute("fill", t.tail[2].toString());
+
+        imgbird[i] = new Image;
+        imgbird[i].src = "data:image/svg+xml;base64," + window.btoa((new XMLSerializer()).serializeToString(data));
+    });
+
+},"xml");
 
 r.addClickListener(fly,[{
     top : 0,
@@ -69,14 +93,18 @@ $(document).keydown(function(e){
 });
 
 function fly(){
-    if(socket)
+    if(socket){
         socket.emit("fly");
+        soundWing.stop();
+        soundWing.play();
+    }
 }
 
 var lastNitro = Date.now();
 function nitro(){
     if(socket){
         socket.emit("nitro");
+        soundEagle.play();
         $("#score").css("background-color","transparent");
         if(lastNitro+5000<Date.now())
             lastNitro = Date.now();
@@ -105,6 +133,7 @@ function create(){
             console.log("#addBird",b);
             var bird = new Bird(b.locx, b.locy, b.right);
             bird.ad = b.ad;
+            bird.tip = b.tip;
             world.addBird(bird, b.i);
         });
         socket.on("youare",function(i){
@@ -212,11 +241,12 @@ function update(){
     if(debug){
         r.color("white")
         r.text("ALPHA TEST",5, r.canvas.height-110)
-        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5, r.canvas.height-80);
+        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100)+" zoom:"+zoom,5, r.canvas.height-80);
         r.text("UPS: " + UPSslow,5, r.canvas.height-60);
         r.text("ping: " + ping,5, r.canvas.height-40);
         r.text("r: " + bird.loc.x,5, r.canvas.height-20);
     }
+
 
 
     r.color("#EF7126");
@@ -234,21 +264,31 @@ function full(){
 var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
 
 setInterval(function(){
-    FPSslow = FPS.FPS;
-    UPSslow = UPS;
     if(created){
         topFPS+=FPSslow;
         FPScount++;
-        if(nitropercent==0){
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
-            $("#score").css("background-color","rgba(255,0,0,0.03)");
-        }
-        else
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
     }
 
 
-},500);
+},1000);
+
+var oncekiSize=0;
+setInterval(function(){
+    FPSslow = FPS.FPS;
+    UPSslow = UPS;
+    if(created){
+        if(nitropercent==0){
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
+            $("#score").css("background-color","rgba(255,0,0,0.03)");
+            soundEagle.stop();
+        }
+        else
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
+        $("#height").html(Math.floor((bird.loc.y-world.earthR)/10));
+        if(oncekiSize<bird.size) soundPoint.stop() && soundPoint.play();
+        oncekiSize = bird.size;
+    }
+},200);
 
 var PINGstartTime;
 setInterval(function() {

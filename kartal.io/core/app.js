@@ -135,6 +135,7 @@ var validator = require('validator');
  */
 
     eval(fs.readFileSync("../../js/lib/Vec2.js", 'utf8'));
+    eval(fs.readFileSync("../../js/lib/RGB.js", 'utf8'));
     eval(fs.readFileSync("js/Sabitler.js", 'utf8'));
     eval(fs.readFileSync("js/FPS.js", 'utf8'));
     eval(fs.readFileSync("js/Bird.js", 'utf8'));
@@ -159,6 +160,8 @@ var pro = require("uglify-js").uglify;
      '../../js/lib/CanvasRender.js',
      '../../js/lib/jquery-min.js',
      '../../js/lib/Vec2.js',
+     '../../js/lib/RGB.js',
+     '../../js/lib/buzz.min.js',
      'node_modules/socket.io/node_modules/socket.io-client/socket.io.js',
      'js/Sabitler.js',
      'js/FPS.js',
@@ -245,7 +248,9 @@ var sunucu = http.createServer(function(istek,cevap){
                     if(istek.url.indexOf(".css")>-1)
                         cevap.writeHead(200,{"Content-type":"text/css"}); // html sayfası
                     else if(istek.url.indexOf(".svg")>-1)
-                        cevap.writeHead(200,{"Content-type":"image/svg+xml"}); // html sayfası
+                        cevap.writeHead(200,{"Content-type":"image/svg+xml"}); // svg sayfası
+                    else if(istek.url.indexOf(".ogg")>-1)
+                        cevap.writeHead(200,{"Content-type":"audio/ogg"}); // ogg sayfası
                     else
                         cevap.writeHead(200,{"Content-type":"text/html"}); // html sayfası
                     cevap.end(veri);

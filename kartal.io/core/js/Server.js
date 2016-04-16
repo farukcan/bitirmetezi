@@ -130,6 +130,7 @@ function svBird(bird,i){
         "locy" : bird.loc.y,
         "right" : bird.right,
         "ad" : bird.ad,
+        "tip" : bird.tip,
         "i" : i
     };
 }

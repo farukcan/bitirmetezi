@@ -4,7 +4,7 @@
 function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
-    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4;
+    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4,this.kntdelay=600;;
     this.rightPolar = -1;
     if(right)
         this.rightPolar = 1;
@@ -19,7 +19,7 @@ function Bird(locx,locy,right){
     this.nitro = false;
     this.nitroTime = 0;
     this.knti = 0;
-    this.kntdelay;
+    this.tip = Math.round((BIRD_TYPES.length-1)*Math.random());
 }
 
 Bird.prototype = {
@@ -62,13 +62,12 @@ Bird.prototype = {
             r.ellipse(0,0,this.size*this.aspect,this.size);
         }
 
-        r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
+        r.image(imgbird[this.tip],-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 
-        if(this.speed.y<0) this.kntdelay = 600;
-        else this.kntdelay = Math.max(600/(this.speed.y+1),550);
-        this.knti=Math.floor(Date.now()%this.kntdelay/this.kntdelay*this.knts);
+        if(this.speed.y!=0)
+            this.knti=Math.floor(Date.now()%this.kntdelay/this.kntdelay*this.knts);
         r.scale(-1,1);
-        r.imageClipped(kanat,this.kntx/this.knts*this.knti,0,this.kntx/this.knts,this.knty,-this.size/10*this.aspect,-this.size/2,this.size*this.kntx/this.knty/this.knts,this.size);
+        r.imageClipped(kanat,this.kntx/this.knts*this.knti,0,Math.floor(this.kntx/this.knts),Math.floor(this.knty),-this.size/10*this.aspect,-this.size/2,this.size*this.kntx/this.knty/this.knts,this.size);
 
         camera.end();
 

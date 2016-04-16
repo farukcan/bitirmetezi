@@ -207,7 +207,30 @@ function limit(x,min,max){
 
 function findLenght(x,y){
 	return Math.sqrt(x*x+y*y);
-}(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.io = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+}/**
+ * Created by Can on 16.4.2016.
+ */
+function RGB(r,g,b){
+    this.r = r;
+    this.g = g;
+    this.b = b;
+}
+RGB.prototype = {
+    toString : function(){
+        return "rgb("+this.r+","+this.g+","+this.b+")";
+    }
+};
+ // ----------------------------------------------------------------------------
+ // Buzz, a Javascript HTML5 Audio library
+ // v1.1.10 - Built 2015-04-20 13:05
+ // Licensed under the MIT license.
+ // http://buzz.jaysalvat.com/
+ // ----------------------------------------------------------------------------
+ // Copyright (C) 2010-2015 Jay Salvat
+ // http://jaysalvat.com/
+ // ----------------------------------------------------------------------------
+
+(function(t,e){"use strict";"undefined"!=typeof module&&module.exports?module.exports=e():"function"==typeof define&&define.amd?define([],e):t.buzz=e()})(this,function(){"use strict";var t=window.AudioContext||window.webkitAudioContext,e={defaults:{autoplay:!1,duration:5e3,formats:[],loop:!1,placeholder:"--",preload:"metadata",volume:80,webAudioApi:!1,document:window.document},types:{mp3:"audio/mpeg",ogg:"audio/ogg",wav:"audio/wav",aac:"audio/aac",m4a:"audio/x-m4a"},sounds:[],el:document.createElement("audio"),getAudioContext:function(){if(void 0===this.audioCtx)try{this.audioCtx=t?new t:null}catch(e){this.audioCtx=null}return this.audioCtx},sound:function(t,n){function i(t){for(var e=[],n=t.length-1,i=0;n>=i;i++)e.push({start:t.start(i),end:t.end(i)});return e}function u(t){return t.split(".").pop()}n=n||{};var s=n.document||e.defaults.document,r=0,o=[],a={},h=e.isSupported();if(this.load=function(){return h?(this.sound.load(),this):this},this.play=function(){return h?(this.sound.play(),this):this},this.togglePlay=function(){return h?(this.sound.paused?this.sound.play():this.sound.pause(),this):this},this.pause=function(){return h?(this.sound.pause(),this):this},this.isPaused=function(){return h?this.sound.paused:null},this.stop=function(){return h?(this.setTime(0),this.sound.pause(),this):this},this.isEnded=function(){return h?this.sound.ended:null},this.loop=function(){return h?(this.sound.loop="loop",this.bind("ended.buzzloop",function(){this.currentTime=0,this.play()}),this):this},this.unloop=function(){return h?(this.sound.removeAttribute("loop"),this.unbind("ended.buzzloop"),this):this},this.mute=function(){return h?(this.sound.muted=!0,this):this},this.unmute=function(){return h?(this.sound.muted=!1,this):this},this.toggleMute=function(){return h?(this.sound.muted=!this.sound.muted,this):this},this.isMuted=function(){return h?this.sound.muted:null},this.setVolume=function(t){return h?(0>t&&(t=0),t>100&&(t=100),this.volume=t,this.sound.volume=t/100,this):this},this.getVolume=function(){return h?this.volume:this},this.increaseVolume=function(t){return this.setVolume(this.volume+(t||1))},this.decreaseVolume=function(t){return this.setVolume(this.volume-(t||1))},this.setTime=function(t){if(!h)return this;var e=!0;return this.whenReady(function(){e===!0&&(e=!1,this.sound.currentTime=t)}),this},this.getTime=function(){if(!h)return null;var t=Math.round(100*this.sound.currentTime)/100;return isNaN(t)?e.defaults.placeholder:t},this.setPercent=function(t){return h?this.setTime(e.fromPercent(t,this.sound.duration)):this},this.getPercent=function(){if(!h)return null;var t=Math.round(e.toPercent(this.sound.currentTime,this.sound.duration));return isNaN(t)?e.defaults.placeholder:t},this.setSpeed=function(t){return h?(this.sound.playbackRate=t,this):this},this.getSpeed=function(){return h?this.sound.playbackRate:null},this.getDuration=function(){if(!h)return null;var t=Math.round(100*this.sound.duration)/100;return isNaN(t)?e.defaults.placeholder:t},this.getPlayed=function(){return h?i(this.sound.played):null},this.getBuffered=function(){return h?i(this.sound.buffered):null},this.getSeekable=function(){return h?i(this.sound.seekable):null},this.getErrorCode=function(){return h&&this.sound.error?this.sound.error.code:0},this.getErrorMessage=function(){if(!h)return null;switch(this.getErrorCode()){case 1:return"MEDIA_ERR_ABORTED";case 2:return"MEDIA_ERR_NETWORK";case 3:return"MEDIA_ERR_DECODE";case 4:return"MEDIA_ERR_SRC_NOT_SUPPORTED";default:return null}},this.getStateCode=function(){return h?this.sound.readyState:null},this.getStateMessage=function(){if(!h)return null;switch(this.getStateCode()){case 0:return"HAVE_NOTHING";case 1:return"HAVE_METADATA";case 2:return"HAVE_CURRENT_DATA";case 3:return"HAVE_FUTURE_DATA";case 4:return"HAVE_ENOUGH_DATA";default:return null}},this.getNetworkStateCode=function(){return h?this.sound.networkState:null},this.getNetworkStateMessage=function(){if(!h)return null;switch(this.getNetworkStateCode()){case 0:return"NETWORK_EMPTY";case 1:return"NETWORK_IDLE";case 2:return"NETWORK_LOADING";case 3:return"NETWORK_NO_SOURCE";default:return null}},this.set=function(t,e){return h?(this.sound[t]=e,this):this},this.get=function(t){return h?t?this.sound[t]:this.sound:null},this.bind=function(t,e){if(!h)return this;t=t.split(" ");for(var n=this,i=function(t){e.call(n,t)},u=0;t.length>u;u++){var s=t[u],r=s;s=r.split(".")[0],o.push({idx:r,func:i}),this.sound.addEventListener(s,i,!0)}return this},this.unbind=function(t){if(!h)return this;t=t.split(" ");for(var e=0;t.length>e;e++)for(var n=t[e],i=n.split(".")[0],u=0;o.length>u;u++){var s=o[u].idx.split(".");(o[u].idx===n||s[1]&&s[1]===n.replace(".",""))&&(this.sound.removeEventListener(i,o[u].func,!0),o.splice(u,1))}return this},this.bindOnce=function(t,e){if(!h)return this;var n=this;return a[r++]=!1,this.bind(t+"."+r,function(){a[r]||(a[r]=!0,e.call(n)),n.unbind(t+"."+r)}),this},this.trigger=function(t,e){if(!h)return this;t=t.split(" ");for(var n=0;t.length>n;n++)for(var i=t[n],u=0;o.length>u;u++){var r=o[u].idx.split(".");if(o[u].idx===i||r[0]&&r[0]===i.replace(".","")){var a=s.createEvent("HTMLEvents");a.initEvent(r[0],!1,!0),a.originalEvent=e,this.sound.dispatchEvent(a)}}return this},this.fadeTo=function(t,n,i){function u(){setTimeout(function(){t>s&&t>o.volume?(o.setVolume(o.volume+=1),u()):s>t&&o.volume>t?(o.setVolume(o.volume-=1),u()):i instanceof Function&&i.apply(o)},r)}if(!h)return this;n instanceof Function?(i=n,n=e.defaults.duration):n=n||e.defaults.duration;var s=this.volume,r=n/Math.abs(s-t),o=this;return this.play(),this.whenReady(function(){u()}),this},this.fadeIn=function(t,e){return h?this.setVolume(0).fadeTo(100,t,e):this},this.fadeOut=function(t,e){return h?this.fadeTo(0,t,e):this},this.fadeWith=function(t,e){return h?(this.fadeOut(e,function(){this.stop()}),t.play().fadeIn(e),this):this},this.whenReady=function(t){if(!h)return null;var e=this;0===this.sound.readyState?this.bind("canplay.buzzwhenready",function(){t.call(e)}):t.call(e)},this.addSource=function(t){var n=this,i=s.createElement("source");return i.src=t,e.types[u(t)]&&(i.type=e.types[u(t)]),this.sound.appendChild(i),i.addEventListener("error",function(t){n.trigger("sourceerror",t)}),i},h&&t){for(var d in e.defaults)e.defaults.hasOwnProperty(d)&&void 0===n[d]&&(n[d]=e.defaults[d]);if(this.sound=s.createElement("audio"),n.webAudioApi){var l=e.getAudioContext();l&&(this.source=l.createMediaElementSource(this.sound),this.source.connect(l.destination))}if(t instanceof Array)for(var c in t)t.hasOwnProperty(c)&&this.addSource(t[c]);else if(n.formats.length)for(var f in n.formats)n.formats.hasOwnProperty(f)&&this.addSource(t+"."+n.formats[f]);else this.addSource(t);n.loop&&this.loop(),n.autoplay&&(this.sound.autoplay="autoplay"),this.sound.preload=n.preload===!0?"auto":n.preload===!1?"none":n.preload,this.setVolume(n.volume),e.sounds.push(this)}},group:function(t){function e(){for(var e=n(null,arguments),i=e.shift(),u=0;t.length>u;u++)t[u][i].apply(t[u],e)}function n(t,e){return t instanceof Array?t:Array.prototype.slice.call(e)}t=n(t,arguments),this.getSounds=function(){return t},this.add=function(e){e=n(e,arguments);for(var i=0;e.length>i;i++)t.push(e[i])},this.remove=function(e){e=n(e,arguments);for(var i=0;e.length>i;i++)for(var u=0;t.length>u;u++)if(t[u]===e[i]){t.splice(u,1);break}},this.load=function(){return e("load"),this},this.play=function(){return e("play"),this},this.togglePlay=function(){return e("togglePlay"),this},this.pause=function(t){return e("pause",t),this},this.stop=function(){return e("stop"),this},this.mute=function(){return e("mute"),this},this.unmute=function(){return e("unmute"),this},this.toggleMute=function(){return e("toggleMute"),this},this.setVolume=function(t){return e("setVolume",t),this},this.increaseVolume=function(t){return e("increaseVolume",t),this},this.decreaseVolume=function(t){return e("decreaseVolume",t),this},this.loop=function(){return e("loop"),this},this.unloop=function(){return e("unloop"),this},this.setSpeed=function(t){return e("setSpeed",t),this},this.setTime=function(t){return e("setTime",t),this},this.set=function(t,n){return e("set",t,n),this},this.bind=function(t,n){return e("bind",t,n),this},this.unbind=function(t){return e("unbind",t),this},this.bindOnce=function(t,n){return e("bindOnce",t,n),this},this.trigger=function(t){return e("trigger",t),this},this.fade=function(t,n,i,u){return e("fade",t,n,i,u),this},this.fadeIn=function(t,n){return e("fadeIn",t,n),this},this.fadeOut=function(t,n){return e("fadeOut",t,n),this}},all:function(){return new e.group(e.sounds)},isSupported:function(){return!!e.el.canPlayType},isOGGSupported:function(){return!!e.el.canPlayType&&e.el.canPlayType('audio/ogg; codecs="vorbis"')},isWAVSupported:function(){return!!e.el.canPlayType&&e.el.canPlayType('audio/wav; codecs="1"')},isMP3Supported:function(){return!!e.el.canPlayType&&e.el.canPlayType("audio/mpeg;")},isAACSupported:function(){return!!e.el.canPlayType&&(e.el.canPlayType("audio/x-m4a;")||e.el.canPlayType("audio/aac;"))},toTimer:function(t,e){var n,i,u;return n=Math.floor(t/3600),n=isNaN(n)?"--":n>=10?n:"0"+n,i=e?Math.floor(t/60%60):Math.floor(t/60),i=isNaN(i)?"--":i>=10?i:"0"+i,u=Math.floor(t%60),u=isNaN(u)?"--":u>=10?u:"0"+u,e?n+":"+i+":"+u:i+":"+u},fromTimer:function(t){var e=(""+t).split(":");return e&&3===e.length&&(t=3600*parseInt(e[0],10)+60*parseInt(e[1],10)+parseInt(e[2],10)),e&&2===e.length&&(t=60*parseInt(e[0],10)+parseInt(e[1],10)),t},toPercent:function(t,e,n){var i=Math.pow(10,n||0);return Math.round(100*t/e*i)/i},fromPercent:function(t,e,n){var i=Math.pow(10,n||0);return Math.round(e/100*t*i)/i}};return e});(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.io = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 module.exports =  _dereq_('./lib/');
 
@@ -7465,16 +7488,66 @@ function toArray(list, index) {
 var SABITLER = {
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
-    "GRAVITY" : -0.00031,
+    "GRAVITY" : -0.00050,
     "MAXSPEEDY" : 1,
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
     "KUSORANI" : 1,
-    "DISTIME" : 1000,
+    "DISTIME" : 3000,
     "FOODNUM" : 80,
-    "IVMESELDUSUS" :    0.001,
-    "NITROIVME" :       0.001
-}/**
+    "IVMESELDUSUS" :    0.001
+}
+
+var BIRD_TYPES = [
+    {
+        body : new RGB(153,102,51),
+        tail : [new RGB(255,102,0),new RGB(0,0,204),new RGB(255,51,51)]
+    },
+    {
+        body : new RGB(0,0,0),
+        tail : [new RGB(0,0,0),new RGB(0,0,0),new RGB(0,0,0)]
+    },
+    {
+        body : new RGB(0,204,255),
+        tail : [new RGB(0,255,255),new RGB(102,204,255),new RGB(102,255,255)]
+    },
+    {
+        body : new RGB(204,51,0),
+        tail : [new RGB(255,204,0),new RGB(255,204,0),new RGB(255,211,32)]
+    },
+    {
+        body : new RGB(238,238,238),
+        tail : [new RGB(255,255,255),new RGB(255,255,255),new RGB(255,255,255)]
+    },
+    {
+        body : new RGB(153,255,102),
+        tail : [new RGB(0,102,0),new RGB(153,204,153),new RGB(87,157,28)]
+    },
+    {
+        body : new RGB(255,51,51),
+        tail : [new RGB(255,51,51),new RGB(255,51,0),new RGB(255,51,51)]
+    },
+    {
+        body : new RGB(141,107,148),
+        tail : [new RGB(177,133,167),new RGB(195,162,158),new RGB(177,133,167)]
+    },
+    {
+        body : new RGB(109,33,60),
+        tail : [new RGB(186,171,104),new RGB(148,104,70),new RGB(186,171,104)]
+    },
+    {
+        body : new RGB(181,214,178),
+        tail : [new RGB(90,70,76),new RGB(83,19,30),new RGB(90,70,76)]
+    },
+    {
+        body : new RGB(255,78,0),
+        tail : [new RGB(245,187,0),new RGB(142,166,4),new RGB(236,159,5)]
+    },
+    {
+        body : new RGB(8,61,119),
+        tail : [new RGB(244,211,94),new RGB(235,235,211),new RGB(238,150,75)]
+    }
+];/**
  * Created by Can on 11.4.2016.
  */
 function FPSCalculator(){
@@ -7495,7 +7568,7 @@ function FPSCalculator(){
 function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
-    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4;
+    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4,this.kntdelay=600;;
     this.rightPolar = -1;
     if(right)
         this.rightPolar = 1;
@@ -7510,7 +7583,7 @@ function Bird(locx,locy,right){
     this.nitro = false;
     this.nitroTime = 0;
     this.knti = 0;
-    this.kntdelay;
+    this.tip = Math.round((BIRD_TYPES.length-1)*Math.random());
 }
 
 Bird.prototype = {
@@ -7553,13 +7626,12 @@ Bird.prototype = {
             r.ellipse(0,0,this.size*this.aspect,this.size);
         }
 
-        r.image(imgbird,-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
+        r.image(imgbird[this.tip],-this.size/2*this.aspect,-this.size/2,this.size*this.aspect,this.size);
 
-        if(this.speed.y<0) this.kntdelay = 600;
-        else this.kntdelay = Math.max(600/(this.speed.y+1),550);
-        this.knti=Math.floor(Date.now()%this.kntdelay/this.kntdelay*this.knts);
+        if(this.speed.y!=0)
+            this.knti=Math.floor(Date.now()%this.kntdelay/this.kntdelay*this.knts);
         r.scale(-1,1);
-        r.imageClipped(kanat,this.kntx/this.knts*this.knti,0,this.kntx/this.knts,this.knty,-this.size/10*this.aspect,-this.size/2,this.size*this.kntx/this.knty/this.knts,this.size);
+        r.imageClipped(kanat,this.kntx/this.knts*this.knti,0,Math.floor(this.kntx/this.knts),Math.floor(this.knty),-this.size/10*this.aspect,-this.size/2,this.size*this.kntx/this.knty/this.knts,this.size);
 
         camera.end();
 
@@ -7781,17 +7853,41 @@ var camera;
 var bird;
 var highscore=0;
 var socket;
-var zoom=r.canvas.width/r.canvas.height;
+var zoom=r.canvas.width/r.canvas.height*2/3;
 $("#scoreboard").hide();
 // debug mode
 var debug = true;
 
 
+var soundEagle = new buzz.sound("/ogg/eagle.ogg");
+var soundPoint = new buzz.sound("/ogg/point.ogg");
+var soundWing = new buzz.sound("/ogg/wing.ogg");
+var sounds = [soundEagle,soundPoint,soundWing]
 
-var imgbird = r.loadImage("img/kartal.svg");
+var mute = true;
+function togglemute(t){
+    sounds.forEach(function(s){s.toggleMute();})
+    mute=!mute;
+    if(mute) t.src = "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4Ij4KPGc+Cgk8cGF0aCBkPSJNMjc3LjU0OSwwaC00OGwtMTQ0LDE2MGgtNDhjLTE3LjY3MiwwLTMyLjM3NSwxNC4zMjYtMzIuMzc1LDMydjEyOGMwLDE3LjY3MiwxNC43MDMsMzIsMzIuMzc1LDMyaDQ4bDE0NCwxNjBoNDggICBjOC44MzYsMCwxNS42MjUtNy4xNjQsMTUuNjI1LTE2VjE2QzI5My4xNzQsNy4xNjQsMjg2LjM4NSwwLDI3Ny41NDksMHoiIGZpbGw9IiMwMDZERjAiLz4KCTxwYXRoIGQ9Ik0zODIuNDU2LDE4Ny45MDZjLTExLjEwOS0xMy43MjctMzEuMjk3LTE1Ljg5MS00NC45NjEtNC44NDRjLTEzLjc1LDExLjA0Ny0xNS45NDEsMzEuMjM0LTQuODc5LDQ1ICAgYzExLjc3LDE0LjYyNSwxMS43Nyw0MS4yNS0wLjAwOCw1NS44ODNjLTExLjA1NSwxMy43NTgtOC44NjMsMzMuOTQ1LDQuODgzLDQ0Ljk5MmM1LjY2NCw0LjU1NSwxMi43ODEsNy4wNjMsMjAuMDQzLDcuMDYzICAgYzkuNzYyLDAsMTguODU5LTQuMzUyLDI0Ljk1My0xMS45MzhDNDEzLjE4MiwyODUuODk4LDQxMy4xODIsMjI2LjEwMiwzODIuNDU2LDE4Ny45MDZ6IiBmaWxsPSIjMDA2REYwIi8+Cgk8cGF0aCBkPSJNNDU5LjkzNiwxMzguNTc4Yy02LjQyNi02LjY2NC0xNS4wNy0xMC40MTQtMjQuMzQtMTAuNTc4Yy05LjQ3NywwLjE0MS0xOC4wMzUsMy4yOTctMjQuNjg0LDkuNzI3ICAgYy0xMy43MzgsMTMuMjY2LTE0LjEzMywzNS4yNS0wLjg2Nyw0OS4wMjNjMzYuODc5LDM4LjE4LDM2Ljg3OSwxMDAuMzEzLTAuMDE2LDEzOC41MDhjLTEzLjI1LDEzLjc1OC0xMi44NTUsMzUuNzQyLDAuODU5LDQ4Ljk4NCAgIGM2LjQ4NCw2LjI5NywxNS4wNDMsOS43NTgsMjQuMDk4LDkuNzU4YzkuMzUyLDAsMTguNDQxLTMuODUyLDI0Ljk0OS0xMC41NzhDNTIyLjQ1NiwzMDguNjcyLDUyMi40NTYsMjAzLjMyLDQ1OS45MzYsMTM4LjU3OHoiIGZpbGw9IiMwMDZERjAiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K";
+    else t.src = "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTI7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4Ij4KPGc+Cgk8cGF0aCBkPSJNNDYxLjI1MywyNTZsMjUuMzc1LTI1LjM3NWMxMi40OTYtMTIuNDkyLDEyLjQ5Ni0zMi43NTgsMC00NS4yNWMtMTIuNS0xMi41LTMyLjc1OC0xMi41LTQ1LjI1OCwwbC0yNS4zNzEsMjUuMzcxICAgbC0yNS4zNzEtMjUuMzcxYy0xMi41LTEyLjUtMzIuNzU4LTEyLjUtNDUuMjU4LDBjLTEyLjQ5NiwxMi40OTItMTIuNDk2LDMyLjc1OCwwLDQ1LjI1TDM3MC43NDUsMjU2bC0yNS4zNzUsMjUuMzc1ICAgYy0xMi40OTYsMTIuNDkyLTEyLjQ5NiwzMi43NTgsMCw0NS4yNWM2LjI1LDYuMjUsMTQuNDM4LDkuMzc1LDIyLjYyOSw5LjM3NXMxNi4zNzktMy4xMjUsMjIuNjI5LTkuMzc1bDI1LjM3MS0yNS4zNzEgICBsMjUuMzcxLDI1LjM3MWM2LjI1LDYuMjUsMTQuNDM4LDkuMzc1LDIyLjYyOSw5LjM3NXMxNi4zNzktMy4xMjUsMjIuNjI5LTkuMzc1YzEyLjQ5Ni0xMi40OTIsMTIuNDk2LTMyLjc1OCwwLTQ1LjI1TDQ2MS4yNTMsMjU2eiIgZmlsbD0iIzAwNkRGMCIvPgoJPHBhdGggZD0iTTI4Ny45OTksMGgtNDhsLTE0NCwxNjBoLTQ4QzMwLjMyNywxNjAsMTYsMTc0LjMyNiwxNiwxOTJ2MTI4YzAsMTcuNjcyLDE0LjMyNywzMiwzMS45OTksMzJoNDhsMTQ0LDE2MGg0OCAgIGM4LjgzNiwwLDE2LjAwMS03LjE2NCwxNi4wMDEtMTZWMTZDMzA0LDcuMTY0LDI5Ni44MzUsMCwyODcuOTk5LDB6IiBmaWxsPSIjMDA2REYwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==";
+}
+
+var imgbird = [];
 var kanat = r.loadImage("img/kanat.svg");
 
 
+$.get("img/kartal.svg",function(data) {
+    BIRD_TYPES.forEach(function(t,i){
+        data.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
+        data.getElementById("id4").childNodes[1].setAttribute("fill", t.tail[0].toString());
+        data.getElementById("id5").childNodes[1].setAttribute("fill", t.tail[1].toString());
+        data.getElementById("id6").childNodes[1].setAttribute("fill", t.tail[2].toString());
+
+        imgbird[i] = new Image;
+        imgbird[i].src = "data:image/svg+xml;base64," + window.btoa((new XMLSerializer()).serializeToString(data));
+    });
+
+},"xml");
 
 r.addClickListener(fly,[{
     top : 0,
@@ -7835,14 +7931,18 @@ $(document).keydown(function(e){
 });
 
 function fly(){
-    if(socket)
+    if(socket){
         socket.emit("fly");
+        soundWing.stop();
+        soundWing.play();
+    }
 }
 
 var lastNitro = Date.now();
 function nitro(){
     if(socket){
         socket.emit("nitro");
+        soundEagle.play();
         $("#score").css("background-color","transparent");
         if(lastNitro+5000<Date.now())
             lastNitro = Date.now();
@@ -7871,6 +7971,7 @@ function create(){
             console.log("#addBird",b);
             var bird = new Bird(b.locx, b.locy, b.right);
             bird.ad = b.ad;
+            bird.tip = b.tip;
             world.addBird(bird, b.i);
         });
         socket.on("youare",function(i){
@@ -7978,11 +8079,12 @@ function update(){
     if(debug){
         r.color("white")
         r.text("ALPHA TEST",5, r.canvas.height-110)
-        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100),5, r.canvas.height-80);
+        r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100)+" zoom:"+zoom,5, r.canvas.height-80);
         r.text("UPS: " + UPSslow,5, r.canvas.height-60);
         r.text("ping: " + ping,5, r.canvas.height-40);
         r.text("r: " + bird.loc.x,5, r.canvas.height-20);
     }
+
 
 
     r.color("#EF7126");
@@ -8000,21 +8102,31 @@ function full(){
 var topFPS=SABITLER.FPS,FPScount= 1,FPSbf=SABITLER.FPS;
 
 setInterval(function(){
-    FPSslow = FPS.FPS;
-    UPSslow = UPS;
     if(created){
         topFPS+=FPSslow;
         FPScount++;
-        if(nitropercent==0){
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
-            $("#score").css("background-color","rgba(255,0,0,0.03)");
-        }
-        else
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
     }
 
 
-},500);
+},1000);
+
+var oncekiSize=0;
+setInterval(function(){
+    FPSslow = FPS.FPS;
+    UPSslow = UPS;
+    if(created){
+        if(nitropercent==0){
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
+            $("#score").css("background-color","rgba(255,0,0,0.03)");
+            soundEagle.stop();
+        }
+        else
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
+        $("#height").html(Math.floor((bird.loc.y-world.earthR)/10));
+        if(oncekiSize<bird.size) soundPoint.stop() && soundPoint.play();
+        oncekiSize = bird.size;
+    }
+},200);
 
 var PINGstartTime;
 setInterval(function() {
