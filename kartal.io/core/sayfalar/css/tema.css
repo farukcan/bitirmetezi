@@ -19,7 +19,7 @@
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     height: 170px;
     text-align: center;
     padding: 10px;
@@ -41,7 +41,7 @@
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     border: 1px solid;
     border-radius: 10px;
 }
@@ -75,7 +75,7 @@
     left: 0px;
     right: 0px;
     width: 60%;
-    max-width: 500px;
+    max-width: 400px;
     text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -117,7 +117,7 @@
 
 #zoomdiv {
     color : white;
-    font-size: 30px;
+    font-size: 34px;
     position: absolute;
     top: 5px;
     left: 5px;
