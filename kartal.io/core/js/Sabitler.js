@@ -4,7 +4,7 @@
 var SABITLER = {
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
-    "GRAVITY" : -0.00050,
+    "GRAVITY" : -0.00042,
     "MAXSPEEDY" : 1,
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
