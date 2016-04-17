@@ -7486,6 +7486,7 @@ function toArray(list, index) {
  * Created by Can on 10.4.2016.
  */
 var SABITLER = {
+    "VERSION" : "alpha-0.1",
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
     "GRAVITY" : -0.00042,
@@ -7603,15 +7604,15 @@ Bird.prototype = {
         // yeni orginde göndür
         r.rotate(this.loc.x+Math.PI/2);
 
-        r.color("orange");
+        if(clientConfig.names){
+            r.color("orange");
 
 
-        if(this.right)
-            r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
-        else
-            r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
-
-
+            if(this.right)
+                r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+            else
+                r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
+        }
 
         if(!this.right)
             r.scale(-1,1);
@@ -7744,6 +7745,34 @@ Camera.prototype = {
 
     }
 }/**
+ * Created by Can on 17.4.2016.
+ */
+function Asset(x,y,w,h,img){
+    this.loc = new Vec2(x,y);
+    this.w = w;
+    this.h = h;
+    this.img = img;
+    this.rota = Math.PI/2;
+
+}
+
+Asset.prototype = {
+    draw : function (r) {
+        camera.begin();
+
+        var loc = this.loc.Angular2Analitic();
+
+        // origini değiştir
+        r.translate(  loc.x, loc.y );
+
+        r.rotate(this.loc.x+this.rota);
+
+        r.image(this.img,-this.w/2,-this.h/2,this.w,this.h);
+
+        camera.end();
+
+    }
+};/**
  * Created by Can on 8.4.2016.
  */
 function World(){
@@ -7754,6 +7783,7 @@ function World(){
     this.leftCount = 0;
     this.rightCount = 0;
     this.foods = [];
+    this.assets = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
     this.serverSide = false;
@@ -7769,6 +7799,10 @@ World.prototype = {
         r.circle(0,0,this.earthR);
         r.fill();
         this.camera.end();
+
+        this.assets.forEach(function(asset){
+            asset.draw(r);
+        });
 
         this.foods.forEach(function(food){
             food.draw(r);
@@ -7874,7 +7908,15 @@ function togglemute(t){
 
 var imgbird = [];
 var kanat = r.loadImage("img/kanat.svg");
+var imgtree = r.loadImage("img/agac.svg");
+var imgbulut = r.loadImage("img/bulut.svg");
 
+var clientConfig = {
+    right : 0,
+    clouds : true,
+    trees : true,
+    names : true
+};
 
 $.get("img/kartal.svg",function(data) {
     BIRD_TYPES.forEach(function(t,i){
@@ -7902,6 +7944,18 @@ r.canvas.oncontextmenu = function() {
     nitro();
     return false;
 }
+
+$(".checkbox").click(function(){
+    if(this.checked)
+        eval($(this).attr("boolvar")+"=true;")
+    else
+        eval($(this).attr("boolvar")+"=false;")
+});
+
+$("#flyingway").change(function(){
+   clientConfig.right = $( "#flyingway option:selected").val();
+});
+
 $(document).keydown(function(e){
     switch(e.keyCode) {
         case 107:
@@ -7955,17 +8009,28 @@ function zoomin(){
 }
 function zoomout(){
     zoom-=zoomspeed;
+    zoom = Math.max(0.01,zoom);
 }
 var created,UPS,UPScache= 0,Udelta;
 function create(){
     if(!created){
         $("#gameInfo").hide();
         $("#rules").hide();
+        $("#settings").hide();
 
         world = new World();
 
+        var sz;
+        for(var i=0;i<50;i++){
+            sz = (Math.random()*7+2);
+            if(clientConfig.trees)
+                world.assets.push(new Asset(Math.random()*Math.PI*2,world.earthR+15*sz,19*sz,30*sz,imgtree));
+            if(clientConfig.clouds)
+                world.assets.push(new Asset(Math.random()*Math.PI*2,world.earthR+world.atmosphere*2/3+world.atmosphere/2*Math.random(),(45+Math.random()*30)*sz,30*sz,imgbulut));
+        }
+
         socket = io();
-        socket.emit("hi",$("#nick").val());
+        socket.emit("hi",$("#nick").val(),clientConfig.right,SABITLER.VERSION);
         socket.on("disconnect",destroy);
         socket.on("addBird",function(b){
             console.log("#addBird",b);
@@ -8013,6 +8078,10 @@ function create(){
             console.log("#hp",hp);
             bird.hp = hp;
         });
+        socket.on("alert",function(s){
+            destroy();
+            alert(s);
+        });
         socket.on('scores',function(scores){
            var h = "<tr><th>Score</th><th>Nick</th></tr>";
             scores.forEach(function(s){
@@ -8042,13 +8111,14 @@ function destroy(){
         $("#gameInfo").fadeIn(4000);
         $("#rules").fadeIn();
         $("#scoreboard").fadeOut(5000);
+        $("#settings").fadeIn();
 
         r.removeUpdateFunc();
         try{
             socket.emit("disconnect");
             socket.disconnect();
         }catch(err){}
-        highscore = Math.max(highscore,Math.floor(bird.size)*10);
+        if(bird) highscore = Math.max(highscore,Math.floor(bird.size)*10);
         $("#score").html("High Score<h1>"+highscore+"</h1>");
 
         socket = null;
@@ -8082,7 +8152,6 @@ function update(){
         r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100)+" zoom:"+zoom,5, r.canvas.height-80);
         r.text("UPS: " + UPSslow,5, r.canvas.height-60);
         r.text("ping: " + ping,5, r.canvas.height-40);
-        r.text("r: " + bird.loc.x,5, r.canvas.height-20);
     }
 
 
@@ -8090,7 +8159,8 @@ function update(){
     r.color("#EF7126");
     r.rect(0,r.canvas.height-5,r.canvas.width,5);
     r.color("#F9E559");
-    r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
+    if(bird)
+        r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
     //;
 
 }
@@ -8114,7 +8184,7 @@ var oncekiSize=0;
 setInterval(function(){
     FPSslow = FPS.FPS;
     UPSslow = UPS;
-    if(created){
+    if(created && bird){
         if(nitropercent==0){
             $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
             $("#score").css("background-color","rgba(255,0,0,0.03)");

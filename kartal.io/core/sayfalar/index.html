@@ -18,16 +18,31 @@
 
 </div>
 <div id="score">Enjoy !</div>
-<div id="scoreboard"></div>
+<div id="scoreboard">
+</div>
+
+<div id="settings">
+    way:
+    <select id="flyingway">
+        <option value="0">Never Mind</option>
+        <option value="1">Fly to Right</option>
+        <option value="-1">Fly to Left</option>
+    </select>
+    debug:<input type="checkbox" class="checkbox" boolvar="debug" checked/>
+    trees:<input type="checkbox" class="checkbox" boolvar="clientConfig.trees" checked/>
+    clouds:<input type="checkbox" class="checkbox" boolvar="clientConfig.clouds" checked/>
+    names:<input type="checkbox" class="checkbox" boolvar="clientConfig.names" checked/>
+</div>
 
 <div id="gameInfo">
     <h1>kartal.io</h1>
 
     <br>
-    <input id="nick" type="text" width="50" placeholder="Type a nick and press play!"/>
+    <input id="nick" type="text" width="50" placeholder="Type a name and press play!"/>
     <br>
-    <input id="buton" type="submit" value="Play !" onclick="create()" />
-    <br><br>
+    <input id="buton" type="submit" value="Play !" onclick="create()" /><br>
+
+
 </div>
 <img id="rules" src="img/rules.png"/>
 

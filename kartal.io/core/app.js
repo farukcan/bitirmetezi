@@ -168,6 +168,7 @@ var pro = require("uglify-js").uglify;
      'js/Bird.js',
      'js/Food.js',
      'js/Camera.js',
+     'js/Asset.js',
      'js/World.js',
      'js/main.js'
  ];
@@ -285,9 +286,10 @@ io.on('connection', function(socket){
         ct(conn.name+" is disconnected");
         conn.disconnect(bird);
     });
-    socket.on('hi',function(name){
+    socket.on('hi',function(name,way,version){
+        if(SABITLER.VERSION!=version) socket.emit("alert","Please update the game, your version is decrepited");
         if(bird) return;
-        bird = birdCreator();
+        bird = birdCreator(way);
         bird.conn = conn;
         bird.lastFly=Date.now();
         bird.flyable = function(){
@@ -374,8 +376,12 @@ setInterval(function(){
 },10000)
 
 
-function birdCreator(){
- return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
+function birdCreator(way){
+    if(typeof way != "undefined"){
+        if(way==1) return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,true);
+        if(way==-1) return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,false);
+    }
+    return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
 function foodCreator(){
     for(var i=0;i<SABITLER.FOODNUM;i++){

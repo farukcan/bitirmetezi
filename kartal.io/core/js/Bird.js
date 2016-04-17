@@ -39,15 +39,15 @@ Bird.prototype = {
         // yeni orginde göndür
         r.rotate(this.loc.x+Math.PI/2);
 
-        r.color("orange");
+        if(clientConfig.names){
+            r.color("orange");
 
 
-        if(this.right)
-            r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
-        else
-            r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
-
-
+            if(this.right)
+                r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+            else
+                r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
+        }
 
         if(!this.right)
             r.scale(-1,1);

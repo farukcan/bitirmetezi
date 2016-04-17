@@ -9,6 +9,7 @@ function World(){
     this.leftCount = 0;
     this.rightCount = 0;
     this.foods = [];
+    this.assets = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
     this.serverSide = false;
@@ -24,6 +25,10 @@ World.prototype = {
         r.circle(0,0,this.earthR);
         r.fill();
         this.camera.end();
+
+        this.assets.forEach(function(asset){
+            asset.draw(r);
+        });
 
         this.foods.forEach(function(food){
             food.draw(r);
