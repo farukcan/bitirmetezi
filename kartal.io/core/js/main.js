@@ -43,7 +43,8 @@ var clientConfig = {
     right : 0,
     clouds : true,
     trees : true,
-    names : true
+    names : true,
+    foodIndicator : true
 };
 
 $.get("img/kartal.svg",function(data) {
@@ -170,6 +171,7 @@ function create(){
         socket.on("youare",function(i){
             console.log("#youare",i);
            bird = world.birds[i];
+           bird.me = true;
         });
         socket.on("removeBird",function(i){
             console.log("#removeBird",i);
@@ -283,13 +285,20 @@ function update(){
     }
 
 
-
     r.color("#EF7126");
     r.rect(0,r.canvas.height-5,r.canvas.width,5);
     r.color("#F9E559");
-    if(bird)
+    if(bird){
         r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
-    //;
+        r.strokeStyle("white");
+        r.circle(r.canvas.width-75,r.canvas.height-75,50);
+        r.circle(r.canvas.width-75,r.canvas.height-75,Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50)+2);
+        r.color("white");
+        r.fill();
+        r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,r.canvas.height-75+Math.sin(bird.loc.x)*50,10);
+        r.fill();
+    }
+
 
 }
 function full(){

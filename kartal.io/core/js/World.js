@@ -30,14 +30,15 @@ World.prototype = {
             asset.draw(r);
         });
 
-        this.foods.forEach(function(food){
-            food.draw(r);
-        });
+
 
         this.birds.forEach(function(bird){
             bird.draw(r);
         });
 
+        this.foods.forEach(function(food){
+            food.draw(r);
+        });
     },
     update : function(delta){
         this.birds.forEach(function(bird){
