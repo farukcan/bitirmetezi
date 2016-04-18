@@ -11,7 +11,6 @@ function Bird(locx,locy,right){
     this.speed = new Vec2(this.rightPolar*SABITLER.STANDARTSPEED,0);
     this.right = right;
     this.world;
-    this.visible=true;
     this.ad = "kartal";
     this.hp = 20;
     this.living = true;
@@ -20,6 +19,8 @@ function Bird(locx,locy,right){
     this.nitroTime = 0;
     this.knti = 0;
     this.tip = Math.round((BIRD_TYPES.length-1)*Math.random());
+    this.duman=10;
+    this.visible=true;
 }
 
 Bird.prototype = {

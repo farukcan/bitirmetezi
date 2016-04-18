@@ -26,7 +26,7 @@ Bird.prototype.kill = function(){
     }
 };
 
-Bird.prototype.damage = function(damage){
+Bird.prototype.damage = function(damage,i){
     if(this.living){
         this.hp-=damage;
         try{
@@ -34,7 +34,10 @@ Bird.prototype.damage = function(damage){
         }catch (err){
             console.log(err);
         }
-        if(this.hp<=0) this.kill();
+        if(this.hp<=0) {
+            world.server.io.emit("invisible",i);
+            this.kill();
+        }
     }
 };
 
@@ -106,13 +109,13 @@ World.prototype.server = {
                             // biri diğerinde büyükse
                             //diğerini yer
                             bird.size+=anotherBird.size;
-                            anotherBird.damage(bird.size);
+                            anotherBird.damage(bird.size,j);
                         }
                     }else{
                         //yönler farklıysa
                         //ikiside can kaybeder
-                        bird.damage(anotherBird.size);
-                        anotherBird.damage(bird.size);
+                        bird.damage(anotherBird.size,i);
+                        anotherBird.damage(bird.size,j);
                     }
 
                 }
@@ -152,3 +155,4 @@ function rtBird(bird,i){
         "s" : bird.size
     };
 }
+

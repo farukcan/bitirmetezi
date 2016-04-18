@@ -10,6 +10,7 @@ function World(){
     this.rightCount = 0;
     this.foods = [];
     this.assets = [];
+    this.dumanlar = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
     this.serverSide = false;
@@ -26,11 +27,9 @@ World.prototype = {
         r.fill();
         this.camera.end();
 
-        this.assets.forEach(function(asset){
+        this.assets.forEach(function(asset,i){
             asset.draw(r);
         });
-
-
 
         this.birds.forEach(function(bird){
             bird.draw(r);
@@ -38,6 +37,15 @@ World.prototype = {
 
         this.foods.forEach(function(food){
             food.draw(r);
+        });
+        var destroyAssets = [];
+        var dumanlar = this.dumanlar;
+        dumanlar.forEach(function(duman,i){
+            if(duman.destroyme) destroyAssets.push(i);
+            else duman.draw(r);
+        });
+        destroyAssets.forEach(function(i){
+            dumanlar.splice(i,1);
         });
     },
     update : function(delta){

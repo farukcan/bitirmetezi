@@ -7,7 +7,6 @@ function Asset(x,y,w,h,img){
     this.h = h;
     this.img = img;
     this.rota = Math.PI/2;
-
 }
 
 Asset.prototype = {

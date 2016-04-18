@@ -20,6 +20,20 @@ $("#scoreboard").hide();
 // debug mode
 var debug = true;
 
+var hints = [
+    "Left Mouse > fly",
+    "Right Mouse > fly faster",
+    "Touch > fly",
+    "Touch 2sc > fly faster",
+    "SPACE > fly",
+    "CTRL > fly faster",
+    "UP key > fly",
+    "LEFT key > fly faster",
+    "RIGHT key > fly faster",
+    "DOWN key > fly faster",
+    "+ key > zoom in",
+    "- key > zoom out"
+],hintindex= 0,hintsenable=true;
 
 var soundEagle = new buzz.sound("/ogg/eagle.ogg");
 var soundPoint = new buzz.sound("/ogg/point.ogg");
@@ -39,14 +53,6 @@ var kanat = r.loadImage("img/kanat.svg");
 var imgtree = r.loadImage("img/agac.svg");
 var imgbulut = r.loadImage("img/bulut.svg");
 
-var clientConfig = {
-    right : 0,
-    clouds : true,
-    trees : true,
-    names : true,
-    foodIndicator : true
-};
-
 $.get("img/kartal.svg",function(data) {
     BIRD_TYPES.forEach(function(t,i){
         data.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
@@ -59,6 +65,14 @@ $.get("img/kartal.svg",function(data) {
     });
 
 },"xml");
+
+var clientConfig = {
+    right : 0,
+    clouds : true,
+    trees : true,
+    names : true,
+    foodIndicator : true
+};
 
 r.addClickListener(fly,[{
     top : 0,
@@ -222,6 +236,14 @@ function create(){
             $("#scoreboard").show();
         });
 
+        socket.on('duman',function(dat){
+            console.log("#duman",dat);
+            world.dumanlar.push(new Duman(dat.x,dat.y,dat.vx,dat.vy,dat.vr));
+        });
+        socket.on('invisible', function (i) {
+            console.log("#invisible",i);
+            world.birds[i].visible=false;
+        });
 
         camera = new Camera(new Vec2(0,0));
         world.camera = camera;
@@ -278,7 +300,7 @@ function update(){
 
     if(debug){
         r.color("white")
-        r.text("ALPHA TEST",5, r.canvas.height-110)
+        r.text("version : "+ SABITLER.VERSION,5, r.canvas.height-110)
         r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100)+" zoom:"+zoom,5, r.canvas.height-80);
         r.text("UPS: " + UPSslow,5, r.canvas.height-60);
         r.text("ping: " + ping,5, r.canvas.height-40);
@@ -328,7 +350,7 @@ setInterval(function(){
             soundEagle.stop();
         }
         else
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>"+(hintsenable ? hints[hintindex] : ""));
         $("#height").html(Math.floor((bird.loc.y-world.earthR)/10));
         if(oncekiSize<bird.size) soundPoint.stop() && soundPoint.play();
         oncekiSize = bird.size;
@@ -340,6 +362,8 @@ setInterval(function() {
     if(socket){
         PINGstartTime = Date.now();
         socket.emit("p");
+        hintindex++;
+        if(hintindex==hints.length) hintindex=0;
     }
 }, 5000);
 

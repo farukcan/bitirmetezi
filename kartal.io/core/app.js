@@ -1,8 +1,7 @@
 var 
  ayar = require("./ayar.js"), //ayarlar burda
  http = require('http'), //http protokolune ata
- fs = require('fs'),
- mysql = require('mysql'); // mysqli yükle
+ fs = require('fs');
 var validator = require('validator');
 
 
@@ -113,18 +112,6 @@ var validator = require('validator');
     function c(tt){console.log(tt);}
     function ct(tt){console.log("# > "+tt);}
     function ctt(tt){c("# ----------");ct(tt);c("# ----------")}
- 
-/*
-|--------------------------------------------------------------------------
-| MySQL Veritabanı
-|--------------------------------------------------------------------------
-|
-|
-*/
-
-    var sql = mysql.createConnection(ayar.mysql); // bağlantı oluştur
-
-    //sql.connect(); //bağlan
 
 /*
  |--------------------------------------------------------------------------
@@ -169,6 +156,7 @@ var pro = require("uglify-js").uglify;
      'js/Food.js',
      'js/Camera.js',
      'js/Asset.js',
+     'js/Duman.js',
      'js/World.js',
      'js/main.js'
  ];
@@ -234,6 +222,26 @@ var sunucu = http.createServer(function(istek,cevap){
                     cevap.end(veri);
                 }
             });
+            break;
+        case "/statics":
+            var files = fs.readdirSync("logs");
+            files.reverse();
+            var veri = "";
+            files.forEach(function(file){
+                veri += fs.readFileSync("logs/"+file).toString();
+            });
+            veri = veri.split("{").join("{<blockquote>").split("}").join("</blockquote>}").split(",").join(",<br>");
+            cevap.writeHead(200,{"Content-type":"text/html"}); // html sayfası
+            cevap.end(veri);
+            break
+        case "/deletestatics":
+            var files = fs.readdirSync("logs");
+            files.reverse();
+            files.forEach(function(file){
+                fs.unlinkSync("logs/"+file);
+            });
+            cevap.writeHead(200,{"Content-type":"text/html"}); // html sayfası
+            cevap.end("ok - deleted");
             break;
         default:
             fs.readFile("./sayfalar" + istek.url,function(hata,veri){
@@ -310,6 +318,7 @@ io.on('connection', function(socket){
         }
         bird.ad=conn.name;
         world.addBird(bird);
+        statics.playedgames++;
         ct(conn.name+" is connected");
     });
 
@@ -362,6 +371,16 @@ setInterval(function(){
     });
 },2000);
 
+
+var loggerfile = "logs/D"+Date.now()+".txt";
+var statics = {
+    start : Date().toString(),
+    playedgames : 0,
+    maxscore : 0,
+    maxscoread : "yok",
+    maxplayer : 0
+};
+
 setInterval(function(){
     var scores = [];
     world.birds.forEach(function(bird,i){
@@ -371,7 +390,16 @@ setInterval(function(){
         });
     });
     scores.sort(function(a, b){return b.score- a.score});
+    statics.maxplayer = Math.max(statics.maxplayer,scores.length);
     scores.splice(10, scores.length);
+    if(scores[0] && statics.maxscore < scores[0].score){
+        statics.maxscore = scores[0].score;
+        statics.maxscoread = scores[0].ad;
+    }
+    fs.writeFile(loggerfile, JSON.stringify(statics)+JSON.stringify(scores), function (err) {
+        if (err)
+            return console.log(err);
+    });
     world.server.io.emit('scores',scores);
 },10000)
 

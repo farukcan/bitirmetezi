@@ -23,6 +23,16 @@ ConnectionController.prototype = {
         };
 
         world.birds.forEach(function(bird,i){
+            if(!bird.living && bird.duman>0) {
+                world.server.io.emit('duman',{
+                    x : bird.loc.x+(Math.random()*bird.size-bird.size/2)/1800,
+                    y : bird.loc.y+Math.random()*bird.size-bird.size*2/3,
+                    vx : (Math.random()*2-1)/96000*bird.size,
+                    vy : (Math.random()*2-1)/60*bird.size,
+                    vr : bird.size/40
+                });
+                bird.duman--;
+            }
             data.birds.push(rtBird(bird,i));
         });
         world.server.io.emit("update",data);

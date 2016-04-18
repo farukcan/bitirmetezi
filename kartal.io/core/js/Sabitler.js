@@ -2,7 +2,7 @@
  * Created by Can on 10.4.2016.
  */
 var SABITLER = {
-    "VERSION" : "alpha-0.1",
+    "VERSION" : "BETA-1.0",
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
     "GRAVITY" : -0.00042,
@@ -10,7 +10,7 @@ var SABITLER = {
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
     "KUSORANI" : 1,
-    "DISTIME" : 3000,
+    "DISTIME" : 1500,
     "FOODNUM" : 80,
     "IVMESELDUSUS" :    0.001
 }

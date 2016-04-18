@@ -7486,7 +7486,7 @@ function toArray(list, index) {
  * Created by Can on 10.4.2016.
  */
 var SABITLER = {
-    "VERSION" : "alpha-0.1",
+    "VERSION" : "BETA-1.0",
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
     "GRAVITY" : -0.00042,
@@ -7494,7 +7494,7 @@ var SABITLER = {
     "STANDARTSPEED" : Math.PI/(7200*8),
     "FPS" : 60,
     "KUSORANI" : 1,
-    "DISTIME" : 3000,
+    "DISTIME" : 1500,
     "FOODNUM" : 80,
     "IVMESELDUSUS" :    0.001
 }
@@ -7576,7 +7576,6 @@ function Bird(locx,locy,right){
     this.speed = new Vec2(this.rightPolar*SABITLER.STANDARTSPEED,0);
     this.right = right;
     this.world;
-    this.visible=true;
     this.ad = "kartal";
     this.hp = 20;
     this.living = true;
@@ -7585,6 +7584,8 @@ function Bird(locx,locy,right){
     this.nitroTime = 0;
     this.knti = 0;
     this.tip = Math.round((BIRD_TYPES.length-1)*Math.random());
+    this.duman=10;
+    this.visible=true;
 }
 
 Bird.prototype = {
@@ -7753,7 +7754,6 @@ function Asset(x,y,w,h,img){
     this.h = h;
     this.img = img;
     this.rota = Math.PI/2;
-
 }
 
 Asset.prototype = {
@@ -7773,6 +7773,39 @@ Asset.prototype = {
 
     }
 };/**
+ * Created by Can on 18.4.2016.
+ */
+function Duman(x,y,vx,vy,vr){
+    this.loc = new Vec2(x,y);
+    this.speed= new Vec2(vx,vy);
+    this.r = Math.floor(2*Math.random()+1);
+    this.opacity=1;
+    this.vr=vr;
+    this.destroyme = false;
+}
+
+Duman.prototype = {
+    draw : function(){
+        this.opacity-=0.02;
+        this.r+=this.vr;
+        this.loc.add(this.speed);
+        if(this.opacity<=0) return this.destroyme=true;
+
+        camera.begin();
+
+        var loc = this.loc.Angular2Analitic();
+
+        r.translate(  loc.x, loc.y );
+
+        r.context.globalAlpha = this.opacity;
+
+        r.color("#E5E5E5");
+        r.circle(0,0,this.r);
+        r.fill();
+
+        camera.end();
+    }
+}/**
  * Created by Can on 8.4.2016.
  */
 function World(){
@@ -7784,6 +7817,7 @@ function World(){
     this.rightCount = 0;
     this.foods = [];
     this.assets = [];
+    this.dumanlar = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
     this.serverSide = false;
@@ -7800,11 +7834,9 @@ World.prototype = {
         r.fill();
         this.camera.end();
 
-        this.assets.forEach(function(asset){
+        this.assets.forEach(function(asset,i){
             asset.draw(r);
         });
-
-
 
         this.birds.forEach(function(bird){
             bird.draw(r);
@@ -7812,6 +7844,15 @@ World.prototype = {
 
         this.foods.forEach(function(food){
             food.draw(r);
+        });
+        var destroyAssets = [];
+        var dumanlar = this.dumanlar;
+        dumanlar.forEach(function(duman,i){
+            if(duman.destroyme) destroyAssets.push(i);
+            else duman.draw(r);
+        });
+        destroyAssets.forEach(function(i){
+            dumanlar.splice(i,1);
         });
     },
     update : function(delta){
@@ -7893,6 +7934,20 @@ $("#scoreboard").hide();
 // debug mode
 var debug = true;
 
+var hints = [
+    "Left Mouse > fly",
+    "Right Mouse > fly faster",
+    "Touch > fly",
+    "Touch 2sc > fly faster",
+    "SPACE > fly",
+    "CTRL > fly faster",
+    "UP key > fly",
+    "LEFT key > fly faster",
+    "RIGHT key > fly faster",
+    "DOWN key > fly faster",
+    "+ key > zoom in",
+    "- key > zoom out"
+],hintindex= 0,hintsenable=true;
 
 var soundEagle = new buzz.sound("/ogg/eagle.ogg");
 var soundPoint = new buzz.sound("/ogg/point.ogg");
@@ -7912,14 +7967,6 @@ var kanat = r.loadImage("img/kanat.svg");
 var imgtree = r.loadImage("img/agac.svg");
 var imgbulut = r.loadImage("img/bulut.svg");
 
-var clientConfig = {
-    right : 0,
-    clouds : true,
-    trees : true,
-    names : true,
-    foodIndicator : true
-};
-
 $.get("img/kartal.svg",function(data) {
     BIRD_TYPES.forEach(function(t,i){
         data.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
@@ -7932,6 +7979,14 @@ $.get("img/kartal.svg",function(data) {
     });
 
 },"xml");
+
+var clientConfig = {
+    right : 0,
+    clouds : true,
+    trees : true,
+    names : true,
+    foodIndicator : true
+};
 
 r.addClickListener(fly,[{
     top : 0,
@@ -8095,6 +8150,14 @@ function create(){
             $("#scoreboard").show();
         });
 
+        socket.on('duman',function(dat){
+            console.log("#duman",dat);
+            world.dumanlar.push(new Duman(dat.x,dat.y,dat.vx,dat.vy,dat.vr));
+        });
+        socket.on('invisible', function (i) {
+            console.log("#invisible",i);
+            world.birds[i].visible=false;
+        });
 
         camera = new Camera(new Vec2(0,0));
         world.camera = camera;
@@ -8151,7 +8214,7 @@ function update(){
 
     if(debug){
         r.color("white")
-        r.text("ALPHA TEST",5, r.canvas.height-110)
+        r.text("version : "+ SABITLER.VERSION,5, r.canvas.height-110)
         r.text("FPS: " + FPSslow+" %"+Math.floor(renderKalite*100)+" zoom:"+zoom,5, r.canvas.height-80);
         r.text("UPS: " + UPSslow,5, r.canvas.height-60);
         r.text("ping: " + ping,5, r.canvas.height-40);
@@ -8201,7 +8264,7 @@ setInterval(function(){
             soundEagle.stop();
         }
         else
-            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>");
+            $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>"+(hintsenable ? hints[hintindex] : ""));
         $("#height").html(Math.floor((bird.loc.y-world.earthR)/10));
         if(oncekiSize<bird.size) soundPoint.stop() && soundPoint.play();
         oncekiSize = bird.size;
@@ -8213,6 +8276,8 @@ setInterval(function() {
     if(socket){
         PINGstartTime = Date.now();
         socket.emit("p");
+        hintindex++;
+        if(hintindex==hints.length) hintindex=0;
     }
 }, 5000);
 
