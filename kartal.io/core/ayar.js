@@ -14,6 +14,6 @@ ayar.mysql =  {
       database : 'whoiswampire'
     };
 
-ayar.uglyjs = false;
+ayar.uglyjs = true;
 
 module.exports = ayar;

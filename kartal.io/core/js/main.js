@@ -16,6 +16,7 @@ var bird;
 var highscore=0;
 var socket;
 var zoom=r.canvas.width/r.canvas.height*2/3;
+var fpsStabilizer = true;
 $("#scoreboard").hide();
 // debug mode
 var debug = true;
@@ -371,7 +372,7 @@ setInterval(function() {
 setInterval(function(){
     topFPS = topFPS/FPScount;
     renderKalite = Math.min(SABITLER.FPS,topFPS)/SABITLER.FPS;
-    if(Math.abs(topFPS-FPSbf)>5){
+    if(fpsStabilizer && Math.abs(topFPS-FPSbf)>5){
         FPSbf=topFPS;
         r.canvas.width = window.innerWidth*renderKalite;
         r.canvas.height = window.innerHeight*renderKalite;
