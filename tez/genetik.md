@@ -3,12 +3,24 @@
 Kısaltmalar : GA (Genetik Algoritma)
 
 ## Tanımlar
-Genetik algoritmalar doğadaki evrimsel süreci taklit eden optimizasyon yöntemleridir. Her problemde en iyi çözümü bulması zorunlu değildir. Fakat amacı en iyi veya en iyiye yakın çözümü bulmaktır. En iyilerin hayatta kalması şartına göre çalışır ve bu "hayatta kalmak" amacı, "en iyi çözüme uygun olmak" amacıyla değiştirelerek birçok probleme uygulanabilir. Bu kavrama "Fitness" veya "Uygunluk" diyebiliriz.
-Yine doğada nasıl tek canlı yani tek çözüm yoksa, genetik algoritmalarda da tek çözüm yoktur. Tüm çözümlerin ortak kümesine Popülasyon denilir. Kötü çözümlerin yok olma zorunluluğu yoktur. Kötü çözümlerin ne kadar yok olma ihtimali yüksek olsada, bir çok genetik yöntemde,kötü çözümler bizi ilerde iyi bir sonuca götüreceği için tamamen yok olmazlar.
-Genetik algoritmalarda her bir çözüm Kromozomlarda tutulur ve her bir çözüm değişkenine Gen denir. Onun için "çözüm" kelimesi yerine, her kromozom sahibi olan ve Popülasyonun üyesi olan şeye 'Birey(Member)' denilir. Her birey üreyip, çocuklar oluşturabilir. Bu durumda o birey, çocukların ebeveyni olur. Dolayısıyla ilk ebeveynler için bir başlangıç populasyonu olması gerekir. Genelde başlangıç populasyonu rastgele oluşturulur.
+Genetik algoritmalar doğadaki evrimsel süreci taklit eden optimizasyon yöntemleridir. 
+
+Her problemde en iyi çözümü bulması zorunlu değildir. Fakat amacı en iyi veya en iyiye yakın çözümü bulmaktır. En iyilerin hayatta kalması şartına göre çalışır ve bu "hayatta kalmak" amacı, "en iyi çözüme uygun olmak" amacıyla değiştirelerek birçok probleme uygulanabilir. Bu kavrama "Fitness" veya "Uygunluk" diyebiliriz.
+
+Yine doğada nasıl tek canlı yani tek çözüm yoksa, genetik algoritmalarda da tek çözüm yoktur. Tüm çözümlerin ortak kümesine Popülasyon denilir. Kötü çözümlerin yok olma zorunluluğu yoktur. Kötü çözümlerin ne kadar yok olma ihtimali yüksek olsada, bir çok genetik yöntemde,kötü çözümler bizi ilerde iyi bir sonuca götürebileceği için tamamen yok edilmezler.
+
+Genetik algoritmalarda her bir çözüm Kromozomlarda tutulur ve her bir çözüm değişkenine Gen denir. Onun için "çözüm" kelimesi yerine Birey kelimesini kullanacağız.Her kromozom sahibi olan ve Popülasyonun üyesi olan şeye 'Birey(Member)' denilir. Her birey üreyip, çocuklar oluşturabilir. Bu durumda o birey, çocukların ebeveyni olur. Dolayısıyla ilk ebeveynler için bir başlangıç populasyonu olması gerekir. Genelde başlangıç populasyonu rastgele oluşturulur.
+
 Genetik algoritmalar 3 kavram üzerine kuruludur ;  Mutasyon, Çaprazlama ve Seçilim.
+
 Bir bireyin genleri çocuklarına aktarılırken, mutasyonlar oluşabilir. Mutasyonlar, gen aktarımda oluşan hatalardır. Bilgisayarda, bu hatayı doğadaki gibi taklit etmek için rastgelelik fonksiyonları kullanılır.
-Mutasyon, doğadaki gibi çoğu sefer zararlı olabilir.
+Mutasyon, doğadaki gibi çoğu sefer zararlı olabilir. Mutasyon sonucu olşan zararlı özellik o canlının hayatta kalma ihtimalini (uygunluğunu) düşürecektir. Fakat bazı zamanlar, mutasyonlar canlıya  faydalı olabilir. Bu faydalı özellikler canlının hayatta kalma ihtimali arttıracak ve diğerlerine karşı o canlıyı üstün kılacaktır. Onun için mutasyondan kötü etkilenen canlı zamanla yok olur, iyi etkilenen ise büyük avantajlar sağlayarak, kendini çoğaltır.
+
+Çaprazlama, 2 canlının eşeyli üreyerek kendi kromozomlarını tek bir kromozoma naklederek, kendilerinde farklı bir çocuk oluşturmasıdır. Çocuk, ebeveynlerinin özelliklerini taşır. Ebeveynlerini kısmen benzer. Bunun sebebi, iki ebeveynin kromozomlarının bir veya birkaç noktadan kesilerek, iki taraftan rastgele alınan genler ile bir kromozom oluşturulmasıdır.
+
+Doğal seçilim, hayatta kalma ihtimali az olan canlıların birçoğunun ölüp, hayatta kalma ihtimali yüksek olanlarının bir çoğunun hayatta kalmasıdır. Eğer doğada bir elitizim(en iyinin ölmemesi) durumu yoksa, hayatta kalma ihtimali yüksek olanınında yine ölme ihtimali vardır.
+Bilgisayarda seçilim, bireyin uygunluk fonksiyonu gözetilerek rastgele yapılır. Doğanın zor koşulları ve ön görülemezliği, rastgelelik fonksiyonları ile taklit edilir.
+
 Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natural and Artificial Systems” kitabında ortaya atılmıştır
 
 ### Evolotion (Evrim)
