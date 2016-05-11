@@ -1,10 +1,20 @@
 /**
  * Created by Can on 21.4.2016.
  */
+
+var GA = {
+    defaultParameters : {
+        crossing_over_rate : 0.0,
+        mutation_rate : 0.5,
+        population_size : 100,
+        real_timed  : false,
+    },
+}
+
 function Evolotion(){
     this.fitnessFunction;
     this.population;
-    this.generation;
+    this.parameters;
 }
 
 function Population(){
@@ -14,9 +24,14 @@ function Population(){
     this.minFitness
 }
 
+function Member(){
+    this.generation;
+    this.chromosome;
+    this.fitness;
+}
+
 function Chromesome(){
     this.genes = [];
-    this.fitness;
 }
 
 function Gene(type,val){

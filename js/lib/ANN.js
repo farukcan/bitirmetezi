@@ -52,8 +52,8 @@ ANN_Layer.prototype = {
 
 function ANN_Neuron(){
 	this.functions = {
-		sum : YSA_f_sum,
-		transfer : [YSA_f_sigmoid]
+		sum : ANN_f_sum,
+		transfer : [ANN_f_sigmoid]
 	};
 	this.out=0; // Sinir çıktısı saklanır
 
@@ -100,13 +100,21 @@ function ANN_Connection (){
 
 
 
-var YSA_f_sum = function (w,x){
+var ANN_f_sum = function (w,x){
 	var r = 0;
 	for(var i=0; i<w.length;i++)
 		r += w[i]*x[i];
 	return r;
 };
 
-var YSA_f_sign = function (o) { return Math.sign(o); }
+var ANN_f_sign = function (o) { return Math.sign(o); }
 
-var YSA_f_sigmoid  = function (t) { return 1/(1+Math.pow(Math.E, -t)); }
+var ANN_f_sigmoid  = function (t) { return 1/(1+Math.pow(Math.E, -t)); }
+
+
+modele.exports = {
+	Network : ANN,
+	Layer : ANN_Layer,
+	Neuron : ANN_Neuron,
+	Connection : ANN_Connection
+};
