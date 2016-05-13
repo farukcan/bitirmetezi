@@ -42,9 +42,13 @@ Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natura
 ### Teknik Gereksinimler
 
 * **Probleminin Genetik Temsili** : Her bir çözümün genlere aktarılabilmesi
+
 * **Değerlendirme** : Her bir çözümün uygunluğunu değerlendiren bir fonksiyon ; Fitness/Uygunluk fonksiyonu
+
 * **Başlangıç populasyonu oluşturma yöntemi ** : Başlangıç populasyonun belirlenmesinde yöntemler. Örneğin : Rastgele genler oluşturma.
+
 * **Genetik kompozisyon yöntemleri** : Bir sonraki populasyonun kromozomları oluşturacak teknikler. Örneğin : Mutasyon ve Çaprazlama
+
 
 
 ### Evolotion (Evrim)
@@ -114,7 +118,7 @@ Member'in yapısı belirleyen her bir birime denir.
 
 |	Gen Türü	|	açıklama			|
 |	--------	|	--------			|
-|	binary		|	0 -> 1	[0 veya 1]									|
+|	bit			|	0 -> 1	[0 veya 1]									|
 |	unipolar	|	0 -> 1		0.3->0.5 [0 ile 1 arası değer]			|
 |	bipolar		|	-1 -> 1		-0.3->0.5 [-1 ile 1 arası değer]		|
 |	permutation	|	[A,B,C] -> [B,C,A]	[SADECE YER DEĞİŞTEREN DİZİ]	|
@@ -135,25 +139,34 @@ Populasyon büyüklüğüne bağlı olarak ilk oluşan rastgele populasyondur.
 Bireyin ne kadar uygun olduğunu belirleyen değeri üreten fonksiyondur. Uygun populasyon üyesi daha fazla soyunu devam ettirmeye meyillidir. Bu fonksiyonun döndürdüğü değerin yüksek olması canlının, soyunu devam ettirme ihtimalini arttırır.
 
 ### Çaprazlama
-Tek noktalı takas: Genlerden bir nokta seçilir. O Noktadan bölünürek parçalar değiştirilir.
+* **Partially Crossing Over:** Genlerden bir nokta seçilir. O Noktadan bölünürek parçalar değiştirilir.
 
-Çok noktalı takas: Gen çok noktadan parçalanarak, parçalar yer değiştirir.
+* **Multi-Partially Crossing Over:** Gen çok noktadan parçalanarak, parçalar yer değiştirir.
 
-Tek basamaklı takas (uniform) : Her gen,belli bir olasılıkta diğer genle yer değiştirir.
+* **Uniform Crossing Over: :** Her gen,belli bir olasılıkta diğer genle yer değiştirir.
 
-Aritmatik takas : AND,OR,XOR ile yapılan takastır. X AND Y = 0 AND 1 = 0
+* **Aritmetic Crossing Over** : AND,OR,XOR ile yapılan takastır. X AND Y = 0 AND 1 = 0
 
 ### Mutasyon
 Her gen, alabileceği bir değer ile değiştirilir veya o miktarda arttırılıp,azaltılır.
 
+* **CHANGING**(DEĞİŞTİRME) : Genin değeri değişir.
+
+* **INSERTION**(EKLEME) : Kromozoma Gen eklenir
+
+* **REMOVING** (ÇIKARMA): Kromozamdan gen çıkartılır.
+
+* **SWAPING** (YER DEĞİŞTİRME) : İki genin yerleri değişir.
+
 ### Seçilim
-Rulet seçimi : Tüm bireylerin uygunluk değerleri bir tabloya yazılır, sonra bu uygunluk değeri toplam uygunluk değerine bölünerek, olasılıklar belirlenir.
 
-Sıralama seçilimi : Rulet seçiminde, eğer çok yüksek uygunluğa sahip birey varsa , diğerlerinin seçilim ihtimali imkansızlaşmaktadır. Buda ileri vadede bir sorundur. Onun için uygunluk değerine göre değilde, sıralama yapılarak kaçıncı sırada olduğuna göre bir seçilim yapılır. Yani uygunluk değeri 1 ile (Birey Sayısı) arasında olur.
+* **Rulet seçimi** : Tüm bireylerin uygunluk değerleri bir tabloya yazılır, sonra bu uygunluk değeri toplam uygunluk değerine bölünerek, olasılıklar belirlenir.
 
-Sabit durum seçimi : Buna göre, ebeveyn seçimi için kromozomların büyük parçaları bir sonraki nesile taşınmalıdır. Yeni döl oluşturulma üzere birkaç kromozom seçilir.(Genellikle en yüksek uygunluğa sahip olanlar seçilir.)
+* **Sıralama seçilimi** : Rulet seçiminde, eğer çok yüksek uygunluğa sahip birey varsa , diğerlerinin seçilim ihtimali imkansızlaşmaktadır. Buda ileri vadede bir sorundur. Onun için uygunluk değerine göre değilde, sıralama yapılarak kaçıncı sırada olduğuna göre bir seçilim yapılır. Yani uygunluk değeri 1 ile (Birey Sayısı) arasında olur.
 
-Seçkinlik(Elitizm) : En iyi(ler) birey bozulmadan bir sonraki jenerasyona kopyalanır.
+* **Sabit durum seçimi** : Buna göre, ebeveyn seçimi için kromozomların büyük parçaları bir sonraki nesile taşınmalıdır. Yeni döl oluşturulma üzere birkaç kromozom seçilir.(Genellikle en yüksek uygunluğa sahip olanlar seçilir.)
+
+* **Elitizm**(Seçkinlik) : En iyi(ler) birey bozulmadan bir sonraki jenerasyona kopyalanır.
 
 ### Gerçek Zamanlılık
 Eğer evrimsel süreç gerçek zamanlıysa, bireyin ölmesi ve üremesi durumları göz önüne alınır.

@@ -53,7 +53,8 @@ Gene.prototype = {
 };
 
 Gene.TYPE = {
+    BIT : 0,
     UNIPOLAR : 0,
-    BIPOLAR : 1,
-    STRING : 2
+    BIPOLAR : 0,
+    STRING : 0
 };

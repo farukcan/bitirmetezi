@@ -1,26 +1,47 @@
+// @class ANN
 function ANN(){
-	this.hiddenLayers = []; //ara nöron layerları, sırayla ateşlenir.
-	this.inputLayer = new ANN_Layer(); //burda girdi nöronları var,ateşlenmez
-	this.outputLayer = new ANN_Layer();//burda çıktı nöronları var,enson ateşlenir
+	this.layers = []; //YSAnın katmaları bu dizide tutulur
+	this.TYPE="CUSTOM"; // YSA'nın tipi
 }
-ANN.prototype = {
-	fire : function(){
-		this.inputLayer.fireConsecutive();
-	},
-	perceptron : function(){
-		//  snapsisleri perceptrona göre oluşturur
 
-		return this;
+// @prototype ANN : fonksiyonlar...
+ANN.prototype = {
+	inputLayer : function(){ // bu fonk. ilk katmanı döndürür.
+		return this.layers[0];
+	},
+	outputLayer : function(){  // buda son " " "
+		return this.layers[this.layers.length-1];
+	},
+	fire : function(inputArray){ // tüm YSAyı ateşler
+		if(inputArray)
+			this.setOutputs(inputArray);
+
+		this.inputLayer().fireConsecutive();
+	},
+	getOutputs : function(){ // son katmının çıkış değetlerini döndürür.
+		return this.outputLayer().getOutputs();
+	},
+	setOutputs : function(outputs){ // ilk katmanın outputlarını günceller.
+		this.inputLayer().setOutputs(outputs);
 	}
+};
+
+// @arcitures ANN Burada belirli YSA modelleri oluşturma fonksiyonları tutulur.
+
+// @arc PERCEPTRON ### kullanım ysa = new ANN().PERCEPTRON(5,[4,3,3],2);
+ANN.prototype.PERCEPTRON = function(inputNeuronNum,arrayof_hiddenLayersNeuronNum,outputNeuronNum){
+	this.TYPE = "PERCEPTRON";
+
+	return this;
 };
 
 
 
 function ANN_Layer(neuron_num){
 	this.neurons = [];
-	this.left;
-	this.right;
-	while(neuron_num<=0){
+	this.inputLayers=[]; // solundaki katman
+	this.outputLayers=[]; // sağındaki katman
+	while(neuron_num==0){
 		this.neurons.push(new ANN_Neuron());
 		neuron_num--;
 	}
@@ -28,13 +49,21 @@ function ANN_Layer(neuron_num){
 
 ANN_Layer.prototype = {
 	connect : function(layer){
-		// layerları bağlama
-		this.right = layer;
-		layer.left = this;
 
+		var connection = new ANN_Connection;
+		connection.input = this;
+		connection.output = layer;
+
+		// layerları bağlama
+		layer.inputLayers.push(connection);
+		this.outputLayers.push(connection);
+
+	},
+	connectWithNeurons : function(layer){
+		this.connect(layer);
 		// her nöronu teker teker bağla
 		this.neurons.forEach(function(leftNeuron){
-			layer.forEach(function (rightNeuron) {
+			layer.neurons.forEach(function (rightNeuron) {
 				leftNeuron.connect(rightNeuron);
 			});
 		});
@@ -47,6 +76,21 @@ ANN_Layer.prototype = {
 	fireConsecutive : function(){
 		this.fire();
 		if(this.right) this.right.fireConsecutive();
+	},
+	setOutputs : function (outputArray) {
+		var neurons = this.neurons;
+		outputArray.forEach(function(output,i){
+			neurons[i].out = output;
+		});
+	},
+	getOutputs : function () {
+		var outputs = [];
+
+		this.neurons.forEach(function(neuron){
+			outputs.push(neuron.out);
+		});
+
+		return outputs;
 	}
 };
 
@@ -92,10 +136,10 @@ ANN_Neuron.prototype = {
 };
 
 
-function ANN_Connection (){
+function ANN_Connection (){ // KATMANLARI  veya NÖRONLARI bağlar.
 	this.input;
 	this.output;
-	this.w=0;
+	this.w=0; // sadece nöronlarda önemli
 }
 
 
