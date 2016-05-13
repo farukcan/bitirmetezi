@@ -11,7 +11,7 @@ Yine doğada nasıl tek canlı yani tek çözüm yoksa, genetik algoritmalarda d
 
 Genetik algoritmalarda her bir çözüm Kromozomlarda tutulur ve her bir çözüm değişkenine Gen denir. Onun için "çözüm" kelimesi yerine Birey kelimesini kullanacağız.Her kromozom sahibi olan ve Popülasyonun üyesi olan şeye 'Birey(Member)' denilir. Her birey üreyip, çocuklar oluşturabilir. Bu durumda o birey, çocukların ebeveyni olur. Dolayısıyla ilk ebeveynler için bir başlangıç populasyonu olması gerekir. Genelde başlangıç populasyonu rastgele oluşturulur.
 
-Genetik algoritmalar 3 kavram üzerine kuruludur ;  Mutasyon, Çaprazlama ve Seçilim.
+Genetik algoritmalar 3 temel kavram üzerine kuruludur ;  Mutasyon, Çaprazlama ve Seçilim.
 
 Bir bireyin genleri çocuklarına aktarılırken, mutasyonlar oluşabilir. Mutasyonlar, gen aktarımda oluşan hatalardır. Bilgisayarda, bu hatayı doğadaki gibi taklit etmek için rastgelelik fonksiyonları kullanılır.
 Mutasyon, doğadaki gibi çoğu sefer zararlı olabilir. Mutasyon sonucu olşan zararlı özellik o canlının hayatta kalma ihtimalini (uygunluğunu) düşürecektir. Fakat bazı zamanlar, mutasyonlar canlıya  faydalı olabilir. Bu faydalı özellikler canlının hayatta kalma ihtimali arttıracak ve diğerlerine karşı o canlıyı üstün kılacaktır. Onun için mutasyondan kötü etkilenen canlı zamanla yok olur, iyi etkilenen ise büyük avantajlar sağlayarak, kendini çoğaltır.
@@ -21,7 +21,31 @@ Mutasyon, doğadaki gibi çoğu sefer zararlı olabilir. Mutasyon sonucu olşan 
 Doğal seçilim, hayatta kalma ihtimali az olan canlıların birçoğunun ölüp, hayatta kalma ihtimali yüksek olanlarının bir çoğunun hayatta kalmasıdır. Eğer doğada bir elitizim(en iyinin ölmemesi) durumu yoksa, hayatta kalma ihtimali yüksek olanınında yine ölme ihtimali vardır.
 Bilgisayarda seçilim, bireyin uygunluk fonksiyonu gözetilerek rastgele yapılır. Doğanın zor koşulları ve ön görülemezliği, rastgelelik fonksiyonları ile taklit edilir.
 
-Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natural and Artificial Systems” kitabında ortaya atılmıştır
+Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natural and Artificial Systems” kitabında ortaya atılmıştır. [kaynakça:wikipedia2016]
+
+
+### Genetik Teknik
+
+1. P(0) başlangıç populasyonunu oluştur. (t=0)
+2. P(t)'yi değerlendir
+3. Durdurma kriterini kontrol et.
+3. P(t)'nin bireylerini seç.
+4. P(t)'nin seçilmiş bireylerini değiştirerek P(t+1) populasyonunu oluştur. (t=t+1)
+5. Adım 2'ye geç.
+
+
+[Kaynakça;Derviş Karaboğa]
+
+
+
+
+### Teknik Gereksinimler
+
+* **Probleminin Genetik Temsili** : Her bir çözümün genlere aktarılabilmesi
+* **Değerlendirme** : Her bir çözümün uygunluğunu değerlendiren bir fonksiyon ; Fitness/Uygunluk fonksiyonu
+* **Başlangıç populasyonu oluşturma yöntemi ** : Başlangıç populasyonun belirlenmesinde yöntemler. Örneğin : Rastgele genler oluşturma.
+* **Genetik kompozisyon yöntemleri** : Bir sonraki populasyonun kromozomları oluşturacak teknikler. Örneğin : Mutasyon ve Çaprazlama
+
 
 ### Evolotion (Evrim)
 Altında populasyonları bulunduran. En üst sınıftır.
@@ -145,3 +169,9 @@ Evrimsel algoritma, adım adım olarak değil, asenkron şekilde çalışır. Ya
 6. Mutasyona uğrat
 7. Adım 2'ye git
 8. Dur
+
+
+![alt tag](https://upload.wikimedia.org/wikipedia/tr/5/59/GAelen.jpg)
+
+
+*Alıntı: Wikipedia CC BY-SA
