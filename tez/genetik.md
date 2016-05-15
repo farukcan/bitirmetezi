@@ -48,6 +48,17 @@ Genetik algoritma hakkında bilgilerin saklandığı objedir.
 |	defaultParameters{}	|	Her Evolotion sınıfın varsayılan parametreleridir	|
 |	charSet[]	|	Bir String'de kullanılabilecek karakterlerin listesidir	|
 |	TYPE{}	|	Gen türlerin saklandığı ENUM	|
+|	CO_TYPE{}	|	Çaprazlama yönteminin saklandığı ENUM	|
+|	SELECTION{}	|	Seçilim yönteminin saklandığı ENUM	|
+|	ALGORITHMS{}	|	Algoritmaların saklandığı ENUM	|
+
+|	parameters{}	|	açıklama				|
+|	--------	|	--------				|
+|	crossing_over_rate	|	çaprazlama ihtimali(UNIFORM türü CO için)		|
+|	mutation_rate	|	mutasyon ihtimali		|
+|	population_size	|	populasyon büyüklüğü (önerilen 100-300)	|
+|	algorithm	|	Algoritmanın türüdür. ENUM	|
+
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
@@ -55,7 +66,13 @@ Genetik algoritma hakkında bilgilerin saklandığı objedir.
 |	randomINT(min,max)	|	min,max aralığında tam sayı üreten fonksiyondur	|
 |	chance(rate)	|	rate ihtimalini gerçekleyen ve buna göre boolean:true/false döndüren fonksiyon	|
 |	copyGene(oldGene)	|	Bir genin aynen kopyalayıp,yeni gen üreten fonksiyondur	|
-
+|	INS(geneArray)	|	Kromozomdaki gen sayısını, herhangi bir geni kopyalayarak arttırır	|
+|	RMV(geneArray)	|	Kromozomdaki herhangi bir geni siler	|
+|	SWP(geneArray)	|	Kromozomdaki herhangi iki geni yer değiştirir	|
+|	splitToParts(chromosome)	|	Kromozomu ağaç gibi açar. Çaprazlama için uygun ağacın en altındaki genleri, GenePart'a çevirir.	|
+|	crossingOverable(partsA,partsB)	|	İki Gen Parçası(GenePart) dizisininin, çaprazlama için uygun olanlarını ayıklar.	|
+|	crossingOver(chromA,chromoB,CO_TYPE,PARTNUM_OR_UNIFORMRATE)	|	İki kromozomu çaprazlar.	|
+|	crossingOverRULED(chromA,chromoB,CO_TYPE,PARTNUM_OR_UNIFORMRATE)	|	İki kromozomu çaprazlar ve çaprazlama sonucu oluşan kromozomlardaki hataları onarır.(mutasyon sonrasıda aynı işlem yapıldığı için crossingOver fonksiyonu tercih edilir)	|
 ### Evolotion (Evrim)
 Altında populasyonları bulunduran. En üst sınıftır.
 
@@ -63,19 +80,14 @@ Altında populasyonları bulunduran. En üst sınıftır.
 |	--------	|	--------				|
 |	populations[]	|	Populasyonlar			|
 |	parameters{}	|	Evrimsel parametreler	|
-
-|	parameters{}	|	açıklama				|
-|	--------	|	--------				|
-|	crossing_over_rate	|	çaprazlama ihtimali		|
-|	mutation_rate	|	mutasyon ihtimali		|
-|	population_size	|	populasyon büyüklüğü (önerilen 100-300)	|
-|	real_timed	|	Algoritmanın gerçek zamanlı çalışma özelliği	|
-
+|	fitnessFunction(member)	|	fitness fonksiyonu	|
+|	createPopulation(population_size)	|	Rastgele başlangıç populasyonu oluşturur	|
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
-|	fitness()	|	fitness fonksiyonu	|
-|	createPopulation(population_size)	|	Rastgele başlangıç populasyonu oluşturur	|
+|	setParameters(param)	|	Parametreleri değiştirir	|
+
+
 
 ### Population (Populasyon)
 Member'ların dizisidir. Population'un fitness fonksiyonu ve Memberların en iyi ve kötüsü burada belirlenip, sıralanır.

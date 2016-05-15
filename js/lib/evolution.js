@@ -4,6 +4,17 @@
 
 //	#	by Faruk CAN ( farukcan.net ) @ 2016
 //	#	license : GNU GPL
+/*
+
+GA : object
+Evolotion : class
+Population : class
+Member : class
+Chromosome : function returns new Gene().TYPE(CHROMOSOME)
+Gene : class
+GenePart : class
+ */
+
 
 
 var GA = {
@@ -11,7 +22,9 @@ var GA = {
         crossing_over_rate : 0.0,
         mutation_rate : 0.5,
         population_size : 100,
-        real_timed  : false
+        iterations : 100,
+        elitism : true,
+        algorithm  : 0 // GA.ALGORITHMS.STANDART
     },
     charSet : "ABCÇDEFGĞHIİJKLMNÖOPQRSŞTUÜVWXYZabcçdefghiığjklmnoöpqrsştüuvwxyz0123456789 .,!'^+%&/()-@æß",
     TYPE : {
@@ -29,7 +42,11 @@ var GA = {
     },
     SELECTION : {
         ROULETTE : 0,
-        SORT : 1,
+        SORT : 1
+    },
+    ALGORITHMS : {
+        STANDART : 0,
+        DIEANDBORN : 1
     },
     random : function(){ return Math.random(); },
     randomINT : function(min,max) { return Math.round(Math.random()*(max-min) + min)},
@@ -104,29 +121,189 @@ var GA = {
         return split(chromosome);
 
     },
-    crossingOver : function(chromesomeA,chromosomeB,CO_TYPE){
-        var partsA = GA.splitToParts(chromesomeA);
+    crossingOverable : function(partsA,partsB){
+        var r = [[],[]];
+
+        for(var i=0; i <partsA.length; i++){
+            for(var j=0; j <partsB.length; j++){
+                if(partsA[i].isSameWith(partsB[j])){
+                    if(partsA[i].getGene().type==partsB[j].getGene().type){
+                        r[0].push(partsA[i]);
+                        r[1].push(partsB[j]);
+                    }
+                    break;
+                }
+            }
+        }
+        return r;
+    },
+    crossingOver : function(chromosomeA,chromosomeB,CO_TYPE,PARTNUM_OR_UNIFORMRATE){
+        var partsA = GA.splitToParts(chromosomeA);
         var partsB = GA.splitToParts(chromosomeB);
+        var crossingOverable = GA.crossingOverable(partsA,partsB);
+        partsA = crossingOverable[0];
+        partsB = crossingOverable[1];
+
+        switch(CO_TYPE){
+            case GA.CO_TYPES.PARTIALLY:
+                // 1 nokta seç , o noktadan yer değiştir
+                if(partsA.length>1){
+                    var i = GA.randomINT(1,partsA.length-1);
+                    var A1 = partsA.slice(0,i);
+                    var A2 = partsA.slice(i, partsA.length);
+                    var B1 = partsB.slice(0,i);
+                    var B2 = partsB.slice(i, partsB.length);
+                    partsA = B1.concat(A2);
+                    partsB = A1.concat(B2);
+                }
+                break;
+            case GA.CO_TYPES.MULTIPARTIALLY:
+                var PARTNUM = PARTNUM_OR_UNIFORMRATE;
+                if(partsA.length>PARTNUM){
+                    var partition = [];
+                    var sum = PARTNUM;
+                    var num=sum;
+                    while(num--) partition.push(1);
+
+                    while((sum<partsA.length-1) && GA.chance(0.5)){
+                        partition[GA.randomINT(0,partition.length-1)]++;
+                        sum++;
+                    }
+
+                    var partitionIndex= 0;
+                    var mode = true;
+                    for(var i=0; i < partsA.length;i++){
+
+                        if(mode){
+                            var swap = partsA[i];
+                            partsA[i] = partsB[i];
+                            partsB[i] = swap;
+                        }
+                        if(typeof partition[partitionIndex] != 'undefined'){
+                            partition[partitionIndex]--;
+                            if(partition[partitionIndex]==0) {
+                                mode = !mode;
+                                partitionIndex++;
+                            }
+                        }
+                    }
+
+                }
+                // yukardakini birkaç noktadan yap
+                break;
+            case GA.CO_TYPES.UNIFORM:
+                // sanşsa göre parçaları değiştir.
+                for(var i=0; i < partsA.length;i++){
+                    if(GA.chance(PARTNUM_OR_UNIFORMRATE)){
+                        var swap = partsA[i];
+                        partsA[i] = partsB[i];
+                        partsB[i] = swap;
+                    }
+                }
+                break;
+        }
+
+        if(GA.chance(0.5)){
+            // swap parts
+            var swap = partsA;
+            partsA = partsB;
+            partsB = swap;
+        }
+
+        var childA = GA.copyGene(chromosomeA);
+        var childB = GA.copyGene(chromosomeB);
+
+        partsA.forEach(function(part){
+            var gene = part.getGene(childA);
+            gene.val = part.getGene().val;
+        });
+
+        partsB.forEach(function(part){
+            var gene = part.getGene(childB);
+            gene.val = part.getGene().val;
+        });
+
+
+        return [childA,childB]; // iki kromozom döndür.
+    },
+    crossingOverRULED : function(chromosomeA,chromosomeB,CO_TYPE,PARTNUM_OR_UNIFORMRATE){
+        var r = GA.crossingOver(chromosomeA,chromosomeB,CO_TYPE,PARTNUM_OR_UNIFORMRATE);
+        if(r[0].RULEfunc) r[0].RULEfunc(r[0].val);
+        if(r[1].RULEfunc) r[1].RULEfunc(r[1].val);
+
+        return r;
     }
 };
 
-function Evolotion(){
-    this.fitnessFunction;
+function Evolotion(fitnessFunc,createFunc){
     this.population;
-    this.parameters;
+    this.fitnessFunction = fitnessFunc; // f(member)
+    this.parameters = GA.defaultParameters;
+    this.createPopulation = createFunc;
 }
 
-function Population(){
+Evolotion.prototype = {
+    setParameters : function(param){
+        for(key in param){
+            this.parameters[key] = param[key];
+        }
+        return this;
+    },
+    start : function(){
+        this.createPopulation();
+        switch (this.parameters.algorithm){
+            case GA.ALGORITHMS.STANDART:
+                this.population.calcFitness();
+                var iteration=0;
+                while(iteration<this.parameters.iterations){
+                    this.population.selection();
+
+                    this.population.calcFitness();
+                    iteration++;
+                }
+                break;
+
+            case GA.ALGORITHMS.DIEANDBORN:
+
+                break;
+        }
+    }
+};
+
+
+function Population(evo){
     this.members = [];
+    this.evolotion=evo;
     this.avgFitness;
     this.maxFitness;
     this.minFitness
+
+    evo.population = this;
 }
 
-function Member(){
-    this.generation;
+Population.prototype = {
+    calcFitness : function(){
+        this.avgFitness=0;
+        this.maxFitness=-1e+99;
+        this.minFitness=1e+99;
+        var _this=this;
+        this.members.forEach(function(member){
+            member.fitness = this.evolotion.fitnessFunction(member);
+            _this.avgFitness+=member.fitness;
+            _this.maxFitness = Math.max(_this.maxFitness,member.fitness);
+            _this.minFitness = Math.min(_this.minFitness,member.fitness);
+        });
+        _this.avgFitness/=this.members.length;
+    }
+};
+
+function Member(Population){
+    this.generation=0;
     this.chromosome;
     this.fitness;
+    this.population=Population;
+
+    Population.push(this);
 }
 
 function Chromosome(){
@@ -297,7 +474,6 @@ Gene.prototype = {
                 this.INS(true);
                 this.SWP(true);
 
-                // ** değiştir
                 this.chg_rate = GA.defaultParameters.mutation_rate;
                 this.ins_rate = GA.defaultParameters.mutation_rate;
                 this.rmv_rate = GA.defaultParameters.mutation_rate;
@@ -309,9 +485,8 @@ Gene.prototype = {
                 this.VAL({});
                 this.CHG(true);
 
-                // ** değştir
-                this.ins_rate = GA.defaultParameters.mutation_rate*0;
-                this.rmv_rate = GA.defaultParameters.mutation_rate*0;
+                this.ins_rate = GA.defaultParameters.mutation_rate;
+                this.rmv_rate = GA.defaultParameters.mutation_rate;
                 this.swp_rate = GA.defaultParameters.mutation_rate;
 
 
@@ -327,6 +502,11 @@ Gene.prototype = {
     INS : function(bool){ this.ins=bool;return this;},
     RMV : function(bool){ this.rmv=bool;return this;},
     SWP : function(bool){ this.swp=bool;return this;},
+    MUTATION_RATE : function(r){ this.mutation_rate=r;return this;},
+    CHG_RATE : function(r){ this.chg_rate=r;return this;},
+    INS_RATE : function(r){ this.ins_rate=r;return this;},
+    RMV_RATE : function(r){ this.rmv_rate=r;return this;},
+    SWP_RATE : function(r){ this.swp_rate=r;return this;},
     RULE : function(func){
         this.RULEfunc = func;
 
@@ -357,8 +537,8 @@ function GenePart(way,root){
 }
 
 GenePart.prototype = {
-    getGene : function(){
-        var current = this.root;
+    getGene : function(from){
+        var current = typeof from != 'undefined' ? from : this.root;
         this.parrents.forEach(function(child){
             current = current.val[child];
         });

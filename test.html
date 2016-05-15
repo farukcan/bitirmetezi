@@ -112,6 +112,17 @@
 
     });
 
+
+    var chromosome1 = GA.copyGene(chromosomeOfEve);
+    chromosome1.mutate();
+    var chromosome2 = GA.copyGene(chromosomeOfEve);
+    chromosome2.mutate();
+    var childs = GA.crossingOverRULED(chromosome1,chromosome2,GA.CO_TYPES.UNIFORM,0.5);
+
+    // crossing over test sonuçları :
+    console.log(chromosome1.toJSON().hiddenNN,chromosome2.toJSON().hiddenNN,childs[0].toJSON().hiddenNN,childs[1].toJSON().hiddenNN);
+
+    // genetik bilgiden , yapay sinir ağı üretme
     setInterval(function(){
         chromosomeOfEve.mutate();
         var genetic = chromosomeOfEve.toJSON();
@@ -123,7 +134,7 @@
         YSA.fire([0.5,0.5]);
 
         console.log(YSA.getOutputs(),genetic.hiddenNN);
-    },10000);
+    },1000);
 
 
 </script>
