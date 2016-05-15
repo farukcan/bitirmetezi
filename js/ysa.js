@@ -2,16 +2,24 @@
  * Created by Can on 19.4.2016.
  */
 
-var input = new ANN_Neuron();
-var neuron = new ANN_Neuron();
-
-var connection = input.connect(neuron);
-connection.w = -0.5;
+var YSA = new ANN().PERCEPTRON(2,[2],1).setBias( [-1,-1] );
 
 
-input.out = 5;
+YSA.setWeights([
+    [
+        [1,1],
+        [0.5,0.5],
+        [-1,-1]
 
-neuron.fire();
+    ],
+    [
+        [1],
+        [1],
+        [-1]
+    ]
+]);
 
-console.log(neuron.out);
-console.log(input,neuron,connection);
+YSA.fire([0.5,0.5]);
+
+console.log(YSA.getOutputs());
+

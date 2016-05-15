@@ -1,6 +1,10 @@
 # Genetik Algoritma
+
 [TOC]
+
 Kısaltmalar : GA (Genetik Algoritma)
+
+**NOT**:*Buradaki bilgilerden yararlanılarak evolution.js kütüphanesi yazıldı.*
 
 ## Tanımlar
 Genetik algoritmalar doğadaki evrimsel süreci taklit eden optimizasyon yöntemleridir. 
@@ -36,20 +40,21 @@ Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natura
 
 [Kaynakça;Derviş Karaboğa]
 
+### GA (Genetik Algoritma)
+Genetik algoritma hakkında bilgilerin saklandığı objedir.
 
+|	değişken	|	açıklama				|
+|	--------	|	--------				|
+|	defaultParameters{}	|	Her Evolotion sınıfın varsayılan parametreleridir	|
+|	charSet[]	|	Bir String'de kullanılabilecek karakterlerin listesidir	|
+|	TYPE{}	|	Gen türlerin saklandığı ENUM	|
 
-
-### Teknik Gereksinimler
-
-* **Probleminin Genetik Temsili** : Her bir çözümün genlere aktarılabilmesi
-
-* **Değerlendirme** : Her bir çözümün uygunluğunu değerlendiren bir fonksiyon ; Fitness/Uygunluk fonksiyonu
-
-* **Başlangıç populasyonu oluşturma yöntemi ** : Başlangıç populasyonun belirlenmesinde yöntemler. Örneğin : Rastgele genler oluşturma.
-
-* **Genetik kompozisyon yöntemleri** : Bir sonraki populasyonun kromozomları oluşturacak teknikler. Örneğin : Mutasyon ve Çaprazlama
-
-
+|	fonksiyon	|	amaç		|
+|	--------	|	--------	|
+|	random()	|	0-1 arası rastgele sayı üreten fonksiyondur.	|
+|	randomINT(min,max)	|	min,max aralığında tam sayı üreten fonksiyondur	|
+|	chance(rate)	|	rate ihtimalini gerçekleyen ve buna göre boolean:true/false döndüren fonksiyon	|
+|	copyGene(oldGene)	|	Bir genin aynen kopyalayıp,yeni gen üreten fonksiyondur	|
 
 ### Evolotion (Evrim)
 Altında populasyonları bulunduran. En üst sınıftır.
@@ -64,7 +69,7 @@ Altında populasyonları bulunduran. En üst sınıftır.
 |	crossing_over_rate	|	çaprazlama ihtimali		|
 |	mutation_rate	|	mutasyon ihtimali		|
 |	population_size	|	populasyon büyüklüğü (önerilen 100-300)	|
-|	real_timed	|	populasyon büyüklüğü (önerilen 100-300)	|
+|	real_timed	|	Algoritmanın gerçek zamanlı çalışma özelliği	|
 
 
 |	fonksiyon	|	amaç		|
@@ -119,13 +124,27 @@ Member'in yapısı belirleyen her bir birime denir.
 |	Gen Türü	|	açıklama			|
 |	--------	|	--------			|
 |	bit			|	0 -> 1	[0 veya 1]									|
+|	int			|	min-max arası tam sayıdır							|
 |	unipolar	|	0 -> 1		0.3->0.5 [0 ile 1 arası değer]			|
 |	bipolar		|	-1 -> 1		-0.3->0.5 [-1 ile 1 arası değer]		|
-|	permutation	|	[A,B,C] -> [B,C,A]	[SADECE YER DEĞİŞTEREN DİZİ]	|
 |	string		|	"abc"	->	"adef"									|
-|	const_string|	"abc"	->	"def"									|
 |	chromesome	|	başka genlerden oluşan, gen dizisi					|
-|	const_chromesome	|	başka genlerden oluşan, sabit gen dizisi					|
+
+|	değişken	|	açıklama			|
+|	--------	|	--------			|
+|	val	|	Genin Türüne göre aldığı değerdir.	|
+|	type	|	Genin Türüdür.	|
+|	chg	|	CHANGE türü mutasyon geçirebilme özelliğinin açık olmasını saklanır.	|
+|	ins	|	INSERT türü mutasyon geçirebilme özelliğinin açık olmasını saklanır.	|
+|	rmv	|	REMOVE türü mutasyon geçirebilme özelliğinin açık olmasını saklanır.	|
+|	swp	|	SWAP türü mutasyon geçirebilme özelliğinin açık olmasını saklanır.	|
+|	mutation_rate	|	Genin mutasyon geçirme ihmalidir.	|
+|	chg_rate	|	STRING her karakterinin CHANGE türü mutasyon geçirme ihmalidir. [sadece Stringde kullanılır]	|
+|	ins_rate	|	Genin INSERT türü mutasyon geçirme ihmalidir.	|
+|	rmv_rate	|	Genin REMOVE türü mutasyon geçirme ihmalidir.	|
+|	swp_rate	|	Genin SWAP türü mutasyon geçirme ihmalidir.	|
+|	min	|	INT tipi genler için minimum alınabilecek değer saklanır	|
+|	max	|	INT tipi genler için maximum alınabilecek değer saklanır	|
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
@@ -150,19 +169,19 @@ Bireyin ne kadar uygun olduğunu belirleyen değeri üreten fonksiyondur. Uygun 
 ### Mutasyon
 Her gen, alabileceği bir değer ile değiştirilir veya o miktarda arttırılıp,azaltılır.
 
-* **CHANGING**(DEĞİŞTİRME) : Genin değeri değişir.
+* **[CHG] CHANGING**(DEĞİŞTİRME) : Genin değeri değişir.
 
-* **INSERTION**(EKLEME) : Kromozoma Gen eklenir
+* **[INS] INSERTION**(EKLEME) : Kromozoma Gen eklenir
 
-* **REMOVING** (ÇIKARMA): Kromozamdan gen çıkartılır.
+* **[RMV] REMOVING** (ÇIKARMA): Kromozamdan gen çıkartılır.
 
-* **SWAPING** (YER DEĞİŞTİRME) : İki genin yerleri değişir.
+* **[SWP] SWAPING** (YER DEĞİŞTİRME) : İki genin yerleri değişir.
 
 ### Seçilim
 
 * **Rulet seçimi** : Tüm bireylerin uygunluk değerleri bir tabloya yazılır, sonra bu uygunluk değeri toplam uygunluk değerine bölünerek, olasılıklar belirlenir.
 
-* **Sıralama seçilimi** : Rulet seçiminde, eğer çok yüksek uygunluğa sahip birey varsa , diğerlerinin seçilim ihtimali imkansızlaşmaktadır. Buda ileri vadede bir sorundur. Onun için uygunluk değerine göre değilde, sıralama yapılarak kaçıncı sırada olduğuna göre bir seçilim yapılır. Yani uygunluk değeri 1 ile (Birey Sayısı) arasında olur.
+* **Sıralama seçilimi** : Rulet seçiminde, eğer çok yüksek uygunluğa sahip birey varsa , diğerlerinin seçilim ihtimali imkansızlaşmaktadır. Bu da ileri vadede bir sorundur. Onun için uygunluk değerine göre değilde, sıralama yapılarak kaçıncı sırada olduğuna göre bir seçilim yapılır. Yani uygunluk değeri 1 ile (Birey Sayısı) arasında olur.
 
 * **Sabit durum seçimi** : Buna göre, ebeveyn seçimi için kromozomların büyük parçaları bir sonraki nesile taşınmalıdır. Yeni döl oluşturulma üzere birkaç kromozom seçilir.(Genellikle en yüksek uygunluğa sahip olanlar seçilir.)
 
@@ -172,7 +191,18 @@ Her gen, alabileceği bir değer ile değiştirilir veya o miktarda arttırılı
 Eğer evrimsel süreç gerçek zamanlıysa, bireyin ölmesi ve üremesi durumları göz önüne alınır.
 Evrimsel algoritma, adım adım olarak değil, asenkron şekilde çalışır. Yani 1.nesil birey ile 3.nesil birey aynı populasyonda bulunabilir.
 
-## Algoritma
+## Teknik Gereksinimler
+
+* **Probleminin Genetik Temsili** : Her bir çözümün genlere aktarılabilmesi
+
+* **Değerlendirme** : Her bir çözümün uygunluğunu değerlendiren bir fonksiyon ; Fitness/Uygunluk fonksiyonu
+
+* **Başlangıç populasyonu oluşturma yöntemi ** : Başlangıç populasyonun belirlenmesinde yöntemler. Örneğin : Rastgele genler oluşturma.
+
+* **Genetik kompozisyon yöntemleri** : Bir sonraki populasyonun kromozomları oluşturacak teknikler. Örneğin : Mutasyon ve Çaprazlama
+
+
+## Basit Algoritma
 
 1. Rastgele başlangıç populasyonu üret
 2. Populasyonu değerlendir
@@ -183,8 +213,21 @@ Evrimsel algoritma, adım adım olarak değil, asenkron şekilde çalışır. Ya
 7. Adım 2'ye git
 8. Dur
 
-
 ![alt tag](https://upload.wikimedia.org/wikipedia/tr/5/59/GAelen.jpg)
+
+## "Her ölüm bir doğumdur " Gerçek Zamanlı Algoritması
+1. Rastgele başlangıç populasyonu üret
+2. Bir üyenin ölmesini bekle => 3.Adıma geç, ve Sonlanmayı bekle => 10.adıma geç
+3. Populasyonu değerlendir
+4. 2 birey için seçilim yap
+5. 2 bireyi çaprazlamaya uğrat ve yeni birey oluştur.
+6. Yeni bireyi mutasyona uğrat.
+7. Ölen bireyi, populasyondan sil.
+8. Yeni bireyi populasyona ekle.
+9. 2.adıma geç
+10. Dur
+
+
 
 
 *Alıntı: Wikipedia CC BY-SA

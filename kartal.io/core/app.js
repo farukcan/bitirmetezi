@@ -115,7 +115,7 @@ var validator = require('validator');
 
 /*
  |--------------------------------------------------------------------------
- | js dosyaları yükle
+ | js kütüphanelerini yükle
  |--------------------------------------------------------------------------
  |
  |
@@ -143,6 +143,7 @@ var jsp = require("uglify-js").parser;
 var pro = require("uglify-js").uglify;
 
 
+// game.js için birleştirilip, build edilecek dosyaların listesidir.
  var buildList = [
      '../../js/lib/CanvasRender.js',
      '../../js/lib/jquery-min.js',
@@ -175,6 +176,7 @@ buildGame();
 
 
  function buildGame(){
+     // bu fonksiyono clientlar için game.js dosyasını build eder. Bunu yaparken belirli dosyaları birleştirir ve optimize eder.
      var data = "";
 
      buildList.forEach(function(file){
@@ -187,7 +189,6 @@ buildGame();
          ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
          data = pro.gen_code(ast); // compressed code here
      }
-
 
 
      fs.writeFile("./sayfalar/game.js", data, function(err) {
@@ -233,7 +234,7 @@ var sunucu = http.createServer(function(istek,cevap){
             veri = veri.split("{").join("{<blockquote>").split("}").join("</blockquote>}").split(",").join(",<br>");
             cevap.writeHead(200,{"Content-type":"text/html"}); // html sayfası
             cevap.end(veri);
-            break
+            break;
         case "/deletestatics":
             var files = fs.readdirSync("logs");
             files.reverse();
@@ -310,11 +311,14 @@ io.on('connection', function(socket){
 
         if(typeof name == "string"){
             conn.name=validator.escape(name).substring(0,18);
+
+            // Game Master Modu
             if(name=="ben bu oyunu bozarım"){
                 conn.name="[GM] F A R U K  C A N";
                 bird.size = 500;
                 bird.hp = 500;
             }
+
         }
         bird.ad=conn.name;
         world.addBird(bird);
@@ -356,7 +360,7 @@ var gameloop = require('node-gameloop');
 var world = new World();
 world.server.io = io;
 
-foodCreator();
+foodCreator(); // ilk yemleri oluştur
 
 gameloop.setGameLoop(update, 1000 / SABITLER.FPS);
 
@@ -365,13 +369,14 @@ function update(delta){
     controller.update(world); // send rt data to players
 }
 
+// 2snde bir kuşlar iyileşir.
 setInterval(function(){
     world.birds.forEach(function(bird,i){
         bird.heal();
     });
 },2000);
 
-
+// LOG - istatiksel kayıtlar...
 var loggerfile = "logs/D"+Date.now()+".txt";
 var statics = {
     start : Date().toString(),
@@ -381,6 +386,7 @@ var statics = {
     maxplayer : 0
 };
 
+// 10snde bir : Scoreboardı günceller
 setInterval(function(){
     var scores = [];
     world.birds.forEach(function(bird,i){
@@ -405,13 +411,13 @@ setInterval(function(){
 
 
 function birdCreator(way){
-    if(typeof way != "undefined"){
-        if(way==1) return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,true);
-        if(way==-1) return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,false);
+    if(typeof way != "undefined"){ // kuşun yöne atanmadıysa kendi ata
+        if(way==1) return new Bird(Math.random()*Math.PI*2,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,true);
+        if(way==-1) return new Bird(Math.random()*Math.PI*2,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,false);
     }
     return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
-function foodCreator(){
+function foodCreator(){ // rastgele yerlerde FOODNUM kadar yem oluştur.
     for(var i=0;i<SABITLER.FOODNUM;i++){
         world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }

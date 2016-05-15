@@ -3,7 +3,6 @@
  */
 function Camera(loc){
     this.loc = loc;
-    this.speed = 100;
     this.a = 0.001;
     this.scale = 1;
     this.rota = (this.a%360)*Math.PI/180;
