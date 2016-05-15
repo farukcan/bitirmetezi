@@ -6,6 +6,7 @@
 
 
 <script src="js/lib/evolution.js"></script>
+<script src="js/lib/ANN.js"></script>
 <script>
 
     var exampleWeightGene = new Gene().TYPE(GA.TYPE.BIPOLAR);
@@ -110,7 +111,20 @@
         });
 
     });
-    console.log(chromosomeOfEve);
+
+    setInterval(function(){
+        chromosomeOfEve.mutate();
+        var genetic = chromosomeOfEve.toJSON();
+
+        var YSA = new ANN().PERCEPTRON(genetic.inputNN,genetic.hiddenNN,genetic.outputNN).setBias([-1,-1]);
+        YSA.setWeights(genetic.W);
+
+
+        YSA.fire([0.5,0.5]);
+
+        console.log(YSA.getOutputs(),genetic.hiddenNN);
+    },10000);
+
 
 </script>
 

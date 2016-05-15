@@ -22,6 +22,15 @@ var GA = {
         STRING : 4,
         CHROMOSOME : 5
     },
+    CO_TYPES : {
+        PARTIALLY : 0,
+        MULTIPARTIALLY : 1,
+        UNIFORM : 2
+    },
+    SELECTION : {
+        ROULETTE : 0,
+        SORT : 1,
+    },
     random : function(){ return Math.random(); },
     randomINT : function(min,max) { return Math.round(Math.random()*(max-min) + min)},
     chance : function(rate) { return rate > GA.random() },
@@ -68,6 +77,36 @@ var GA = {
         var swap = geneArray[i];
         geneArray[i] = geneArray[j];
         geneArray[j] = swap;
+    },
+    splitToParts : function(chromosome){
+        var parts = [];
+        var part;
+
+        var split = function(chromosome,way,root){
+            var ROOT = typeof way == 'undefined' ? chromosome : root;
+            var WAY = typeof way == 'undefined' ? [] : way;
+            var parts = [];
+            for(key in chromosome.val){
+                if(chromosome.val[key].chg){
+                    if(chromosome.val[key].type==GA.TYPE.CHROMOSOME)
+                    {
+                        parts = parts.concat(split(chromosome.val[key],WAY.concat([key]),ROOT));
+                    }
+                    else
+                    {
+                        parts.push(new GenePart(WAY.concat([key]),ROOT))
+                    }
+                }
+            }
+            return parts;
+        };
+
+        return split(chromosome);
+
+    },
+    crossingOver : function(chromesomeA,chromosomeB,CO_TYPE){
+        var partsA = GA.splitToParts(chromesomeA);
+        var partsB = GA.splitToParts(chromosomeB);
     }
 };
 
@@ -275,6 +314,7 @@ Gene.prototype = {
                 this.rmv_rate = GA.defaultParameters.mutation_rate*0;
                 this.swp_rate = GA.defaultParameters.mutation_rate;
 
+
                 break;
 
         }
@@ -309,3 +349,28 @@ Gene.prototype = {
     }
 
 };
+
+
+function GenePart(way,root){
+    this.parrents = way;
+    this.root = root;
+}
+
+GenePart.prototype = {
+    getGene : function(){
+        var current = this.root;
+        this.parrents.forEach(function(child){
+            current = current.val[child];
+        });
+        return current;
+    },
+    isSameWith : function(genepart){
+        if(this.parrents.length!=genepart.parrents.length) return false;
+
+        for(var i = 0 ; i < this.parrents.length ; i++)
+            if(this.parrents[i]!=genepart.parrents[i])
+                return false;
+
+        return true;
+    }
+}
