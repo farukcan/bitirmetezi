@@ -19,11 +19,17 @@ GenePart : class
 
 var GA = {
     defaultParameters : {
-        crossing_over_rate : 0.0,
-        mutation_rate : 0.5,
-        population_size : 100,
-        iterations : 100,
+        mutation_rate : 0.9,
+        population_size : 20,
+        iterations : 20,
         elitism : true,
+        selectionMethod : 0, // GA.SELECTION.ROULETTE
+        crossing_over : true,
+        crossing_overRate : 0.5,
+        crossing_overMethod : 1,// GA CO_TYPES MULTIPARTIALLY
+        crossing_overUniformRate : 0.5,
+        crossing_overPartNum : 3,
+        elit_num : 1,
         algorithm  : 0 // GA.ALGORITHMS.STANDART
     },
     charSet : "ABCÇDEFGĞHIİJKLMNÖOPQRSŞTUÜVWXYZabcçdefghiığjklmnoöpqrsştüuvwxyz0123456789 .,!'^+%&/()-@æß",
@@ -250,15 +256,25 @@ Evolotion.prototype = {
         return this;
     },
     start : function(){
-        this.createPopulation();
+        this.createPopulation(this.parameters.population_size);
         switch (this.parameters.algorithm){
             case GA.ALGORITHMS.STANDART:
                 this.population.calcFitness();
                 var iteration=0;
                 while(iteration<this.parameters.iterations){
+                    console.log('iteration: '+iteration);
+                    console.log("avg fitness:"+this.population.avgFitness);
+                    console.log("max fitness:"+this.population.maxFitness);
+                    console.log("mem"+this.population.members.length);
+                    console.log('select')
                     this.population.selection();
+                    console.log('cross')
+                    this.population.crossing_over();
+                    console.log('mutate')
+                    this.population.mutation();
 
                     this.population.calcFitness();
+
                     iteration++;
                 }
                 break;
@@ -273,37 +289,147 @@ Evolotion.prototype = {
 
 function Population(evo){
     this.members = [];
+    this.bestMember;
     this.evolotion=evo;
     this.avgFitness;
     this.maxFitness;
-    this.minFitness
-
+    this.minFitness;
+    this.totalFitness;
+    this.lastMemberId = 0;
     evo.population = this;
 }
 
 Population.prototype = {
     calcFitness : function(){
-        this.avgFitness=0;
+        this.totalFitness=0;
         this.maxFitness=-1e+99;
         this.minFitness=1e+99;
         var _this=this;
         this.members.forEach(function(member){
-            member.fitness = this.evolotion.fitnessFunction(member);
-            _this.avgFitness+=member.fitness;
-            _this.maxFitness = Math.max(_this.maxFitness,member.fitness);
+            member.fitness = _this.evolotion.fitnessFunction(member);
+            _this.totalFitness+=member.fitness;
+            if(_this.maxFitness<member.fitness){
+                _this.maxFitness=member.fitness;
+                _this.bestMember = member;
+            }
             _this.minFitness = Math.min(_this.minFitness,member.fitness);
         });
-        _this.avgFitness/=this.members.length;
+        _this.avgFitness=_this.totalFitness/this.members.length;
+    },
+    select : function(oldPop){
+        var r = GA.random();
+        for(var i=0;i<oldPop.length;i++){
+            if(oldPop[i]._rate>r){
+                var newMem = new Member(this);
+                newMem.chromosome = GA.copyGene(oldPop[i].chromosome);
+                return newMem;
+            }
+        }
+    },
+    rate : function(oldPop){
+        var _this=this;
+        oldPop.sort(function(a,b){
+            return a.fitness - b.fitness;
+        });
+        switch (this.evolotion.parameters.selectionMethod) {
+            case GA.SELECTION.ROULETTE:
+                var _rate = 0;
+                oldPop.forEach(function(member){
+                    member._rate = _rate+member.fitness/_this.totalFitness;
+                    _rate = member._rate;
+                });
+                return oldPop;
+                break;
+            case GA.SELECTION.SORT:
+                var _rate = 0;
+                oldPop.forEach(function(member,i){
+                    member._rate = _rate+(i+1)/(_this.members.length*(_this.members.length+1)/2);
+                    _rate = member._rate;
+                });
+                return oldPop;
+                break;
+        }
+    },
+    selection : function(){
+        switch (this.evolotion.parameters.selectionMethod){
+            case GA.SELECTION.ROULETTE:
+
+                var oldPop = this.members;
+                this.members = [];
+
+                oldPop = this.rate(oldPop);
+
+                if(this.evolotion.parameters.elitism){
+                    for(var i=0;i<this.evolotion.parameters.elit_num;i++)
+                        this.members.push(oldPop[oldPop.length-(i+1)]);
+                }
+
+                while(this.members.length<oldPop.length){
+                    this.select(oldPop);
+                }
+
+
+                break;
+            case GA.SELECTION.SORT:
+                var oldPop = this.members;
+                this.members = [];
+
+                oldPop = this.rate(oldPop);
+
+                if(this.evolotion.parameters.elitism){
+                    for(var i=0;i<this.evolotion.parameters.elit_num;i++)
+                        this.members.push(oldPop[oldPop.length-(i+1)]);
+                }
+
+                while(this.members.length<oldPop.length){
+                    this.select(oldPop);
+                }
+
+                break;
+        }
+    },
+    crossing_over : function(){
+            if(this.evolotion.parameters.crossing_over==false) return;
+            if(this.evolotion.parameters.elitism){
+                start = this.evolotion.parameters.elit_num;
+            }else{
+                start = 0;
+            }
+            for(var i=start;i<(this.members.length-1);i+=2){
+                if( !GA.chance(this.evolotion.parameters.crossing_overRate)) continue;
+
+                if(this.evolotion.parameters.crossing_overMethod==GA.CO_TYPES.MULTIPARTIALLY)
+                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolotion.parameters.crossing_overMethod,this.evolotion.parameters.crossing_overPartNum);
+                else
+                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolotion.parameters.crossing_overMethod,this.evolotion.parameters.crossing_overUniformRate);
+
+                this.members[i].chromosome = childs[0];
+                this.members[i+1].chromosome = childs[1];
+
+            }
+    },
+    mutation : function(){
+        var elitism = this.evolotion.parameters.elitism;
+        if(elitism) {
+            for (var i = this.evolotion.parameters.elit_num; i < this.members.length; i++)
+                this.members[i].chromosome.mutate();
+        }
+        else{
+            this.members.forEach(function(member){
+                member.chromosome.mutate();
+            });
+        }
+
     }
 };
 
-function Member(Population){
+function Member(pop){
     this.generation=0;
     this.chromosome;
     this.fitness;
-    this.population=Population;
-
-    Population.push(this);
+    this.population=pop;
+    this.id = pop.lastMemberId++;
+    pop.members.push(this);
 }
 
 function Chromosome(){
