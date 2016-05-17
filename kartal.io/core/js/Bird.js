@@ -112,6 +112,17 @@ Bird.prototype = {
         }else{
             this.kill();
         }
+    },
+    fly : function(){
+        this.a=0.005;
+        this.lastFly=Date.now();
+    },
+    useNitro : function(){
+        this.lastNitro=Date.now();
+        this.damage(1);
+        this.size--;
+        this.nitro = true;
+        this.nitroTime=5000;
     }
 }
 

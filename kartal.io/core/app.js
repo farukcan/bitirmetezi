@@ -328,18 +328,13 @@ io.on('connection', function(socket){
 
     socket.on('fly',function(){
         if(bird.flyable()){
-            bird.a=0.005;
-            bird.lastFly=Date.now();
+            bird.fly();
         }
 
     });
     socket.on('nitro',function(){
         if(bird.nitroable()){
-            bird.lastNitro=Date.now();
-            bird.damage(1);
-            bird.size--;
-            bird.nitro = true;
-            bird.nitroTime=5000;
+            bird.useNitro();
         }
     });
     socket.on('p', function() {

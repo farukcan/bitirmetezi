@@ -19,7 +19,7 @@ GenePart : class
 
 var GA = {
     defaultParameters : {
-        mutation_rate : 0.9,
+        mutation_rate : 0.2,
         population_size : 20,
         iterations : 20,
         elitism : true,
@@ -286,15 +286,12 @@ Evolution.prototype = {
                    this.bornFunction(member);
                     member.kill = function(){
 
-                        console.log("fitness")
                         // fitness
                         this.population.calcFitness();
 
-                        console.log("selection")
                         // selection
                         var chromosomes = this.population.select2chromosome();
 
-                        console.log("crossing over")
                         // crossing over
                         if(this.population.evolution.parameters.crossing_over && GA.chance(this.population.evolution.parameters.crossing_overRate)){
                             if(this.population.evolution.parameters.crossing_overMethod==GA.CO_TYPES.MULTIPARTIALLY)
@@ -306,7 +303,6 @@ Evolution.prototype = {
                         // tekini seç
                         this.chromosome = chromosomes[0];
 
-                        console.log("mutation")
                         // mutasyona uğrat
                         this.chromosome.mutate();
 
@@ -314,7 +310,6 @@ Evolution.prototype = {
 
                         this.id = this.population.lastMemberId++;
 
-                        console.log("born")
                         // yeniden doğ
                         this.population.evolution.bornFunction(this);
 
@@ -601,7 +596,7 @@ Gene.prototype = {
                     }
 
                     if(length>0){
-                        if(this.ins && GA.chance(this.ins_rate) ){
+                        if(this.ins && GA.chance(this.ins_rate) && length<=this.size){
                             GA.INS(this.val)
                         }
 
@@ -708,6 +703,8 @@ Gene.prototype = {
                 this.rmv_rate = GA.defaultParameters.mutation_rate;
                 this.swp_rate = GA.defaultParameters.mutation_rate;
 
+                this.size = 65555;
+
 
                 break;
 
@@ -726,6 +723,7 @@ Gene.prototype = {
     INS_RATE : function(r){ this.ins_rate=r;return this;},
     RMV_RATE : function(r){ this.rmv_rate=r;return this;},
     SWP_RATE : function(r){ this.swp_rate=r;return this;},
+    SIZE : function(r){ this.size=r;return this;},
     RULE : function(func){
         this.RULEfunc = func;
 
