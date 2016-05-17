@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Eve.js" afterPath="$PROJECT_DIR$/js/Eve.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/lib/evolution.js" afterPath="$PROJECT_DIR$/js/lib/evolution.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/app.js" afterPath="$PROJECT_DIR$/kartal.io/core/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/js/Bird.js" afterPath="$PROJECT_DIR$/kartal.io/core/js/Bird.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/js/YapayZeka.js" afterPath="$PROJECT_DIR$/kartal.io/core/js/YapayZeka.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/sayfalar/game.js" afterPath="$PROJECT_DIR$/kartal.io/core/sayfalar/game.js" />
     </list>
     <ignored path="bitirmetezi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +38,8 @@
       <file leaf-file-name="YapayZeka.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/js/YapayZeka.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14814815">
-              <caret line="10" column="150" selection-start-line="10" selection-start-column="150" selection-end-line="10" selection-end-column="150" />
+            <state vertical-scroll-proportion="0.09259259">
+              <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
               <folding>
                 <element signature="e#0#39#0" expanded="false" />
               </folding>
@@ -872,8 +867,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/kartal.io/core/js/YapayZeka.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14814815">
-          <caret line="10" column="150" selection-start-line="10" selection-start-column="150" selection-end-line="10" selection-end-column="150" />
+        <state vertical-scroll-proportion="0.09259259">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
           <folding>
             <element signature="e#0#39#0" expanded="false" />
           </folding>

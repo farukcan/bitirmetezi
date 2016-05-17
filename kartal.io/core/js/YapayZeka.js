@@ -5,7 +5,7 @@
 // @imports
 eval(fs.readFileSync("../../js/lib/ANN.js", 'utf8'));
 eval(fs.readFileSync("../../js/lib/evolution.js", 'utf8'));
-eval(fs.readFileSync("../../js/EVE.js", 'utf8'));
+eval(fs.readFileSync("../../js/Eve.js", 'utf8'));
 
 var fitnessFonksiyonu = function(member){
     return (Date.now()-member.bird.bornAt)*member.bird.size/(Date.now()-member.bird.bornAt); // ne kadar hayatta kaldığı ve nekadar iyi beslendiğidir.
