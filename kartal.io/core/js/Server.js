@@ -17,11 +17,21 @@ Bird.prototype.kill = function(){
         this.hp = 0;
         var bird=this;
         setTimeout(function(){
-            try{
-                bird.conn.socket.disconnect();
-            }catch (err){
-                console.log(err);
-            }
+
+                if(bird.yz){
+                    bird.member.kill();
+                    bird.world.deleteBird(bird.id);
+                }
+                else{
+                    try{
+                        bird.conn.socket.disconnect();
+
+                    }catch (err){
+                        console.log(err);
+                    }
+
+                }
+
         },SABITLER.DISTIME)
     }
 };
@@ -29,10 +39,14 @@ Bird.prototype.kill = function(){
 Bird.prototype.damage = function(damage,i){
     if(this.living){
         this.hp-=damage;
-        try{
-            this.conn.socket.emit('hp',this.hp);
-        }catch (err){
-            console.log(err);
+        if(this.yz){
+            // yapay zekası ise
+        }else{
+            try{
+                this.conn.socket.emit('hp',this.hp);
+            }catch (err){
+                console.log(err);
+            }
         }
         if(this.hp<=0) {
             world.server.io.emit("invisible",i);
@@ -44,10 +58,14 @@ Bird.prototype.damage = function(damage,i){
 Bird.prototype.heal = function(){
     if(this.living){
         this.hp=limit(this.hp+1,0,this.size);
-        try{
-            this.conn.socket.emit('hp',this.hp);
-        }catch (err){
-            console.log(err);
+        if(this.yz){
+            // yapay zekası ise
+        }else{
+            try{
+                this.conn.socket.emit('hp',this.hp);
+            }catch (err){
+                console.log(err);
+            }
         }
     }
 };
@@ -59,7 +77,8 @@ World.prototype.collapse = function(birdX,birdY){
 World.prototype.server = {
     addBird : function (bird,i){
         this.io.emit("addBird",svBird(bird,i));
-        bird.conn.sendBirds(bird.world,i);
+        if(bird.conn)
+            bird.conn.sendBirds(bird.world,i);
     },
     addFood : function (food,i){
         this.io.emit("addFood",svFood(food,i));
@@ -86,6 +105,7 @@ World.prototype.server = {
 
                if(foodLA.d(birdLA) < (birdD+food.size)) {
                    bird.size=Math.sqrt(bird.size*bird.size+food.size*food.size);
+                   bird.size = Math.min(SABITLER.MAXSIZE,bird.size);
                    world.deleteFood(m);
                    world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
                }

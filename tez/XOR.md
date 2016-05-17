@@ -31,11 +31,13 @@ Farklı iki input durumunda, 1 çıktısı döndüren kapıdır.
 2. YSA'dan alınan çıktılar OUTS dizisine eklenir.
 3. beklenen = [0,1,1,0] dizisini oluştur.
 3. hata -> her bir outs elemanı için hata = hata +| outs[i]-beklenen[i] |
-4. fitness -> 8 - hata
+4. fitness = 8 - hata
 
 ### Başlangıç fonksiyonu oluşturma fonksiyonu
 1. EVE kromozomunu kopyalayarak yeni kromozom oluştur.
 2. Kromozomu mutasyona uğrat.
+3. Populasyon sayısına ulaşmadıysa Adım.1'e dön.
+4. DUR
 
 #### EVE kromozomu
 Başlangıç için , örnek YSA kromozomudur.
@@ -44,13 +46,28 @@ Başlangıç için , örnek YSA kromozomudur.
 |	parametre	|	değer					|
 |	--------	|	--------				|
 |	algorithm	|	GA.ALGORITHMS.STANDART	|
+|	crossing_overMethod	|	GA.CO_TYPES.MULTIPARTIALLY	|
+|	selectionMethod	|	GA.SELECTION.ROULETTE	|
+|	crossing_overPartNum	|	3	|
 |	population_size	|	100	|
 |	iterations	|	100	|
 |	elitism	|	true	|
 |	elit_num	|	10	|
 
+(varsayılan ; mutation_rate : 0.9 ,crossing_overRate : 0.5,)
+
+#### Algoritma Hakkında
+* Standart Genetik Algoritma kullanılacak
+* Populasyon büyüklüğü 100 olacak
+* 100 iterasyon yapılacak.
+* Elitizm aktif olacak, ve en iyi ilk 10 elit olacak.
+
 ## Javascript Uygulaması
 ```
+
+@import ANN.js (by farukcan.net : YSA Kütüphanesi)
+@import evolotion.js (by farukcan.net : GA Kütüphanesi)
+@import EveXOR.js (by farukcan.net)
 
     var fitnessFonksiyonu = function(member){
         var outs = [];
@@ -134,9 +151,9 @@ Başlangıç için , örnek YSA kromozomudur.
 ```
 
 
-## Sonuçlar
+## Sonuçlar ve Analiz
 
-|  Jenerasyon  |        Ortalama Fitness            |         Maximum Fitness          | 
+|  Jenerasyon  |        Ortalama Fitness(0-8)            |         Maximum Fitness(0-8)          | 
 |----|--------------------|-------------------| 
 | 0  | 5.9853793614933855 | 6.937523766717593 | 
 | 1  | 6.02892588461636   | 6.937523766717593 | 

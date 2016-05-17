@@ -7,7 +7,7 @@
 /*
 
 GA : object
-Evolotion : class
+Evolution : class
 Population : class
 Member : class
 Chromosome : function returns new Gene().TYPE(CHROMOSOME)
@@ -241,14 +241,16 @@ var GA = {
     }
 };
 
-function Evolotion(fitnessFunc,createFunc){
+function Evolution(fitnessFunc,createFunc,bornFunc){
     this.population;
-    this.fitnessFunction = fitnessFunc; // f(member)
     this.parameters = GA.defaultParameters;
+    this.fitnessFunction = fitnessFunc; // f(member)
     this.createPopulation = createFunc;
+    this.bornFunction = typeof bornFunc == 'function' ? bornFunc : function(member){};
+    this.onNewMember = function(member){}; // algoritma tarafından setlenir
 }
 
-Evolotion.prototype = {
+Evolution.prototype = {
     setParameters : function(param){
         for(key in param){
             this.parameters[key] = param[key];
@@ -256,16 +258,16 @@ Evolotion.prototype = {
         return this;
     },
     start : function(){
-        this.createPopulation(this.parameters.population_size);
         switch (this.parameters.algorithm){
             case GA.ALGORITHMS.STANDART:
+                this.createPopulation(this.parameters.population_size);
                 this.population.calcFitness();
                 var iteration=0;
                 while(iteration<this.parameters.iterations){
-                    console.log('iteration: '+iteration);
-                    console.log("avg fitness:"+this.population.avgFitness);
-                    console.log("max fitness:"+this.population.maxFitness);
-                    console.log("mem"+this.population.members.length);
+                    console.log('iteration: '+iteration)
+                    console.log("avg fitness:"+this.population.avgFitness)
+                    console.log("max fitness:"+this.population.maxFitness)
+                    console.log("mem"+this.population.members.length)
                     console.log('select')
                     this.population.selection();
                     console.log('cross')
@@ -280,6 +282,48 @@ Evolotion.prototype = {
                 break;
 
             case GA.ALGORITHMS.DIEANDBORN:
+                this.onNewMember = function(member){
+                   this.bornFunction(member);
+                    member.kill = function(){
+
+                        console.log("fitness")
+                        // fitness
+                        this.population.calcFitness();
+
+                        console.log("selection")
+                        // selection
+                        var chromosomes = this.population.select2chromosome();
+
+                        console.log("crossing over")
+                        // crossing over
+                        if(this.population.evolution.parameters.crossing_over && GA.chance(this.population.evolution.parameters.crossing_overRate)){
+                            if(this.population.evolution.parameters.crossing_overMethod==GA.CO_TYPES.MULTIPARTIALLY)
+                                chromosomes= GA.crossingOver(chromosomes[0],chromosomes[1],this.population.evolution.parameters.crossing_overMethod,this.population.evolution.parameters.crossing_overPartNum);
+                            else
+                                chromosomes= GA.crossingOver(chromosomes[0],chromosomes[1],this.population.evolution.parameters.crossing_overMethod,this.population.evolution.parameters.crossing_overUniformRate);
+                        }
+
+                        // tekini seç
+                        this.chromosome = chromosomes[0];
+
+                        console.log("mutation")
+                        // mutasyona uğrat
+                        this.chromosome.mutate();
+
+                        this.generation++;
+
+                        this.id = this.population.lastMemberId++;
+
+                        console.log("born")
+                        // yeniden doğ
+                        this.population.evolution.bornFunction(this);
+
+                        return true;
+
+                    }
+                };
+
+                this.createPopulation(this.parameters.population_size);
 
                 break;
         }
@@ -290,7 +334,7 @@ Evolotion.prototype = {
 function Population(evo){
     this.members = [];
     this.bestMember;
-    this.evolotion=evo;
+    this.evolution=evo;
     this.avgFitness;
     this.maxFitness;
     this.minFitness;
@@ -306,7 +350,7 @@ Population.prototype = {
         this.minFitness=1e+99;
         var _this=this;
         this.members.forEach(function(member){
-            member.fitness = _this.evolotion.fitnessFunction(member);
+            member.fitness = _this.evolution.fitnessFunction(member);
             _this.totalFitness+=member.fitness;
             if(_this.maxFitness<member.fitness){
                 _this.maxFitness=member.fitness;
@@ -322,6 +366,7 @@ Population.prototype = {
             if(oldPop[i]._rate>r){
                 var newMem = new Member(this);
                 newMem.chromosome = GA.copyGene(oldPop[i].chromosome);
+                newMem.generation = oldPop[i].generation;
                 return newMem;
             }
         }
@@ -331,7 +376,7 @@ Population.prototype = {
         oldPop.sort(function(a,b){
             return a.fitness - b.fitness;
         });
-        switch (this.evolotion.parameters.selectionMethod) {
+        switch (this.evolution.parameters.selectionMethod) {
             case GA.SELECTION.ROULETTE:
                 var _rate = 0;
                 oldPop.forEach(function(member){
@@ -350,8 +395,50 @@ Population.prototype = {
                 break;
         }
     },
+    select2chromosome : function () {
+        var _this=this;
+        switch (this.evolution.parameters.selectionMethod) {
+            case GA.SELECTION.ROULETTE:
+                var _rate = 0;
+                this.members.forEach(function(member){
+                    member._rate = _rate+member.fitness/_this.totalFitness;
+                    _rate = member._rate;
+                });
+                break;
+            case GA.SELECTION.SORT:
+                var _rate = 0;
+                var sorted = this.members.slice(0).sort(function(a,b){
+                    return a.fitness - b.fitness;
+                });
+                sorted.forEach(function(member,i){
+                    member._rate = _rate+(i+1)/(_this.members.length*(_this.members.length+1)/2);
+                    _rate = member._rate;
+                });
+                break;
+        }
+        // rateler ayarlandı.
+
+        // iki tane seç
+        var chromo1 ;
+        var chromo2 ;
+        var r = GA.random();
+        for(var i=0;i<this.members.length;i++){
+            if(this.members[i]._rate>r){
+                chromo1 = GA.copyGene(this.members[i].chromosome);
+            }
+        }
+        r = GA.random();
+        for(var i=0;i<this.members.length;i++){
+            if(this.members[i]._rate>r){
+                chromo2 = GA.copyGene(this.members[i].chromosome);
+            }
+        }
+
+        return [chromo1,chromo2];
+
+    },
     selection : function(){
-        switch (this.evolotion.parameters.selectionMethod){
+        switch (this.evolution.parameters.selectionMethod){
             case GA.SELECTION.ROULETTE:
 
                 var oldPop = this.members;
@@ -359,8 +446,8 @@ Population.prototype = {
 
                 oldPop = this.rate(oldPop);
 
-                if(this.evolotion.parameters.elitism){
-                    for(var i=0;i<this.evolotion.parameters.elit_num;i++)
+                if(this.evolution.parameters.elitism){
+                    for(var i=0;i<this.evolution.parameters.elit_num;i++)
                         this.members.push(oldPop[oldPop.length-(i+1)]);
                 }
 
@@ -376,8 +463,8 @@ Population.prototype = {
 
                 oldPop = this.rate(oldPop);
 
-                if(this.evolotion.parameters.elitism){
-                    for(var i=0;i<this.evolotion.parameters.elit_num;i++)
+                if(this.evolution.parameters.elitism){
+                    for(var i=0;i<this.evolution.parameters.elit_num;i++)
                         this.members.push(oldPop[oldPop.length-(i+1)]);
                 }
 
@@ -389,19 +476,23 @@ Population.prototype = {
         }
     },
     crossing_over : function(){
-            if(this.evolotion.parameters.crossing_over==false) return;
-            if(this.evolotion.parameters.elitism){
-                start = this.evolotion.parameters.elit_num;
+            if(this.evolution.parameters.crossing_over==false) return;
+            if(this.evolution.parameters.elitism){
+                start = this.evolution.parameters.elit_num;
             }else{
                 start = 0;
             }
             for(var i=start;i<(this.members.length-1);i+=2){
-                if( !GA.chance(this.evolotion.parameters.crossing_overRate)) continue;
+                if( !GA.chance(this.evolution.parameters.crossing_overRate)) continue;
 
-                if(this.evolotion.parameters.crossing_overMethod==GA.CO_TYPES.MULTIPARTIALLY)
-                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolotion.parameters.crossing_overMethod,this.evolotion.parameters.crossing_overPartNum);
+                if(this.evolution.parameters.crossing_overMethod==GA.CO_TYPES.MULTIPARTIALLY)
+                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolution.parameters.crossing_overMethod,this.evolution.parameters.crossing_overPartNum);
                 else
-                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolotion.parameters.crossing_overMethod,this.evolotion.parameters.crossing_overUniformRate);
+                    var childs= GA.crossingOver(this.members[i].chromosome,this.members[i+1].chromosome,this.evolution.parameters.crossing_overMethod,this.evolution.parameters.crossing_overUniformRate);
+
+                var generation = Math.max(this.members[i].generation,this.members[i+1].generation)+1;
+                this.members[i].generation = generation;
+                this.members[i+1].generation = generation;
 
                 this.members[i].chromosome = childs[0];
                 this.members[i+1].chromosome = childs[1];
@@ -409,9 +500,9 @@ Population.prototype = {
             }
     },
     mutation : function(){
-        var elitism = this.evolotion.parameters.elitism;
+        var elitism = this.evolution.parameters.elitism;
         if(elitism) {
-            for (var i = this.evolotion.parameters.elit_num; i < this.members.length; i++)
+            for (var i = this.evolution.parameters.elit_num; i < this.members.length; i++)
                 this.members[i].chromosome.mutate();
         }
         else{
@@ -423,13 +514,15 @@ Population.prototype = {
     }
 };
 
-function Member(pop){
+function Member(pop,chromosome){
     this.generation=0;
-    this.chromosome;
+    this.chromosome=chromosome;
     this.fitness;
     this.population=pop;
     this.id = pop.lastMemberId++;
+    this.index = pop.members.length;
     pop.members.push(this);
+    pop.evolution.onNewMember(this);
 }
 
 function Chromosome(){

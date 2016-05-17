@@ -303,11 +303,11 @@ io.on('connection', function(socket){
         bird.lastFly=Date.now();
         bird.flyable = function(){
             return (this.lastFly+75)<Date.now();
-        }
+        };
         bird.lastNitro=Date.now()-5000;
         bird.nitroable = function(){
             return (this.lastNitro+5000)<Date.now() && this.size>15;
-        }
+        };
 
         if(typeof name == "string"){
             conn.name=validator.escape(name).substring(0,18);
@@ -315,8 +315,8 @@ io.on('connection', function(socket){
             // Game Master Modu
             if(name=="ben bu oyunu bozarım"){
                 conn.name="[GM] F A R U K  C A N";
-                bird.size = 500;
-                bird.hp = 500;
+                bird.size = SABITLER.MAXSIZE;
+                bird.hp = SABITLER.MAXSIZE;
             }
 
         }
@@ -415,7 +415,7 @@ function birdCreator(way){
         if(way==1) return new Bird(Math.random()*Math.PI*2,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,true);
         if(way==-1) return new Bird(Math.random()*Math.PI*2,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,false);
     }
-    return new Bird(Math.PI,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
+    return new Bird(Math.random()*Math.PI*2,world.earthR+world.atmosphere/3+Math.random()*world.atmosphere/2,world.leftCount>world.rightCount);
 }
 function foodCreator(){ // rastgele yerlerde FOODNUM kadar yem oluştur.
     for(var i=0;i<SABITLER.FOODNUM;i++){
@@ -423,3 +423,4 @@ function foodCreator(){ // rastgele yerlerde FOODNUM kadar yem oluştur.
     }
 }
 
+eval(fs.readFileSync("js/YapayZeka.js", 'utf8'));

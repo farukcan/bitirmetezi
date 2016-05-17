@@ -43,21 +43,28 @@ Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natura
 ### GA (Genetik Algoritma)
 Genetik algoritma hakkında bilgilerin saklandığı objedir.
 
+
 |	değişken	|	açıklama				|
 |	--------	|	--------				|
 |	defaultParameters{}	|	Her Evolotion sınıfın varsayılan parametreleridir	|
 |	charSet[]	|	Bir String'de kullanılabilecek karakterlerin listesidir	|
-|	TYPE{}	|	Gen türlerin saklandığı ENUM	|
-|	CO_TYPE{}	|	Çaprazlama yönteminin saklandığı ENUM	|
-|	SELECTION{}	|	Seçilim yönteminin saklandığı ENUM	|
-|	ALGORITHMS{}	|	Algoritmaların saklandığı ENUM	|
+|	TYPE{}	|	Gen türlerin saklandığı ENUM BIT,INT,UNIPOLAR,BIPOLAR,STRING,CHROMOSOME	|
+|	CO_TYPE{}	|	Çaprazlama yönteminin saklandığı ENUM PARTIALY,MULTIPARTIALY,UNIFORM	|
+|	SELECTION{}	|	Seçilim yönteminin saklandığı ENUM ROULETTE,SORN	|
+|	ALGORITHMS{}	|	Algoritmaların saklandığı ENUM STANDART,DIEANDBORN	|
+
+
 
 |	parameters{}	|	açıklama				|
 |	--------	|	--------				|
-|	crossing_over_rate	|	çaprazlama ihtimali(UNIFORM türü CO için)		|
+|	crossing_over	|	Çaprazlamanın aktif olma durumu		|
+|	crossing_overRate	|	çaprazlama ihtimali(UNIFORM türü CO için)		|
 |	mutation_rate	|	mutasyon ihtimali		|
 |	population_size	|	populasyon büyüklüğü (önerilen 100-300)	|
+|	iteration	|	Kaç jenerasyon üretileceği	|
 |	algorithm	|	Algoritmanın türüdür. ENUM	|
+|	crossing_overMethod	|	Çaprazlama Algoritması. ENUM : Varsayılan: MULTIPARTIALLY |
+|	selectionMethod	|	Seçilim Algoritması. ENUM : Varsayılan: ROULETTE |
 
 
 |	fonksiyon	|	amaç		|
@@ -73,65 +80,83 @@ Genetik algoritma hakkında bilgilerin saklandığı objedir.
 |	crossingOverable(partsA,partsB)	|	İki Gen Parçası(GenePart) dizisininin, çaprazlama için uygun olanlarını ayıklar.	|
 |	crossingOver(chromA,chromoB,CO_TYPE,PARTNUM_OR_UNIFORMRATE)	|	İki kromozomu çaprazlar.	|
 |	crossingOverRULED(chromA,chromoB,CO_TYPE,PARTNUM_OR_UNIFORMRATE)	|	İki kromozomu çaprazlar ve çaprazlama sonucu oluşan kromozomlardaki hataları onarır.(mutasyon sonrasıda aynı işlem yapıldığı için crossingOver fonksiyonu tercih edilir)	|
+
+
 ### Evolotion (Evrim)
 Altında populasyonları bulunduran. En üst sınıftır.
+
 
 |	değişken	|	açıklama				|
 |	--------	|	--------				|
 |	populations[]	|	Populasyonlar			|
 |	parameters{}	|	Evrimsel parametreler	|
 |	fitnessFunction(member)	|	fitness fonksiyonu	|
-|	createPopulation(population_size)	|	Rastgele başlangıç populasyonu oluşturur	|
+|	createPopulation(population_size)	|	Rastgele başlangıç populasyonu oluşturma fonksiyonu	|
+
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
 |	setParameters(param)	|	Parametreleri değiştirir	|
+|	start()	|	Evrimsel Algoritmayı çalıştırır	|
 
 
 
 ### Population (Populasyon)
 Member'ların dizisidir. Population'un fitness fonksiyonu ve Memberların en iyi ve kötüsü burada belirlenip, sıralanır.
 
+
 |	değişken	|	açıklama				|
 |	--------	|	--------				|
 |	members[]	|	Population'un üyelerinin	|
+|	evolotion	|	Evolution üst sınıfı	|
+|	bestMember	|	En yüksek fitness değerine sahip üyedir	|
+|	avgFitness	|	Ortalama fitness değeri	|
+|	minFitness	|	Minimum fitness değeri	|
+|	maxFitness	|	Maximum fitness değeri	|
+|	totalFitness	|	Toplam fitness değeri	|
+|	lastMemberId	|	Son bireyin Id'si saklanır	|
+
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
-|	select()	|	Seçilim Yapar	|
+|	calcFitness()	|	Populasyonun fitness değerlerini hesaplar	|
+|	select()	|	Seçilim Yapar (bir adet)	|
+|	rate()	|	Her üyenin seçilim ihtimalini belirler	|
+|	selection()	|	Seçilim yapılarak yeni jenerasyon oluşturulur	|
+|	crossing_over()	|	Bütün bireyler kendi aralarında çaprazlamaya uğratılır	|
+|	mutation()	|	Bütün bireyler mutasyona uğratılır	|
+
 
 ### Member (Birey)
 Population'un her bir üyesine verilen addır
 Chromosome'a sahiptir
 
+
 |	değişken	|	açıklama				|
 |	--------	|	--------				|
-|	int generation	|	Memberin kaçıncı nesil olduğunu saklar	|
-|	num fitness	|	Memberin fitness değeri	|
+|	int generation	|	Bireyin kaçıncı nesil olduğunu saklar	|
+|	num fitness	|	Bireyin fitness değeri	|
+|	num id	|	Bireyin Idsi	|
+|	chromosome	|	Bireyin kromozomu	|
+|	population	|	Bireyin bağlı olduğu populasyon	|
+
 
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
 |	kill()	|	Üye öldürülür	|
 |	generate()	|	Üye ürer		|
 
+
 ### Fitness (Uygunluk)
 Bir Memberin amacına ne kadar uygun olduğunu belirleyen fonksiyondur. Mesele : Hayatta kalmak ve Üreyebilmek
 Yüksek olması Memberin, soyunun devam edebilme ihtimalini arttırır.
 
 ### Chromosome (Kromozom)
-Gene'lerden oluşan bir dizidir.
-
-|	değişken	|	açıklama			|
-|	--------	|	--------			|
-|	genes[]	|	Chromosome'un Gene'leri	|
-
-|	fonksiyon	|	amaç		|
-|	--------	|	--------	|
-|	mutate()	|     her Gene mutasyona uğrar   |
-|	crossingOverWith(chromosome)	|	Başka bir Chromesome ile crossing over yapar	|
+Gene'lerden oluşan bir dizidir.Ancak kendisi bir gen türüdür. Yani bir kromozomun, alt kromozomları olabilir. Bu sayede, daha kolay bir şekilde çözümü genetik olarak ifade edebiliyoruz.
 
 ### Gene (Gen)
 Member'in yapısı belirleyen her bir birime denir.
+
 
 |	Gen Türü	|	açıklama			|
 |	--------	|	--------			|
@@ -141,6 +166,7 @@ Member'in yapısı belirleyen her bir birime denir.
 |	bipolar		|	-1 -> 1		-0.3->0.5 [-1 ile 1 arası değer]		|
 |	string		|	"abc"	->	"adef"									|
 |	chromesome	|	başka genlerden oluşan, gen dizisi					|
+
 
 |	değişken	|	açıklama			|
 |	--------	|	--------			|
@@ -158,9 +184,11 @@ Member'in yapısı belirleyen her bir birime denir.
 |	min	|	INT tipi genler için minimum alınabilecek değer saklanır	|
 |	max	|	INT tipi genler için maximum alınabilecek değer saklanır	|
 
+
 |	fonksiyon	|	amaç		|
 |	--------	|	--------	|
 |	mutate()	|	mutasyona uğrar	|
+
 
 ### Başlangıç Populasyonu
 
@@ -199,7 +227,7 @@ Her gen, alabileceği bir değer ile değiştirilir veya o miktarda arttırılı
 
 * **Sabit durum seçimi** : Buna göre, ebeveyn seçimi için kromozomların büyük parçaları bir sonraki nesile taşınmalıdır. Yeni döl oluşturulma üzere birkaç kromozom seçilir.(Genellikle en yüksek uygunluğa sahip olanlar seçilir.)
 
-* **[ELITISM] Elitizm**(Seçkinlik) : En iyi(ler) birey bozulmadan bir sonraki jenerasyona kopyalanır. (Gerçek zamanlı algoritmalarda kullanılamaz.)
+* **Elitizm**(Seçkinlik) : En iyi(ler) birey bozulmadan bir sonraki jenerasyona kopyalanır. (Gerçek zamanlı algoritmalarda kullanılamaz.)
 
 ### Gerçek Zamanlılık
 Eğer evrimsel süreç gerçek zamanlıysa, bireyin ölmesi ve üremesi durumları göz önüne alınır.
