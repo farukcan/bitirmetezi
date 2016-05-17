@@ -15,7 +15,7 @@ var chromosomeOfEve = new Chromosome().VAL({
     /* gizli katmanları sinir sayılarının dizisi */
     hiddenNN : new Chromosome().VAL([
         new Gene().TYPE(GA.TYPE.INT).MIN(5).MAX(15).VAL(10),
-    ]).SIZE(4),
+    ]).SIZE(3),
 
     /* ağın ağırlık matrislerinin dizisi */
     W : new Chromosome().VAL([ // ağırlık matislerinin dizisi
