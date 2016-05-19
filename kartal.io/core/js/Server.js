@@ -25,7 +25,6 @@ Bird.prototype.kill = function(){
                 else{
                     try{
                         bird.conn.socket.disconnect();
-
                     }catch (err){
                         console.log(err);
                     }

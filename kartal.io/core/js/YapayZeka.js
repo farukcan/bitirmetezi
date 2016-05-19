@@ -2,13 +2,16 @@
  * Created by Can on 16.5.2016.
  */
 
+
 // @imports
 eval(fs.readFileSync("../../js/lib/ANN.js", 'utf8'));
 eval(fs.readFileSync("../../js/lib/evolution.js", 'utf8'));
+
+GA.defaultParameters.mutation_rate = 0.1;
 eval(fs.readFileSync("../../js/Eve.js", 'utf8'));
 
 var fitnessFonksiyonu = function(member){
-    return Math.pow(Math.max(1,member.bird.size-20),3) + Math.min(4000,(Date.now()-member.bird.bornAt)) ; // ne kadar hayatta kaldığı ve nekadar iyi beslendiğidir.
+    return Math.pow(Math.max(0.001,member.bird.size-20),3) ;
 };
 
 var baslangicFonksiyonu = function(population_size){

@@ -5,6 +5,6 @@ ayar.host = "kartal.io";
 ayar.port = 80;
 
 
-ayar.uglyjs = true;
+ayar.uglyjs = false;
 
 module.exports = ayar;
