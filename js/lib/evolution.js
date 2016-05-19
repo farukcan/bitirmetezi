@@ -354,6 +354,7 @@ Population.prototype = {
             _this.minFitness = Math.min(_this.minFitness,member.fitness);
         });
         _this.avgFitness=_this.totalFitness/this.members.length;
+        console.log("AVG: ",_this.avgFitness)
     },
     select : function(oldPop){
         var r = GA.random();
@@ -392,6 +393,7 @@ Population.prototype = {
     },
     select2chromosome : function () {
         var _this=this;
+
         switch (this.evolution.parameters.selectionMethod) {
             case GA.SELECTION.ROULETTE:
                 var _rate = 0;
@@ -428,7 +430,6 @@ Population.prototype = {
                 chromo2 = GA.copyGene(this.members[i].chromosome);
             }
         }
-
         return [chromo1,chromo2];
 
     },

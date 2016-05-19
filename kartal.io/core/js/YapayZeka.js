@@ -8,7 +8,7 @@ eval(fs.readFileSync("../../js/lib/evolution.js", 'utf8'));
 eval(fs.readFileSync("../../js/Eve.js", 'utf8'));
 
 var fitnessFonksiyonu = function(member){
-    return (Date.now()-member.bird.bornAt)*member.bird.size/(Date.now()-member.bird.bornAt); // ne kadar hayatta kaldığı ve nekadar iyi beslendiğidir.
+    return Math.pow(Math.max(1,member.bird.size-20),3) + Math.min(4000,(Date.now()-member.bird.bornAt)) ; // ne kadar hayatta kaldığı ve nekadar iyi beslendiğidir.
 };
 
 var baslangicFonksiyonu = function(population_size){
@@ -65,7 +65,7 @@ var evrim = new Evolution(fitnessFonksiyonu,baslangicFonksiyonu,dogumFonksiyonu)
 
 evrim.setParameters({
     algorithm : GA.ALGORITHMS.DIEANDBORN,
-    population_size : 10,
+    population_size : 15,
     crossing_overMethod: GA.CO_TYPES.MULTIPARTIALLY,
     crossing_overPartNum:3,
     selectionMethod: GA.SELECTION.ROULETTE
