@@ -7496,7 +7496,7 @@ var SABITLER = {
     "KUSORANI" : 1,
     "MAXSIZE" : 1000,
     "DISTIME" : 1500,
-    "FOODNUM" : 125,
+    "FOODNUM" : 100,
     "IVMESELDUSUS" :    0.001
 }
 
