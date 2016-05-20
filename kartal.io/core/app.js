@@ -290,6 +290,7 @@ var controller = new ConnectionController();
 io.on('connection', function(socket){
     var conn = controller.addConnection(socket);
     var bird=false;
+    var spectator = false;
 
     socket.on('disconnect', function(neden){
         ct(conn.name+" is disconnected");
@@ -326,13 +327,20 @@ io.on('connection', function(socket){
         ct(conn.name+" is connected");
     });
 
+    socket.on('spectator',function(){
+        conn.sendBirds(world,0);
+        spectator = true;
+    });
+
     socket.on('fly',function(){
+        if(spectator) return;
         if(bird.flyable()){
             bird.fly();
         }
 
     });
     socket.on('nitro',function(){
+        if(spectator) return;
         if(bird.nitroable()){
             bird.useNitro();
         }

@@ -7496,7 +7496,7 @@ var SABITLER = {
     "KUSORANI" : 1,
     "MAXSIZE" : 1000,
     "DISTIME" : 1500,
-    "FOODNUM" : 80,
+    "FOODNUM" : 125,
     "IVMESELDUSUS" :    0.001
 }
 
@@ -7943,8 +7943,18 @@ var socket;
 var zoom=r.canvas.width/r.canvas.height*2/3;
 var fpsStabilizer = true;
 $("#scoreboard").hide();
+$("#playerSelectSpan").hide();
+$("#playerSelect").change(function(){
+    selectSpectator($(this).val());
+});
+var selectSpectator = function(i){
+    bird.me = false;
+    bird = world.birds[i];
+    bird.me = true;
+};
 // debug mode
 var debug = true;
+var isSpectator = false;
 
 var hints = [
     "Left Mouse > fly",
@@ -8054,7 +8064,7 @@ $(document).keydown(function(e){
 });
 
 function fly(){
-    if(socket){
+    if(socket && !isSpectator){
         socket.emit("fly");
         soundWing.stop();
         soundWing.play();
@@ -8063,7 +8073,7 @@ function fly(){
 
 var lastNitro = Date.now();
 function nitro(){
-    if(socket){
+    if(socket && !isSpectator){
         socket.emit("nitro");
         soundEagle.play();
         $("#score").css("background-color","transparent");
@@ -8083,9 +8093,15 @@ function zoomout(){
 var created,UPS,UPScache= 0,Udelta;
 function create(){
     if(!created){
+
         $("#gameInfo").hide();
-        $("#rules").hide();
-        $("#settings").hide();
+        if(!isSpectator){
+            $("#rules").hide();
+            $("#settings").hide();
+        }else{
+            $("#playerSelectSpan").show();
+        }
+
 
         world = new World();
 
@@ -8099,7 +8115,27 @@ function create(){
         }
 
         socket = io();
-        socket.emit("hi",$("#nick").val(),clientConfig.right,SABITLER.VERSION);
+
+
+        if(isSpectator){
+            socket.emit("spectator");
+        }else{
+            socket.emit("hi",$("#nick").val(),clientConfig.right,SABITLER.VERSION);
+
+        }
+
+        var updatePlayerSelect = function(){
+            $("#playerSelect").html("");
+
+            world.birds.forEach(function(bird,i){
+                $("#playerSelect").append($('<option>', {
+                    value: i,
+                    text: bird.ad
+                }));
+            });
+
+        };
+
         socket.on("disconnect",destroy);
         socket.on("addBird",function(b){
             console.log("#addBird",b);
@@ -8107,15 +8143,22 @@ function create(){
             bird.ad = b.ad;
             bird.tip = b.tip;
             world.addBird(bird, b.i);
+            if(isSpectator)
+                updatePlayerSelect();
         });
         socket.on("youare",function(i){
             console.log("#youare",i);
            bird = world.birds[i];
            bird.me = true;
+
         });
         socket.on("removeBird",function(i){
             console.log("#removeBird",i);
+            var me = world.birds[i].me;
             world.removeBird(i);
+            if(me) selectSpectator(0);
+            if(isSpectator)
+                updatePlayerSelect();
         });
         socket.on("addFood",function(f){
            console.log("#addFood",f);
@@ -8270,7 +8313,7 @@ setInterval(function(){
     FPSslow = FPS.FPS;
     UPSslow = UPS;
     if(created && bird){
-        if(nitropercent==0){
+        if(nitropercent==0 && !isSpectator){
             $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>Click me!");
             $("#score").css("background-color","rgba(255,0,0,0.03)");
             soundEagle.stop();

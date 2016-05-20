@@ -60,7 +60,7 @@ var dogumFonksiyonu = function(member){
     });
     member.ysa.setWeights(genetic.W);
 
-    bird.ad="YZ-"+member.generation+"-"+member.id+" @"+genetic.hiddenNN.toString();
+    bird.ad="YZ"+member.id+" G:"+member.generation+" NS:"+genetic.hiddenNN.toString().replace(",","+");
     world.addBird(bird);
 };
 
