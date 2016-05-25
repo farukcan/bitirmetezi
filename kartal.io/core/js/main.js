@@ -46,9 +46,9 @@ var hints = [
     "- key > zoom out"
 ],hintindex= 0,hintsenable=true;
 
-var soundEagle = new buzz.sound("/ogg/eagle.ogg");
-var soundPoint = new buzz.sound("/ogg/point.ogg");
-var soundWing = new buzz.sound("/ogg/wing.ogg");
+var soundEagle = new buzz.sound("ogg/eagle.ogg");
+var soundPoint = new buzz.sound("ogg/point.ogg");
+var soundWing = new buzz.sound("ogg/wing.ogg");
 var sounds = [soundEagle,soundPoint,soundWing]
 
 var mute = true;
@@ -64,18 +64,18 @@ var kanat = r.loadImage("img/kanat.svg");
 var imgtree = r.loadImage("img/agac.svg");
 var imgbulut = r.loadImage("img/bulut.svg");
 
-$.get("img/kartal.svg",function(data) {
-    BIRD_TYPES.forEach(function(t,i){
-        data.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
-        data.getElementById("id4").childNodes[1].setAttribute("fill", t.tail[0].toString());
-        data.getElementById("id5").childNodes[1].setAttribute("fill", t.tail[1].toString());
-        data.getElementById("id6").childNodes[1].setAttribute("fill", t.tail[2].toString());
+kartalsvgdata = $.parseXML(window.atob(kartalsvgdata));
+
+BIRD_TYPES.forEach(function(t,i){
+        kartalsvgdata.getElementById("id3").childNodes[1].setAttribute("fill", t.body.toString());
+        kartalsvgdata.getElementById("id4").childNodes[1].setAttribute("fill", t.tail[0].toString());
+        kartalsvgdata.getElementById("id5").childNodes[1].setAttribute("fill", t.tail[1].toString());
+        kartalsvgdata.getElementById("id6").childNodes[1].setAttribute("fill", t.tail[2].toString());
 
         imgbird[i] = new Image;
-        imgbird[i].src = "data:image/svg+xml;base64," + window.btoa((new XMLSerializer()).serializeToString(data));
-    });
+        imgbird[i].src = "data:image/svg+xml;base64," + window.btoa((new XMLSerializer()).serializeToString(kartalsvgdata));
+});
 
-},"xml");
 
 var clientConfig = {
     right : 0,
@@ -189,7 +189,7 @@ function create(){
                 world.assets.push(new Asset(Math.random()*Math.PI*2,world.earthR+world.atmosphere*2/3+world.atmosphere/2*Math.random(),(45+Math.random()*30)*sz,30*sz,imgbulut));
         }
 
-        socket = io();
+        socket = io(/*BUILD-REMOTE-HOST*/);
 
 
         if(isSpectator){
@@ -229,11 +229,13 @@ function create(){
         });
         socket.on("removeBird",function(i){
             console.log("#removeBird",i);
-            var me = world.birds[i].me;
-            world.removeBird(i);
-            if(me) selectSpectator(0);
             if(isSpectator)
+                var me = world.birds[i].me;
+            world.removeBird(i);
+            if(isSpectator){
+                if(me) selectSpectator(0);
                 updatePlayerSelect();
+            }
         });
         socket.on("addFood",function(f){
            console.log("#addFood",f);
@@ -286,7 +288,8 @@ function create(){
         });
         socket.on('invisible', function (i) {
             console.log("#invisible",i);
-            world.birds[i].visible=false;
+            if(world.birds[i])
+                world.birds[i].visible=false;
         });
 
         camera = new Camera(new Vec2(0,0));
@@ -358,7 +361,7 @@ function update(){
         r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
         r.strokeStyle("white");
         r.circle(r.canvas.width-75,r.canvas.height-75,50);
-        r.circle(r.canvas.width-75,r.canvas.height-75,Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50)+2);
+        r.circle(r.canvas.width-75,r.canvas.height-75,Math.max(Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50),1));
         r.color("white");
         r.fill();
         r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,r.canvas.height-75+Math.sin(bird.loc.x)*50,10);

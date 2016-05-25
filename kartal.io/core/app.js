@@ -1,7 +1,8 @@
 var 
  ayar = require("./ayar.js"), //ayarlar burda
  http = require('http'), //http protokolune ata
- fs = require('fs');
+ fs = require('fs-extra'),
+ base64 = require('base-64');
 var validator = require('validator');
 
 
@@ -88,7 +89,9 @@ var validator = require('validator');
   cmdAdd("build",function (dat) {
     buildGame();
   },"build game");
-
+cmdAdd("remotebuild",function (dat) {
+    build4remote();
+},"build game");
     cmdAdd("conn",function (dat) {
         ct("connections :"+controller.connections.length);
 
@@ -177,11 +180,12 @@ buildGame();
 
  function buildGame(){
      // bu fonksiyono clientlar için game.js dosyasını build eder. Bunu yaparken belirli dosyaları birleştirir ve optimize eder.
-     var data = "";
+     var data = "kartalsvgdata='"+base64.encode(fs.readFileSync("sayfalar/img/kartal.svg").toString())+"';";
 
      buildList.forEach(function(file){
          data+=fs.readFileSync(file).toString();
      });
+
 
      if(ayar.uglyjs){
          var ast = jsp.parse(data); // parse code and get the initial AST
@@ -198,6 +202,35 @@ buildGame();
          ct("game.js builded!");
      });
  }
+
+function build4remote(){
+    var data = "kartalsvgdata='"+base64.encode(fs.readFileSync("sayfalar/img/kartal.svg").toString())+"';";
+
+    buildList.forEach(function(file){
+        data+=fs.readFileSync(file).toString();
+    });
+    data= data.replace("/*BUILD-REMOTE-HOST*/","'"+ayar.host+"'");
+
+    // sıkıştır
+    var ast = jsp.parse(data); // parse code and get the initial AST
+    ast = pro.ast_mangle(ast); // get a new AST with mangled names
+    ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
+    data = pro.gen_code(ast); // compressed code here
+
+    var dir = SABITLER.VERSION + "-remote"+Date.now();
+
+    fs.mkdirsSync('./build/'+dir+'/');
+    fs.copy('./sayfalar/', './build/'+dir+'/', function (err) {
+        if (err) return console.error(err)
+        fs.writeFile("./build/"+dir+"/game.js", data, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            ct("builded for remote : /build/"+dir);
+        });
+    });
+
+}
 
 /*
  |--------------------------------------------------------------------------

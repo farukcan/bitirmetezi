@@ -25,7 +25,7 @@ Duman.prototype = {
 
         r.context.globalAlpha = this.opacity;
 
-        r.color("#E5E5E5");
+        r.color("#F1F1F1");
         r.circle(0,0,this.r);
         r.fill();
 

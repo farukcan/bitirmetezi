@@ -597,7 +597,7 @@ Gene.prototype = {
                     }
 
                     if(length>0){
-                        if(this.ins && GA.chance(this.ins_rate) && length<=this.size){
+                        if(this.ins && GA.chance(this.ins_rate) && length<this.size){
                             GA.INS(this.val)
                         }
 

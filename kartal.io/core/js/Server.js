@@ -129,6 +129,7 @@ World.prototype.server = {
                             // biri diğerinde büyükse
                             //diğerini yer
                             bird.size+=anotherBird.size;
+                            bird.size = Math.min(SABITLER.MAXSIZE,bird.size);
                             anotherBird.damage(bird.size,j);
                         }
                     }else{

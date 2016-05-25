@@ -1,7 +1,7 @@
 var ayar = {};
 
 // host:port
-ayar.host = "kartal.io";
+ayar.host = "http://kartal.io";
 ayar.port = 80;
 
 

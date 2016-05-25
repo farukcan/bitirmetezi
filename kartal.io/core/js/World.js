@@ -86,6 +86,7 @@ World.prototype = {
 
     },
     removeBird : function(m){
+        if(this.birds[m] == undefined) return;
         if(this.birds[m].right) this.birds[m].world.rightCount--;
         else this.birds[m].world.leftCount--;
         this.server.deleteBird(m);
