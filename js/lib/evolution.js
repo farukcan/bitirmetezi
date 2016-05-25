@@ -354,7 +354,7 @@ Population.prototype = {
             _this.minFitness = Math.min(_this.minFitness,member.fitness);
         });
         _this.avgFitness=_this.totalFitness/this.members.length;
-        console.log("AVG: ",_this.avgFitness)
+        console.log("AVG: ",_this.avgFitness,"MAX: ",_this.maxFitness);
     },
     select : function(oldPop){
         var r = GA.random();

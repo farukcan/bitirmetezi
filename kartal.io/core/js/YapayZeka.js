@@ -11,7 +11,8 @@ GA.defaultParameters.mutation_rate = 0.1;
 eval(fs.readFileSync("../../js/Eve.js", 'utf8'));
 
 var fitnessFonksiyonu = function(member){
-    return Math.pow(Math.max(0.001,member.bird.size-20),3) ;
+    return Date.now()-member.bird.bornAt + 1; // hayatta kalma süresine dayalı fitness
+    //return Math.pow(Math.max(0.001,member.bird.size-20),3) ; // yüksek puana dayalı fitness
 };
 
 var baslangicFonksiyonu = function(population_size){
@@ -68,7 +69,7 @@ var evrim = new Evolution(fitnessFonksiyonu,baslangicFonksiyonu,dogumFonksiyonu)
 
 evrim.setParameters({
     algorithm : GA.ALGORITHMS.DIEANDBORN,
-    population_size : 9,
+    population_size : 12,
     crossing_overMethod: GA.CO_TYPES.MULTIPARTIALLY,
     crossing_overPartNum:3,
     selectionMethod: GA.SELECTION.ROULETTE

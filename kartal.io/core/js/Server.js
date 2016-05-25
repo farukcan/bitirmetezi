@@ -105,6 +105,7 @@ World.prototype.server = {
                if(foodLA.d(birdLA) < (birdD+food.size)) {
                    bird.size=Math.sqrt(bird.size*bird.size+food.size*food.size);
                    bird.size = Math.min(SABITLER.MAXSIZE,bird.size);
+                   bird.heal();
                    world.deleteFood(m);
                    world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
                }
