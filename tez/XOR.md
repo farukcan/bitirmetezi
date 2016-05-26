@@ -1,10 +1,7 @@
 [TOC]
 
 #XOR
-Farklı iki input durumunda, 1 çıktısı döndüren kapıdır.
-
-
-
+Farklı iki input durumunda, 1 çıktısı döndüren mantıksal kapıdır.
 
 
 |	input	|	output				|
@@ -61,94 +58,6 @@ Başlangıç için , örnek YSA kromozomudur.
 * Populasyon büyüklüğü 100 olacak
 * 100 iterasyon yapılacak.
 * Elitizm aktif olacak, ve en iyi ilk 10 elit olacak.
-
-## Javascript Uygulaması
-```
-
-@import ANN.js (by farukcan.net : YSA Kütüphanesi)
-@import evolotion.js (by farukcan.net : GA Kütüphanesi)
-@import EveXOR.js (by farukcan.net)
-
-    var fitnessFonksiyonu = function(member){
-        var outs = [];
-        var beklenen = [0,1,1,0];
-        var genetic = member.chromosome.toJSON();
-
-        member.ysa = new ANN().PERCEPTRON(genetic.inputNN,genetic.hiddenNN,genetic.outputNN).setBias([-1,-1]);
-        var ks = 10;
-        genetic.W.forEach(function(matris){
-            matris.forEach(function(satir){
-                satir.forEach(function(deger,i){
-                    satir[i] = deger*ks;
-                });
-            });
-        });
-        member.ysa.setWeights(genetic.W);
-
-        member.ysa.fire([0,0]);
-        outs.push(member.ysa.getOutputs()[0]);
-        member.ysa.fire([0,1]);
-        outs.push(member.ysa.getOutputs()[0]);
-        member.ysa.fire([1,0]);
-        outs.push(member.ysa.getOutputs()[0]);
-        member.ysa.fire([1,1]);
-        outs.push(member.ysa.getOutputs()[0]);
-
-        var hata= 0;
-        for(var i=0; i < beklenen.length ; i++){
-            hata+=Math.abs(outs[i]-beklenen[i]);
-        }
-        member.fitness = 8 - hata;
-
-        return member.fitness;
-    };
-
-    var baslangicFonksiyonu = function(population_size){
-            new Population(this);
-
-            while(population_size--){
-                var newMember = new Member(this.population);
-                newMember.chromosome = GA.copyGene(chromosomeOfEve);
-                newMember.chromosome.mutate();
-            }
-
-            console.log(this.population);
-
-
-    };
-
-    var evrim = new Evolotion(fitnessFonksiyonu,baslangicFonksiyonu);
-
-    evrim.setParameters({
-        algorithm : GA.ALGORITHMS.STANDART,
-        population_size : 100,
-        iterations : 100,
-        elitism : true,
-        elit_num : 10,
-    });
-
-    evrim.start();
-
-    evrim.population.members.sort(function(a,b){
-        return b.fitness- a.fitness;
-    });
-
-    console.log(evrim.population.bestMember);
-    var member = evrim.population.bestMember;
-    var outs = [];
-    member.ysa.fire([0,0]);
-    outs.push(member.ysa.getOutputs()[0]);
-    member.ysa.fire([0,1]);
-    outs.push(member.ysa.getOutputs()[0]);
-    member.ysa.fire([1,0]);
-    outs.push(member.ysa.getOutputs()[0]);
-    member.ysa.fire([1,1]);
-    outs.push(member.ysa.getOutputs()[0]);
-    console.log(outs);
-
-    document.getElementById('text').innerHTML = JSON.stringify(member.chromosome.toJSON());
-
-```
 
 
 ## Sonuçlar ve Analiz
@@ -256,12 +165,12 @@ Başlangıç için , örnek YSA kromozomudur.
 | 98 | 6.128345989980976  | 7.831901595818998 | 
 | 99 | 6.20941059806739   | 7.950397666835871 | 
 
-En iyi sonuç
+**En iyi sonuç** ( beklenen : [0,1,1,0] )
 ```
 [0.0025113558982609715, 0.9554067390221931, 0.9984582624084958, 0.0009559786965573613]
 ```
 
-En iyi sonucun genetik kodu
+**En iyi sonucun genetik kod**
 ```
 {"inputNN":2,"outputNN":1,"hiddenNN":[5,5,4],"W":[[[-0.5206460468681131,0.14697962394732,0.7051736150494592,0.14697962394732,0.14697962394732],[0.3575030980015881,-0.32597186458807803,-0.5946007278727836,-0.10416497326425356,-0.32597186458807803],[-0.05599332381021682,0.5805447252935712,0.31917397347558385,0.8434973716303769,0.31917397347558385]],[[-0.3783256488956259,0.5807485890039374,-0.36445421782678045,-0.3783256488956259,-0.36445421782678045],[0.4523983411685668,0.7807098193949282,-0.09950785159119846,-0.3783256488956259,0.4523983411685668],[-0.3783256488956259,0.5807485890039374,-0.36445421782678045,-0.3783256488956259,-0.3783256488956259],[0.9078283661131228,0.8342563883466951,0.9395598139035855,-0.3783256488956259,-0.3783256488956259],[0.9078283661131228,0.8342563883466951,0.9395598139035855,-0.3783256488956259,0.9395598139035855],[-0.3783256488956259,0.5807485890039374,-0.36445421782678045,-0.3783256488956259,-0.3783256488956259]],[[0.3387170965313673,-0.7202171327934543,0.3387170965313673,0.3387170965313673],[-0.9785173221503713,0.738118881527408,0.738118881527408,-0.9785173221503713],[0.10968387424771375,0.10968387424771375,0.10968387424771375,0.10968387424771375],[-0.7518037453157289,-0.7518037453157289,-0.7518037453157289,-0.7518037453157289],[-0.86301194971493,0.5982339116422084,-0.86301194971493,0.5982339116422084],[-0.86301194971493,0.5982339116422084,0.5982339116422084,0.5982339116422084]],[[0.3387170965313673],[0.738118881527408],[0.10968387424771375],[-0.7518037453157289],[0.5982339116422084]]]}
 ```

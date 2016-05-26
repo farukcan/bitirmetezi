@@ -25,7 +25,7 @@ Mutasyon, doğadaki gibi çoğu sefer zararlı olabilir. Mutasyon sonucu olşan 
 Doğal seçilim, hayatta kalma ihtimali az olan canlıların birçoğunun ölüp, hayatta kalma ihtimali yüksek olanlarının bir çoğunun hayatta kalmasıdır. Eğer doğada bir elitizim(en iyinin ölmemesi) durumu yoksa, hayatta kalma ihtimali yüksek olanınında yine ölme ihtimali vardır.
 Bilgisayarda seçilim, bireyin uygunluk fonksiyonu gözetilerek rastgele yapılır. Doğanın zor koşulları ve ön görülemezliği, rastgelelik fonksiyonları ile taklit edilir.
 
-Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natural and Artificial Systems” kitabında ortaya atılmıştır. [kaynakça:wikipedia2016]
+Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natural and Artificial Systems”[kaynakça:1] kitabında ortaya atılmıştır. [kaynakça:2]
 
 
 ### Genetik Teknik
@@ -38,7 +38,7 @@ Bu algoritmalar ilk kez  1975 yılında John Holland'ın “Adaptation in Natura
 5. Adım 2'ye geç.
 
 
-[Kaynakça;Derviş Karaboğa]
+[Kaynakça;3]
 
 ### GA (Genetik Algoritma)
 Genetik algoritma hakkında bilgilerin saklandığı objedir.
@@ -227,7 +227,7 @@ Her gen, alabileceği bir değer ile değiştirilir veya o miktarda arttırılı
 
 * **Sabit durum seçimi** : Buna göre, ebeveyn seçimi için kromozomların büyük parçaları bir sonraki nesile taşınmalıdır. Yeni döl oluşturulma üzere birkaç kromozom seçilir.(Genellikle en yüksek uygunluğa sahip olanlar seçilir.)
 
-* **Elitizm**(Seçkinlik) : En iyi(ler) birey bozulmadan bir sonraki jenerasyona kopyalanır. (Gerçek zamanlı algoritmalarda kullanılamaz.)
+* **Elitizm**(Seçkinlik) : En iyi birey(ler) bozulmadan bir sonraki jenerasyona kopyalanır. (Gerçek zamanlı algoritmalarda kullanılamaz.)
 
 ### Gerçek Zamanlılık
 Eğer evrimsel süreç gerçek zamanlıysa, bireyin ölmesi ve üremesi durumları göz önüne alınır.
@@ -268,8 +268,3 @@ Evrimsel algoritma, adım adım olarak değil, asenkron şekilde çalışır. Ya
 8. Yeni bireyi populasyona ekle.
 9. 2.adıma geç
 10. Dur
-
-
-
-
-*Alıntı: Wikipedia CC BY-SA

@@ -8,7 +8,7 @@
 
 ## Network (Sinir Ağı)
 
-Katmanlardan ve sinirlerden oluşan yapıdır.
+Katmanlardan ve sinirlerden oluşan sinir ağı yapısıdır.
 
 **Network (ANN) Sınıfı**
 

@@ -20,31 +20,31 @@ var chromosomeOfEve = new Chromosome().VAL({
 
     /* ağın ağırlık matrislerinin dizisi */
     W : new Chromosome().VAL([ // ağırlık matislerinin dizisi
-        new Chromosome().VAL([ // 3x2lik ağırlık matrisi
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL(),
-                GA.copyGene(exampleWeightGene).VAL()
+            new Chromosome().VAL([ // 3x2lik ağırlık matrisi
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL(),
+                    GA.copyGene(exampleWeightGene).VAL()
+                ]),
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL(),
+                    GA.copyGene(exampleWeightGene).VAL()
+                ]),
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL(),
+                    GA.copyGene(exampleWeightGene).VAL()
+                ])
             ]),
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL(),
-                GA.copyGene(exampleWeightGene).VAL()
-            ]),
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL(),
-                GA.copyGene(exampleWeightGene).VAL()
+            new Chromosome().VAL([ // 3x1lik ağırlık matrisi
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL()
+                ]),
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL()
+                ]),
+                new Chromosome().VAL([
+                    GA.copyGene(exampleWeightGene).VAL()
+                ])
             ])
-        ]),
-        new Chromosome().VAL([ // 3x1lik ağırlık matrisi
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL()
-            ]),
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL()
-            ]),
-            new Chromosome().VAL([
-                GA.copyGene(exampleWeightGene).VAL()
-            ])
-        ])
     ])
 }).RULE(function(val){
     /* Mutasyon ve Çaprazlama sonrası kromozomu onarma ve yönetmeyle sorunlu fonksiyondur.

@@ -229,7 +229,7 @@ function create(){
         });
         socket.on("removeBird",function(i){
             console.log("#removeBird",i);
-            if(isSpectator)
+            if(isSpectator && world.birds[i])
                 var me = world.birds[i].me;
             world.removeBird(i);
             if(isSpectator){

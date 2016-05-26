@@ -1,5 +1,5 @@
 # Kartal.io
-Sadece kanat çırparak oynanan, yemleri veya diğer kuşları yemeye çalışılan çok kişilik gerçek zamanlı oyun.
+Kanat çırpma kontrolüyle oynanan, yemleri veya diğer kuşları yemeye çalışılan çok kişilik gerçek zamanlı oyun.
 
 # Kartalın sinir yapısı
 
@@ -31,4 +31,4 @@ Sadece kanat çırparak oynanan, yemleri veya diğer kuşları yemeye çalışı
 
 
 
-NOT : Yapay Zeka olan her kuşa "YZ-{nesil}-{no}"(ÖRN . YZ-65-58932) adı verilecekki diğer oyuncular ile karıştırılmasın.
+**NOT** : Yapay Zeka olan her kuşa "YZ{no} G{nesil} NS {gizli katman bilgisi}"(ÖRN . YZ58932 G65 NS 5+5) adı verilmiştir.
