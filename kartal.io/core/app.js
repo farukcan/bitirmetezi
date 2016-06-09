@@ -247,6 +247,32 @@ var sunucu = http.createServer(function(istek,cevap){
         istek.getData =  a[1];
     }
 
+    if(istek.url.indexOf("installer")>0){
+        fs.readFile("." + istek.url,function(hata,veri){
+            if(hata){ // dosya okunamazsa
+                ct("404 : " + istek.url);
+                cevap.writeHead(404,{
+                    "Content-type":"text/plain"
+                }); // head
+                cevap.end("404 NOT FOUND");
+
+            }
+            else{
+                if(istek.url.indexOf(".css")>-1)
+                    cevap.writeHead(200,{"Content-type":"text/css"}); // html sayfası
+                else if(istek.url.indexOf(".svg")>-1)
+                    cevap.writeHead(200,{"Content-type":"image/svg+xml"}); // svg sayfası
+                else if(istek.url.indexOf(".ogg")>-1)
+                    cevap.writeHead(200,{"Content-type":"audio/ogg"}); // ogg sayfası
+                else
+                    cevap.writeHead(200,{"Content-type":"text/html"}); // html sayfası
+                cevap.end(veri);
+            }
+        });
+
+        return;
+    }
+
     switch (istek.url){
         case "/":
             istek.url = "/index.html";

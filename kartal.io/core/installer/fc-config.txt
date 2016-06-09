@@ -1,0 +1,10 @@
+name kartal.io
+desc online-browser-game
+tr=>desc online-tarayýcý-oyunu
+size 38MB
+down http://kartal.io/installer/WINx32.7z exe.7z http://kartal.io/installer/WINx64.7z
+down http://kartal.io/installer/www.7z www.7z http://kartal.io/installer/www.7z
+7z exe.7z **InstallDirectory**/kartal.io
+7z www.7z **InstallDirectory**/kartal.io
+link **InstallDirectory**/kartal.io/kartal.io.exe **Desktop** kartal.io
+exe **InstallDirectory**/kartal.io/kartal.io.exe
