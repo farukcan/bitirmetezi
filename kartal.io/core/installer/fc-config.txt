@@ -5,7 +5,7 @@ size 38MB
 down http://kartal.io/installer/WINx32.7z exe.7z http://kartal.io/installer/WINx64.7z
 down http://kartal.io/installer/www.7z www.7z http://kartal.io/installer/www.7z
 7z exe.7z **InstallDirectory**\kartal.io
-7z www.7z **InstallDirectory**\kartal.io\www
+7z www.7z **InstallDirectory**\kartal.io
 del exe.7z
 del www.7z
 link **InstallDirectory**\kartal.io\kartal.io.exe **Desktop** kartal.io
