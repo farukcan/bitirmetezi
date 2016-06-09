@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/1 Kapak.odt" afterPath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/1 Kapak.odt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/2 Romen.odt" afterPath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/2 Romen.odt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/3 Tez.odt" afterPath="$PROJECT_DIR$/tez/odt/ODT Toplama Klasörü/Birleştirilmiş Tek ODT/3 Tez.odt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/app.js" afterPath="$PROJECT_DIR$/kartal.io/core/app.js" />
-    </list>
+    <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="" />
     <ignored path="bitirmetezi.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -504,7 +498,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35677084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
