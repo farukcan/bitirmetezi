@@ -1,0 +1,10 @@
+{
+	"main" : "www/index.html",
+	"name" : "kartal.io",
+	"icon" : "kartal.ico",
+	"window" : {
+		"icon" : "kartal.png",
+		"width": 1280,
+    	"height": 720
+	}
+}

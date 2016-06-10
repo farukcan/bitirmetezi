@@ -9,4 +9,5 @@ down http://kartal.io/installer/www.7z www.7z http://kartal.io/installer/www.7z
 del exe.7z
 del www.7z
 link **InstallDirectory**\kartal.io\kartal.io.exe **Desktop** kartal.io
+link **InstallDirectory**\kartal.io\kartal.io.exe **Programs** kartal.io
 exe **InstallDirectory**\kartal.io\kartal.io.exe
