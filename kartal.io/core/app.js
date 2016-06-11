@@ -129,11 +129,14 @@ var smtpTransport = require('nodemailer-smtp-transport');
 var mailer = nodemailer.createTransport(smtpTransport(ayar.mail));
 var outlogFile = "-NO LOG-";
 var errlogFile = "-NO LOG-";
+var loglogFile = "-NO LOG-";
 try{
     outlogFile = fs.readFileSync("out.log").toString().replace(/\n/g, "<br />");
     errlogFile = fs.readFileSync("err.log").toString().replace(/\n/g, "<br />");
-    fs.unlinkSync("out.log");
+    loglogFile = fs.readFileSync("log.log").toString().replace(/\n/g, "<br />");
+    /*fs.unlinkSync("out.log");
     fs.unlinkSync("err.log");
+    fs.unlinkSync("log.log");*/
 
 }
 catch (e){
@@ -143,7 +146,7 @@ mailer.sendMail({
     from: ayar.mailAdresi,
     to: ayar.adminMail,
     subject: 'kartal.io - Server',
-    html: "<h1>kartal.io, restarted</h1> "+Date()+"<h2>err.log</h2>"+errlogFile+ "<h2>out.log</h2>"+errlogFile
+    html: "<h1>kartal.io, restarted</h1> "+Date()+"<h2>err.log</h2>"+errlogFile+ "<h2>out.log</h2>"+errlogFile+ "<h2>log.log</h2>"+loglogFile
 },function(error, info){
     if(error){
         return console.log(error);
