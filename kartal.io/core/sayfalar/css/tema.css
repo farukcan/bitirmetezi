@@ -44,7 +44,7 @@
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 320px;
+    max-width: 300px;
     border: 1px solid;
     border-radius: 10px;
 }
@@ -69,7 +69,7 @@
 #score {
     border-radius: 50px;
     color : white;
-    font-size: 20px;
+    font-size: 18px;
     z-index: 998;
     position: absolute;
     margin-left: auto;
@@ -91,7 +91,7 @@
 }
 
 #score h1{
-    font-size: 50px;
+    font-size: 30px;
 }
 
 #scoreboard {
@@ -123,7 +123,7 @@
 
 #zoomdiv {
     color : white;
-    font-size: 34px;
+    font-size: 20px;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -142,6 +142,7 @@
     height: 32px;
 }
 #settings {
+    font-size: 15px;
     background-color: rgba(0,0,0,0.1);
     color : white;
     text-align: center;

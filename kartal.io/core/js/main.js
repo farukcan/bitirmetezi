@@ -101,6 +101,19 @@ r.addClickListener(fly,[{
 }]);
 
 $("#score").click(nitro);
+
+var scorefading = false;
+$("#scoreboard").click(function(){
+    if(!scorefading){
+        $("#scoreboard").fadeOut(1000);
+        scorefading = true;
+        setTimeout(function(){
+            scorefading = false;
+        },1000);
+    }
+    fly();
+});
+
 r.canvas.oncontextmenu = function() {
     nitro();
     return false;

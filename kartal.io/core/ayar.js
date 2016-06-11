@@ -5,7 +5,7 @@ ayar.host = "http://kartal.io";
 ayar.port = 80;
 
 
-ayar.uglyjs = false;
+ayar.uglyjs = true;
 
 ayar.YZ = true;
 
