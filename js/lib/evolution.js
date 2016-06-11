@@ -238,6 +238,9 @@ var GA = {
         if(r[1].RULEfunc) r[1].RULEfunc(r[1].val);
 
         return r;
+    },
+    log : function(p1,p2,p3,p4,p5,p6,p7){
+        
     }
 };
 
@@ -264,15 +267,15 @@ Evolution.prototype = {
                 this.population.calcFitness();
                 var iteration=0;
                 while(iteration<this.parameters.iterations){
-                    console.log('iteration: '+iteration)
-                    console.log("avg fitness:"+this.population.avgFitness)
-                    console.log("max fitness:"+this.population.maxFitness)
-                    console.log("mem"+this.population.members.length)
-                    console.log('select')
+                    GA.log('iteration: '+iteration)
+                    GA.log("avg fitness:"+this.population.avgFitness)
+                    GA.log("max fitness:"+this.population.maxFitness)
+                    GA.log("mem"+this.population.members.length)
+                    GA.log('select')
                     this.population.selection();
-                    console.log('cross')
+                    GA.log('cross')
                     this.population.crossing_over();
-                    console.log('mutate')
+                    GA.log('mutate')
                     this.population.mutation();
 
                     this.population.calcFitness();
@@ -354,7 +357,7 @@ Population.prototype = {
             _this.minFitness = Math.min(_this.minFitness,member.fitness);
         });
         _this.avgFitness=_this.totalFitness/this.members.length;
-        console.log("AVG: ",_this.avgFitness,"MAX: ",_this.maxFitness);
+        GA.log("AVG: ",_this.avgFitness,"MAX: ",_this.maxFitness);
     },
     select : function(oldPop){
         var r = GA.random();
