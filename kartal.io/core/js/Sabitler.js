@@ -2,7 +2,7 @@
  * Created by Can on 10.4.2016.
  */
 var SABITLER = {
-    "VERSION" : "BETA-1.3",
+    "VERSION" : "1.0.0",
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
     "GRAVITY" : -0.00042,

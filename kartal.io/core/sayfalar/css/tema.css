@@ -11,7 +11,6 @@
 
 #gameInfo {
     z-index: 999;
-    background-color : #F9E559;
     position: absolute;
     margin: auto;
     top : 0%;
@@ -19,15 +18,19 @@
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 400px;
-    height: 170px;
+    max-width: 300px;
+    height: 140px;
     text-align: center;
     padding: 10px;
-    border-radius: 50px;
+    border: 1px dotted;
+    background-color: rgba(0,109,240,0.3);
+    border-radius: 30px;
+    border-color:  #17D736;
     color : #EF7126;
 }
 
 #gameInfo h1 {
+    color : white;
     font-size: 50px;
  }
 
@@ -37,25 +40,26 @@
     position: absolute;
     margin-left: auto;
     margin-right: auto;
-    bottom: 45px;
+    bottom: 60px;
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 400px;
+    max-width: 320px;
     border: 1px solid;
     border-radius: 10px;
 }
 
 #buton {
-    width: 40%;
-    height: 50px;
-    border-radius: 50px;
-    background-color: #17D736;
+    color: white;
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #1982F3;
 }
 
 #nick{
 
-    width: 50%;
+    width: 100%;
     margin-bottom: 10px;
     border-radius: 50px;
     height: 30px;
@@ -75,7 +79,7 @@
     left: 0px;
     right: 0px;
     width: 60%;
-    max-width: 400px;
+    max-width: 300px;
     text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -91,11 +95,13 @@
 }
 
 #scoreboard {
+    padding: 3px;
     background-color: rgba(0,0,0,0.1);
+    font-size: 13px;
     color : white;
     text-align: right;
     position: absolute;
-    top: 0px;
+    bottom: 10px;
     right: 5px;
     z-index: 997;
     -webkit-touch-callout: none; /* iOS Safari */

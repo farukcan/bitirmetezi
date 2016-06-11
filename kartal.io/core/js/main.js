@@ -8,7 +8,10 @@ r.font("50px Arial")
 var renderKalite = 1;
 r.canvas.width = window.innerWidth*renderKalite;
 r.canvas.height = window.innerHeight*renderKalite;
-
+$(window).resize(function(){
+    r.canvas.width = window.innerWidth*renderKalite;
+    r.canvas.height = window.innerHeight*renderKalite;
+});
 // world
 var world;
 var camera;
@@ -16,7 +19,7 @@ var bird;
 var highscore=0;
 var socket;
 var zoom=r.canvas.width/r.canvas.height*2/3;
-var fpsStabilizer = true;
+var fpsStabilizer = false;
 $("#scoreboard").hide();
 $("#playerSelectSpan").hide();
 $("#playerSelect").change(function(){
@@ -28,7 +31,7 @@ var selectSpectator = function(i){
     bird.me = true;
 };
 // debug mode
-var debug = true;
+var debug = false;
 var isSpectator = false;
 
 var hints = [
@@ -45,6 +48,10 @@ var hints = [
     "+ key > zoom in",
     "- key > zoom out"
 ],hintindex= 0,hintsenable=true;
+
+$(function(){
+    $("#buton").show();
+});
 
 var soundEagle = new buzz.sound("ogg/eagle.ogg");
 var soundPoint = new buzz.sound("ogg/point.ogg");
@@ -165,9 +172,15 @@ function zoomout(){
     zoom-=zoomspeed;
     zoom = Math.max(0.01,zoom);
 }
+
+var clog = console.log;
 var created,UPS,UPScache= 0,Udelta;
 function create(){
     if(!created){
+
+
+        if(debug) console.log = clog;
+        else console.log = function(){};
 
         $("#gameInfo").hide();
         if(!isSpectator){
@@ -360,11 +373,11 @@ function update(){
     if(bird){
         r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
         r.strokeStyle("white");
-        r.circle(r.canvas.width-75,r.canvas.height-75,50);
-        r.circle(r.canvas.width-75,r.canvas.height-75,Math.max(Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50),1));
+        r.circle(r.canvas.width-75,75,50);
+        r.circle(r.canvas.width-75,75,Math.max(Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50),1));
         r.color("white");
         r.fill();
-        r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,r.canvas.height-75+Math.sin(bird.loc.x)*50,10);
+        r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,75+Math.sin(bird.loc.x)*50,10);
         r.fill();
     }
 

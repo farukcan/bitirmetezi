@@ -485,4 +485,5 @@ function foodCreator(){ // rastgele yerlerde FOODNUM kadar yem oluştur.
     }
 }
 
-eval(fs.readFileSync("js/YapayZeka.js", 'utf8'));
+if(ayar.YZ) // if AI enabled
+    eval(fs.readFileSync("js/YapayZeka.js", 'utf8'));
