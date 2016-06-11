@@ -198,10 +198,9 @@ function create(){
         else console.log = function(){};
 
         $("#gameInfo").hide();
-        if(!isSpectator){
-            $("#rules").hide();
-            $("#settings").hide();
-        }else{
+        $("#rules").hide();
+        $("#settings").hide();
+        if(isSpectator){
             $("#playerSelectSpan").show();
         }
 
