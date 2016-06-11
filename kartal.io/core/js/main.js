@@ -51,7 +51,7 @@ var hints = [
 
 $(function(){
     $("#buton").show();
-    if(location.hostname="kartal.io"){
+    if(location.hostname=="kartal.io"){
         $("#applinks").show();
     }
 });
