@@ -51,6 +51,9 @@ var hints = [
 
 $(function(){
     $("#buton").show();
+    if(location.hostname="kartal.io"){
+        $("#applinks").show();
+    }
 });
 
 var soundEagle = new buzz.sound("ogg/eagle.ogg");
