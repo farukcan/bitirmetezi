@@ -116,6 +116,43 @@ cmdAdd("remotebuild",function (dat) {
     function ct(tt){console.log("# > "+tt);}
     function ctt(tt){c("# ----------");ct(tt);c("# ----------")}
 
+
+/*
+ |--------------------------------------------------------------------------
+ | email gönderici
+ |--------------------------------------------------------------------------
+ |
+ |
+ */
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var mailer = nodemailer.createTransport(smtpTransport(ayar.mail));
+var outlogFile = "-NO LOG-";
+var errlogFile = "-NO LOG-";
+try{
+    outlogFile = fs.readFileSync("logs/forever/out.log").toString().replace(/\n/g, "<br />");
+    errlogFile = fs.readFileSync("logs/forever/err.log").toString().replace(/\n/g, "<br />");
+    fs.unlinkSync("logs/forever/out.log");
+    fs.unlinkSync("logs/forever/err.log");
+
+}
+catch (e){
+    console.log('Unable to open log files');
+}
+mailer.sendMail({
+    from: ayar.mailAdresi,
+    to: ayar.adminMail,
+    subject: 'kartal.io - Server',
+    html: "<h1>kartal.io, restarted</h1> "+Date()+"<h2>err.log</h2>"+errlogFile+ "<h2>out.log</h2>"+errlogFile
+},function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Eposta gonderme basarili: ' + info.response);
+
+});
+
+
 /*
  |--------------------------------------------------------------------------
  | js kütüphanelerini yükle
