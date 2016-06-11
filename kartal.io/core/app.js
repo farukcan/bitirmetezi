@@ -131,12 +131,12 @@ var outlogFile = "-NO LOG-";
 var errlogFile = "-NO LOG-";
 var loglogFile = "-NO LOG-";
 try{
-    outlogFile = fs.readFileSync("out.log").toString()/*.replace(/\n/g, "<br />")*/;
-    errlogFile = fs.readFileSync("err.log").toString()/*.replace(/\n/g, "<br />")*/;
-    loglogFile = fs.readFileSync("log.log").toString()/*.replace(/\n/g, "<br />")*/;
-    /*fs.unlinkSync("out.log");
+    outlogFile = fs.readFileSync("out.log").toString().replace(/\n/g, "<br />");
+    errlogFile = fs.readFileSync("err.log").toString().replace(/\n/g, "<br />");
+    loglogFile = fs.readFileSync("log.log").toString().replace(/\n/g, "<br />");
+    fs.unlinkSync("out.log");
     fs.unlinkSync("err.log");
-    fs.unlinkSync("log.log");*/
+    fs.unlinkSync("log.log");
 
 }
 catch (e){
