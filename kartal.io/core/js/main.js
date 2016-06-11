@@ -100,6 +100,7 @@ r.addClickListener(fly,[{
     func : nitro
 }]);
 
+
 $("#score").click(nitro);
 
 var scorefading = false;
