@@ -130,10 +130,10 @@ var mailer = nodemailer.createTransport(smtpTransport(ayar.mail));
 var outlogFile = "-NO LOG-";
 var errlogFile = "-NO LOG-";
 try{
-    outlogFile = fs.readFileSync("logs/forever/out.log").toString().replace(/\n/g, "<br />");
-    errlogFile = fs.readFileSync("logs/forever/err.log").toString().replace(/\n/g, "<br />");
-    fs.unlinkSync("logs/forever/out.log");
-    fs.unlinkSync("logs/forever/err.log");
+    outlogFile = fs.readFileSync("out.log").toString().replace(/\n/g, "<br />");
+    errlogFile = fs.readFileSync("err.log").toString().replace(/\n/g, "<br />");
+    fs.unlinkSync("out.log");
+    fs.unlinkSync("err.log");
 
 }
 catch (e){
