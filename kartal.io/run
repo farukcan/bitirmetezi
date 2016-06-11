@@ -1,2 +1,2 @@
 cd core
-forever start -o logs/forever/out.log -e logs/forever/err.log app.js
+forever -o logs/forever/out.log -e logs/forever/err.log start app.js
