@@ -146,7 +146,7 @@ mailer.sendMail({
     from: ayar.mailAdresi,
     to: ayar.adminMail,
     subject: 'kartal.io - Server',
-    html: "<h1>kartal.io, restarted</h1> "+Date()+"<h2>err.log</h2>"+errlogFile+ "<h2>out.log</h2>"+errlogFile+ "<h2>log.log</h2>"+loglogFile
+    html: "<h1>kartal.io, restarted</h1> "+Date()+"<h2>err.log</h2>"+errlogFile+ "<h2>out.log</h2>"+outlogFile+ "<h2>log.log</h2>"+loglogFile
 },function(error, info){
     if(error){
         return console.log(error);
