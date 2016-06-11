@@ -188,9 +188,11 @@ function zoomout(){
 
 var clog = console.log;
 var created,UPS,UPScache= 0,Udelta;
+var stime = Date.now();
 function create(){
     if(!created){
 
+        stime = Date.now();
 
         if(debug) console.log = clog;
         else console.log = function(){};
@@ -386,11 +388,11 @@ function update(){
     if(bird){
         r.rect(0,r.canvas.height-5,bird.hp/bird.size*r.canvas.width,5);
         r.strokeStyle("white");
-        r.circle(r.canvas.width-75,75,50);
-        r.circle(r.canvas.width-75,75,Math.max(Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50),1));
+        r.circle(r.canvas.width-75,r.canvas.height-75,50);
+        r.circle(r.canvas.width-75,r.canvas.height-75,Math.max(Math.floor((bird.loc.y-world.earthR)/world.atmosphere*50),1));
         r.color("white");
         r.fill();
-        r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,75+Math.sin(bird.loc.x)*50,10);
+        r.circle(r.canvas.width-75+Math.cos(bird.loc.x)*50,r.canvas.height-75+Math.sin(bird.loc.x)*50,10);
         r.fill();
     }
 
@@ -425,6 +427,7 @@ setInterval(function(){
         else
             $("#score").html("Score<h1>"+Math.floor(bird.size*10)+"</h1>"+(hintsenable ? hints[hintindex] : ""));
         $("#height").html(Math.floor((bird.loc.y-world.earthR)/10));
+        $("#time").html(Math.floor((Date.now()-stime)/1000));
         if(oncekiSize<bird.size) soundPoint.stop() && soundPoint.play();
         oncekiSize = bird.size;
     }

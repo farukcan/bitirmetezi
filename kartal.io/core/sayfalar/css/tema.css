@@ -13,12 +13,12 @@
     z-index: 999;
     position: absolute;
     margin: auto;
-    top : 0%;
+    top : -90px;
     bottom: 0px;
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 300px;
+    max-width: 275px;
     height: 140px;
     text-align: center;
     padding: 10px;
@@ -40,11 +40,11 @@
     position: absolute;
     margin-left: auto;
     margin-right: auto;
-    bottom: 60px;
+    bottom: 70px;
     left: 0px;
     right: 0px;
     width: 90%;
-    max-width: 300px;
+    max-width: 275px;
     border: 1px solid;
     border-radius: 10px;
 }
@@ -79,7 +79,7 @@
     left: 0px;
     right: 0px;
     width: 60%;
-    max-width: 300px;
+    max-width: 275px;
     text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -102,7 +102,7 @@
     text-align: right;
     position: absolute;
     bottom: 10px;
-    right: 5px;
+    left: 5px;
     z-index: 997;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -136,8 +136,27 @@
     user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
 }
-
 #zoomdiv img {
+    width: 32px;
+    height: 32px;
+}
+#topright{
+    color : white;
+    font-size: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 997;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+#topright img {
     width: 32px;
     height: 32px;
 }
