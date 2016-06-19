@@ -103,7 +103,7 @@ Bird.prototype = {
                 if(this.nitroTime<=1){
                     this.nitro=false;
                 }else{
-                    this.loc.x+=this.speed.x*this.nitroTime/100;
+                    this.loc.x+=this.speed.x*this.nitroTime*SABITLER.NITRO_RATE;
                 }
             }
             this.loc.add(this.speed.mul(delta,true));

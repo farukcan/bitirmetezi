@@ -2,12 +2,13 @@
  * Created by Can on 10.4.2016.
  */
 var SABITLER = {
-    "VERSION" : "1.0.1",
+    "VERSION" : "1.0.2",
     "EARTHR" : 5000,
     "ATMOSPHERE" : 1500,
     "GRAVITY" : -0.00042,
     "MAXSPEEDY" : 1,
-    "STANDARTSPEED" : Math.PI/(7200*8),
+    "STANDARTSPEED" : Math.PI/(7200*16),
+    "NITRO_RATE" : 0.02,
     "FPS" : 60,
     "KUSORANI" : 1,
     "MAXSIZE" : 750,

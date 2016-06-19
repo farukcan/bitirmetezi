@@ -69,7 +69,7 @@ var evrim = new Evolution(fitnessFonksiyonu,baslangicFonksiyonu,dogumFonksiyonu)
 
 evrim.setParameters({
     algorithm : GA.ALGORITHMS.DIEANDBORN,
-    population_size : 10,
+    population_size : 8,
     crossing_overMethod: GA.CO_TYPES.UNIFORM,
     selectionMethod: GA.SELECTION.ROULETTE
 });
