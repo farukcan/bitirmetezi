@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="" />
+    <list default="true" id="5eb50b22-2ea4-4cf5-85d6-a796c41614f2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/cache.properties.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/outputFileStates.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/taskArtifacts/taskArtifacts.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/tasks/_compileArmv7ReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/tasks/_compileArmv7ReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/tasks/_compileArmv7ReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.gradle/2.10/tasks/_compileArmv7ReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/android-armv7-release.apk" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/android-armv7-release.apk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" afterPath="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/config.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/libraries/support_annotations_23_1_1.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/libraries/support_annotations_23_1_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/misc.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/workspace.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/AndroidManifest.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/CordovaLib/CordovaLib.iml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/CordovaLib/CordovaLib.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/android.iml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/android.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/res/xml/config.xml" afterPath="$PROJECT_DIR$/kartal.io/kartalplay/kartal.io/platforms/android/res/xml/config.xml" />
+    </list>
     <ignored path="bitirmetezi.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -22,14 +41,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.580645">
-              <caret line="81" column="21" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.69150174">
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding>
-                <element signature="n#style#0;n#input#1;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#1;n#div#6;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#6;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,7 +120,7 @@
       <file leaf-file-name="tema.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.419355">
+            <state vertical-scroll-proportion="0.0">
               <caret line="158" column="9" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="9" />
               <folding />
             </state>
@@ -117,10 +137,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sabitler.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Sabitler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kartal.io/core/js/Sabitler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17990655">
+            <state vertical-scroll-proportion="0.0">
               <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
               <folding />
             </state>
@@ -189,12 +209,12 @@
         <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css" />
         <option value="$PROJECT_DIR$/kartal.io/core/app.js" />
         <option value="$PROJECT_DIR$/js/lib/evolution.js" />
-        <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/main.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/Bird.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/ayar.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/YapayZeka.js" />
         <option value="$PROJECT_DIR$/kartal.io/core/js/Sabitler.js" />
+        <option value="$PROJECT_DIR$/kartal.io/core/sayfalar/index.html" />
       </list>
     </option>
   </component>
@@ -237,8 +257,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -407,6 +425,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -811,7 +831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.058823">
           <caret line="124" column="27" selection-start-line="124" selection-start-column="23" selection-end-line="124" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -819,7 +838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="53" column="26" selection-start-line="53" selection-start-column="26" selection-end-line="53" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -827,34 +845,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="28" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/css/tema.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.419355">
+        <state vertical-scroll-proportion="0.0">
           <caret line="158" column="9" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kartal.io/core/ayar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="14" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.580645">
-          <caret line="81" column="21" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="21" />
-          <folding>
-            <element signature="n#style#0;n#input#1;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#5;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -908,11 +906,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/kartal.io/core/ayar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="14" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/kartal.io/core/js/Sabitler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17990655">
+        <state vertical-scroll-proportion="0.0">
           <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kartal.io/core/sayfalar/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.69150174">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#1;n#div#6;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#6;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
