@@ -41,10 +41,11 @@ var hints = [
     "Touch 2sc > fly faster",
     "SPACE > fly",
     "CTRL > fly faster",
-    "UP key > fly",
-    "LEFT key > fly faster",
-    "RIGHT key > fly faster",
-    "DOWN key > fly faster",
+    "UP W key > fly",
+    "LEFT A key > change way",
+    "RIGHT D key > change way",
+    "ESC key > change way",
+    "DOWN S key > fly faster",
     "+ key > zoom in",
     "- key > zoom out"
 ],hintindex= 0,hintsenable=true;
@@ -146,12 +147,23 @@ $(document).keydown(function(e){
             create();
             break;
         case 38: //up
+        case 87: //w
         case 32: //space
             fly();
             break;
-        case 39: // left
-        case 40: // right
-        case 37:
+        case 37: // left
+        case 65: // a
+            left();
+            break;
+        case 39:// right
+        case 68: // d
+            right();
+            break;
+        case 27: // esc
+            changeWay();
+            break;
+        case 40: //down
+        case 83: //s
         case 17: //ctrl
             nitro();
             break;
@@ -181,6 +193,31 @@ function nitro(){
     }
 }
 
+function changeWay(){
+    if(socket && !isSpectator) {
+        socket.emit("changeWay");
+        $("#changeWayButton").css("opacity","0.1");
+        setTimeout(function(){
+            $("#changeWayButton").css("opacity","1.0");
+        },7500);
+    }
+}
+
+function left(){
+    if(typeof bird =='undefined') return;
+    if(bird.right)
+        changeWay();
+    else
+        nitro();
+}
+function right(){
+    if(typeof bird =='undefined') return;
+
+    if(!bird.right)
+        changeWay();
+    else
+        nitro();
+}
 var zoomspeed=0.09;
 function zoomin(){
     zoom+=zoomspeed;
@@ -322,6 +359,14 @@ function create(){
             if(world.birds[i])
                 world.birds[i].visible=false;
         });
+        socket.on('refleshWay', function (i) {
+            console.log("#refleshWay",i);
+            if(world.birds[i]){
+                world.birds[i].right = !world.birds[i].right;
+                world.birds[i].rightPolar*=-1;
+            }
+        });
+
 
         camera = new Camera(new Vec2(0,0));
         world.camera = camera;

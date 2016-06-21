@@ -4,7 +4,7 @@
 function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
     this.size = 20;
-    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4,this.kntdelay=600;;
+    this.aspect = 12200/4760;this.kntx=604.719;this.knty=185.188;this.knts=4;this.kntdelay=600;
     this.rightPolar = -1;
     if(right)
         this.rightPolar = 1;
@@ -19,7 +19,7 @@ function Bird(locx,locy,right){
     this.nitroTime = 0;
     this.knti = 0;
     this.tip = Math.round((BIRD_TYPES.length-1)*Math.random());
-    this.duman=10;
+    this.duman=SABITLER.DUMANSAYISI;
     this.visible=true;
 }
 
@@ -123,6 +123,42 @@ Bird.prototype = {
         this.size--;
         this.nitro = true;
         this.nitroTime=5000;
+        var bird = this;
+        for(var i=0;i<5;i++)
+            setTimeout(function(){
+                bird.dumanYap(true);
+                bird.duman = SABITLER.DUMANSAYISI;
+            },i*50)
+    },
+    changeWay : function(){
+        this.right = !this.right;
+        this.rightPolar*=-1;
+        this.speed = new Vec2(this.rightPolar*SABITLER.STANDARTSPEED,0);
+        this.lastChangeWay = Date.now();
+
+
+        this.world.server.io.emit('refleshWay',this.world.findIndexById(this.id));
+
+        var bird = this;
+        for(var i=0;i<5;i++)
+            setTimeout(function(){
+                bird.dumanYap(true);
+                bird.duman = SABITLER.DUMANSAYISI;
+            },i*16)
+
+    },
+    dumanYap : function(t){
+        var bird = this;
+        if((!bird.living || t) && bird.duman>0 && bird.world) {
+            bird.world.server.io.emit('duman',{
+                x : bird.loc.x+(Math.random()*bird.size-bird.size/2)/1800,
+                y : bird.loc.y+Math.random()*bird.size-bird.size*2/3,
+                vx : (Math.random()*2-1)/96000*bird.size,
+                vy : (Math.random()*2-1)/60*bird.size,
+                vr : bird.size/40
+            });
+            bird.duman--;
+        }
     }
 }
 

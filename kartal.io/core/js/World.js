@@ -69,8 +69,7 @@ World.prototype = {
         this.foods.push(food);
         this.server.addFood(food,(this.foods.length-1));
     },
-    deleteBird : function(id){
-        // find in connections array and destrol
+    findIndexById : function(id){
         var m=-1;
         this.birds.every(function(o,i){
             if(id == o.id){
@@ -79,11 +78,13 @@ World.prototype = {
             }
             return true;
         });
-
+        return m;
+    },
+    deleteBird : function(id){
+        var m = this.findIndexById(id);
         if(m!=-1) {
             this.removeBird(m);
         }
-
     },
     removeBird : function(m){
         if(this.birds[m] == undefined) return;

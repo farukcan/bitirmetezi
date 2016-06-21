@@ -409,6 +409,11 @@ io.on('connection', function(socket){
             return (this.lastNitro+5000)<Date.now() && this.size>15;
         };
 
+        bird.lastChangeWay = Date.now()-7500;
+        bird.changable = function(){
+            return (this.lastChangeWay+7500)<Date.now();
+        };
+
         if(typeof name == "string"){
             conn.name=validator.escape(name).substring(0,18);
 
@@ -443,6 +448,11 @@ io.on('connection', function(socket){
         if(bird.nitroable()){
             bird.useNitro();
         }
+    });
+    socket.on('changeWay',function(){
+        if(spectator) return;
+        if(bird.changable())
+            bird.changeWay();
     });
     socket.on('p', function() {
         socket.emit('pong');

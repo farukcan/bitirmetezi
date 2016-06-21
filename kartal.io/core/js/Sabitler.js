@@ -14,7 +14,8 @@ var SABITLER = {
     "MAXSIZE" : 750,
     "DISTIME" : 1500,
     "FOODNUM" : 90,
-    "IVMESELDUSUS" :    0.001
+    "IVMESELDUSUS" :    0.001,
+    "DUMANSAYISI" : 10
 }
 
 var BIRD_TYPES = [
