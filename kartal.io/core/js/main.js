@@ -18,7 +18,7 @@ var camera;
 var bird;
 var highscore=0;
 var socket;
-var zoom=r.canvas.width/r.canvas.height*2/3;
+var zoom=r.canvas.width/r.canvas.height*2/4;
 var fpsStabilizer = false;
 $("#scoreboard").hide();
 $("#playerSelectSpan").hide();
@@ -52,9 +52,6 @@ var hints = [
 
 $(function(){
     $("#buton").show();
-    if(location.hostname=="kartal.io"){
-        $("#applinks").show();
-    }
 });
 
 var soundEagle = new buzz.sound("ogg/eagle.ogg");
@@ -103,6 +100,22 @@ r.addClickListener(fly,[{
     width : r.canvas.width,
     func : nitro
 }]);
+
+/*
+IPTAL EDILDI - DONMA YAPIYOR
+$(function(){
+    $(window).on("mousewheel",scrollFunc);
+});
+
+
+function scrollFunc(e) {
+
+        if( e.deltaY > 0)
+            zoom*=0.99;
+        else  if( e.deltaY < 0)
+            zoom/=0.99;
+}
+*/
 
 
 $("#score").click(nitro);
@@ -188,7 +201,7 @@ function nitro(){
         socket.emit("nitro");
         soundEagle.play();
         $("#score").css("background-color","transparent");
-        if(lastNitro+5000<Date.now())
+        if(lastNitro+2500<Date.now())
             lastNitro = Date.now();
     }
 }
@@ -199,7 +212,7 @@ function changeWay(){
         $("#changeWayButton").css("opacity","0.1");
         setTimeout(function(){
             $("#changeWayButton").css("opacity","1.0");
-        },7500);
+        },1000);
     }
 }
 
@@ -244,9 +257,13 @@ function create(){
         if(isSpectator){
             $("#playerSelectSpan").show();
         }
+        $("#zoomdiv").show();
+        $("#topright").show();
 
 
-        world = new World();
+
+
+        world = new World(r);
 
         var sz;
         for(var i=0;i<50;i++){
@@ -314,6 +331,16 @@ function create(){
         socket.on("deleteFood",function(i){
             console.log("#deleteFood",i);
             world.deleteFood(i);
+        });
+        socket.on("addTrap",function(f){
+            console.log("#addTrap",f);
+            var trap = new Trap(f.locx, f.locy);
+            trap.size = f.size;
+            world.addTrap(trap);
+        });
+        socket.on("deleteTrap",function(i){
+            console.log("#deleteTrap",i);
+            world.deleteTrap(i);
         });
         socket.on("update",function(data){
             Udelta = data.time - UPScache;
@@ -388,6 +415,10 @@ function destroy(){
         $("#scoreboard").fadeOut(5000);
         $("#settings").fadeIn();
 
+
+        $("#zoomdiv").hide();
+        $("#topright").hide();
+
         r.removeUpdateFunc();
         try{
             socket.emit("disconnect");
@@ -417,7 +448,7 @@ function update(){
         camera.scale = 30/bird.size*zoom;
     }
     world.draw(r);
-    nitropercent = r.canvas.width*limit(((lastNitro+5000)-Date.now())/5000,0,1);
+    nitropercent = r.canvas.width*limit(((lastNitro+2500)-Date.now())/2500,0,1);
     r.fillStyle('red');
     r.rect(0,0,nitropercent , 5);
 

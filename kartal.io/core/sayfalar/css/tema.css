@@ -11,23 +11,22 @@
 
 #gameInfo {
     z-index: 999;
+
     position: absolute;
-    margin: auto;
-    top : -90px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    width: 90%;
-    max-width: 275px;
-    height: 140px;
-    text-align: center;
-    padding: 10px;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
     border: 1px dotted;
     background-color: rgba(0,109,240,0.3);
     border-radius: 30px;
     border-color:  #17D736;
     color : #EF7126;
+    padding: 10px;
+    text-align: center;
 }
+
 
 #gameInfo h1 {
     color : white;
@@ -35,18 +34,9 @@
  }
 
 #rules {
-    z-index: 998;
-    background-color : #7EDDFD;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    bottom: 70px;
-    left: 0px;
-    right: 0px;
-    width: 90%;
-    max-width: 275px;
     border: 1px solid;
     border-radius: 10px;
+    height: 300px;
 }
 
 #buton {
@@ -96,7 +86,7 @@
 
 #scoreboard {
     padding: 3px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.5);
     font-size: 13px;
     color : white;
     text-align: right;
@@ -180,3 +170,4 @@
     user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
 }
+

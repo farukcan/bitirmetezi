@@ -170,6 +170,7 @@ mailer.sendMail({
     eval(fs.readFileSync("js/FPS.js", 'utf8'));
     eval(fs.readFileSync("js/Bird.js", 'utf8'));
     eval(fs.readFileSync("js/Food.js", 'utf8'));
+    eval(fs.readFileSync("js/Trap.js", 'utf8'));
     eval(fs.readFileSync("js/World.js", 'utf8'));
     eval(fs.readFileSync("js/Connection.js", 'utf8'));
     eval(fs.readFileSync("js/Server.js", 'utf8'));
@@ -190,6 +191,7 @@ var pro = require("uglify-js").uglify;
  var buildList = [
      '../../js/lib/CanvasRender.js',
      '../../js/lib/jquery-min.js',
+     '../../js/lib/jquery-whell.js',
      '../../js/lib/Vec2.js',
      '../../js/lib/RGB.js',
      '../../js/lib/buzz.min.js',
@@ -198,6 +200,7 @@ var pro = require("uglify-js").uglify;
      'js/FPS.js',
      'js/Bird.js',
      'js/Food.js',
+     'js/Trap.js',
      'js/Camera.js',
      'js/Asset.js',
      'js/Duman.js',
@@ -404,14 +407,14 @@ io.on('connection', function(socket){
         bird.flyable = function(){
             return (this.lastFly+75)<Date.now();
         };
-        bird.lastNitro=Date.now()-5000;
+        bird.lastNitro=Date.now()-2500;
         bird.nitroable = function(){
-            return (this.lastNitro+5000)<Date.now() && this.size>15;
+            return (this.lastNitro+2500)<Date.now() && this.size>15;
         };
 
-        bird.lastChangeWay = Date.now()-7500;
+        bird.lastChangeWay = Date.now()-1000;
         bird.changable = function(){
-            return (this.lastChangeWay+7500)<Date.now();
+            return (this.lastChangeWay+1000)<Date.now();
         };
 
         if(typeof name == "string"){
@@ -474,6 +477,8 @@ world.server.io = io;
 
 foodCreator(); // ilk yemleri oluştur
 
+trapCreator(); // ilk tuzakalr
+
 gameloop.setGameLoop(update, 1000 / SABITLER.FPS);
 
 function update(delta){
@@ -534,6 +539,17 @@ function foodCreator(){ // rastgele yerlerde FOODNUM kadar yem oluştur.
         world.addFood(new Food(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }
 }
+
+function trapCreator() {
+    for(var i=0;i<SABITLER.TRAPNUM;i++){
+        world.addTrap(new Trap(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
+    }
+}
+// Naming
+
+eval(fs.readFileSync("js/Naming.js", 'utf8'));
+
+
 
 if(ayar.YZ) // if AI enabled
     eval(fs.readFileSync("js/YapayZeka.js", 'utf8'));

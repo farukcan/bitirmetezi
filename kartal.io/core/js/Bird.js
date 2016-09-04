@@ -1,5 +1,9 @@
 /**
- * Created by Can on 8.4.2016.
+ * 
+ * @param locx
+ * @param locy
+ * @param right
+ * @constructor
  */
 function Bird(locx,locy,right){
     this.loc = new Vec2(locx,locy);
@@ -23,6 +27,10 @@ function Bird(locx,locy,right){
     this.visible=true;
 }
 
+/**
+ * 
+ * @type {{draw: Bird.draw, update: Bird.update, fly: Bird.fly, useNitro: Bird.useNitro, changeWay: Bird.changeWay, dumanYap: Bird.dumanYap}}
+ */
 Bird.prototype = {
     draw : function(r){
         if(!this.visible) return;
@@ -45,9 +53,9 @@ Bird.prototype = {
 
 
             if(this.right)
-                r.text(this.ad,-this.size/2*this.aspect-50,this.size/2);
+                r.text(this.ad,-this.size/2*this.aspect-75,this.size/2);
             else
-                r.text(this.ad,this.size/2*this.aspect+50,this.size/2);
+                r.text(this.ad,this.size/2*this.aspect+75,this.size/2);
         }
 
         if(!this.right)
@@ -94,7 +102,7 @@ Bird.prototype = {
     update : function(delta){
         if(!this.living) return; //yaşamıyorsa fizikselliği olmaz
         if((this.loc.y-this.size/2)>this.world.earthR){
-            if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) (this.speed.y=-Math.abs(this.speed.y)) && (this.loc.y =this.world.earthR+this.world.atmosphere);
+            if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) this.speed.y-= Math.abs(this.speed.y/10);
             this.speed.y+=this.a*delta;
             this.speed.add(this.world.gravity.mul(delta,true));
             this.speed.y = limit(this.speed.y,-SABITLER.MAXSPEEDY,SABITLER.MAXSPEEDY);
@@ -114,6 +122,7 @@ Bird.prototype = {
         }
     },
     fly : function(){
+        if((this.loc.y)>(this.world.earthR+this.world.atmosphere)) return;
         this.a=0.005;
         this.lastFly=Date.now();
     },
@@ -122,7 +131,7 @@ Bird.prototype = {
         this.damage(1);
         this.size--;
         this.nitro = true;
-        this.nitroTime=5000;
+        this.nitroTime=2500;
         var bird = this;
         for(var i=0;i<5;i++)
             setTimeout(function(){

@@ -1,5 +1,6 @@
 /**
- * Created by Can on 11.4.2016.
+ * 
+ * @constructor
  */
 function FPSCalculator(){
     this.FPScache=Date.now();

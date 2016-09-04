@@ -1,5 +1,11 @@
 /**
- * Created by Can on 18.4.2016.
+ * 
+ * @param x
+ * @param y
+ * @param vx
+ * @param vy
+ * @param vr
+ * @constructor
  */
 function Duman(x,y,vx,vy,vr){
     this.loc = new Vec2(x,y);
@@ -10,6 +16,10 @@ function Duman(x,y,vx,vy,vr){
     this.destroyme = false;
 }
 
+/**
+ * 
+ * @type {{draw: Duman.draw}}
+ */
 Duman.prototype = {
     draw : function(){
         this.opacity-=0.02;

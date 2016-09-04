@@ -1,5 +1,11 @@
 /**
- * Created by Can on 17.4.2016.
+ *
+ * @param x
+ * @param y
+ * @param w
+ * @param h
+ * @param img
+ * @constructor
  */
 function Asset(x,y,w,h,img){
     this.loc = new Vec2(x,y);
@@ -8,7 +14,10 @@ function Asset(x,y,w,h,img){
     this.img = img;
     this.rota = Math.PI/2;
 }
-
+/**
+ *
+ * @type {{draw: Asset.draw}}
+ */
 Asset.prototype = {
     draw : function (r) {
         camera.begin();

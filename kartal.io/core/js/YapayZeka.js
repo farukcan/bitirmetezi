@@ -50,8 +50,9 @@ var dogumFonksiyonu = function(member){
     // kromozomdan ysa oluştur
     var genetic = member.chromosome.toJSON();
 
+    // Yapar Sinir Ağı , oluştur.
     member.ysa = new ANN().PERCEPTRON(genetic.inputNN,genetic.hiddenNN,genetic.outputNN).setBias([-1,-1]);
-    var ks = 15;
+    var ks = 15; // bipolar katsayı
     genetic.W.forEach(function(matris){
         matris.forEach(function(satir){
             satir.forEach(function(deger,i){
@@ -61,7 +62,13 @@ var dogumFonksiyonu = function(member){
     });
     member.ysa.setWeights(genetic.W);
 
-    bird.ad="YZ"+member.id+" G:"+member.generation+" NS:"+genetic.hiddenNN.toString().split(',').join('+');
+    if(Math.random()>0.5)
+        bird.ad = createName().toUpperCase();
+    else if(Math.random()>0.5)
+        bird.ad = createName();
+    else
+        bird.ad="YZ"+member.id+" G:"+member.generation+" NS:"+genetic.hiddenNN.toString().split(',').join('+');
+
     world.addBird(bird);
 };
 
@@ -69,7 +76,7 @@ var evrim = new Evolution(fitnessFonksiyonu,baslangicFonksiyonu,dogumFonksiyonu)
 
 evrim.setParameters({
     algorithm : GA.ALGORITHMS.DIEANDBORN,
-    population_size : 8,
+    population_size : 5,
     crossing_overMethod: GA.CO_TYPES.UNIFORM,
     selectionMethod: GA.SELECTION.ROULETTE
 });

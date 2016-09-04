@@ -1,7 +1,9 @@
 /**
- * Created by Can on 8.4.2016.
+ * 
+ * @param r
+ * @constructor
  */
-function World(){
+function World(r){
     this.earthR = SABITLER.EARTHR;
     this.atmosphere = SABITLER.ATMOSPHERE;
     this.birds = [];
@@ -9,18 +11,28 @@ function World(){
     this.leftCount = 0;
     this.rightCount = 0;
     this.foods = [];
+    this.traps = [];
     this.assets = [];
     this.dumanlar = [];
     this.camera;
     this.gravity = new Vec2(0,SABITLER.GRAVITY);
     this.serverSide = false;
+    if(r){
+        this.skyGradient =  r.context.createRadialGradient(100, 50 , this.earthR, 100, 500, this.earthR+this.atmosphere);
+        this.skyGradient.addColorStop(0, '#BDEEFF');
+        this.skyGradient.addColorStop(1, '#84E0FF');
+    }
 }
 
+/**
+ * 
+ * @type {{draw: World.draw, update: World.update, addBird: World.addBird, addFood: World.addFood, addTrap: World.addTrap, findIndexById: World.findIndexById, deleteBird: World.deleteBird, removeBird: World.removeBird, deleteFood: World.deleteFood, deleteTrap: World.deleteTrap}}
+ */
 World.prototype = {
     draw : function(r){
         this.camera.begin();
-        r.color("#9CE4FC");
         r.circle(0,0,this.earthR+this.atmosphere);
+        r.context.fillStyle = this.skyGradient;
         r.fill();
         r.color("#17D736");
         r.circle(0,0,this.earthR);
@@ -37,6 +49,10 @@ World.prototype = {
 
         this.foods.forEach(function(food){
             food.draw(r);
+        });
+
+        this.traps.forEach(function(trap){
+            trap.draw(r);
         });
         var destroyAssets = [];
         var dumanlar = this.dumanlar;
@@ -69,6 +85,10 @@ World.prototype = {
         this.foods.push(food);
         this.server.addFood(food,(this.foods.length-1));
     },
+    addTrap : function (trap) {
+        this.traps.push(trap);
+        this.server.addTrap(trap,(this.traps.length-1));
+    },
     findIndexById : function(id){
         var m=-1;
         this.birds.every(function(o,i){
@@ -97,13 +117,19 @@ World.prototype = {
     deleteFood : function(m){
         this.server.deleteFood(m);
         this.foods.splice(m,1);
+    },
+    deleteTrap : function (m) {
+        this.server.deleteTrap(m);
+        this.traps.splice(m,1);
     }
 };
 
 World.prototype.server = {
     addBird : function (){},
     addFood : function (){},
+    addTrap : function (){},
     deleteBird : function (){},
     deleteFood : function (){},
+    deleteTrap : function (){},
     detectCollisions : function(){}
-}
+};

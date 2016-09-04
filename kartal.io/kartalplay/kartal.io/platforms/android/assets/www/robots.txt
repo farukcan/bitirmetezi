@@ -1,9 +1,0 @@
-# Added by fc
-User-agent: *
-Disallow: /git/
-# End Link Mask Generator output
-
-User-agent: *
-Disallow: /statics/
-
-Sitemap: http://kartal.io/sitemap.xml

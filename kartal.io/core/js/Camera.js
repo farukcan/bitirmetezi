@@ -1,5 +1,7 @@
 /**
- * Created by Can on 8.4.2016.
+ * 
+ * @param loc
+ * @constructor
  */
 function Camera(loc){
     this.loc = loc;
@@ -9,6 +11,10 @@ function Camera(loc){
     this.r;
 }
 
+/**
+ * 
+ * @type {{setRota: Camera.setRota, begin: Camera.begin, end: Camera.end, rotateDraw: Camera.rotateDraw}}
+ */
 Camera.prototype = {
     setRota : function (x){
         this.a = x;

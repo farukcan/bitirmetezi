@@ -1,11 +1,16 @@
 /**
- * Created by Can on 9.4.2016.
+ * 
+ * @constructor
  */
 function ConnectionController(){
     this.connections = [];
     this.connected = 0;
     this.disconnected = 0;
 }
+/**
+ * 
+ * @type {{addConnection: ConnectionController.addConnection, update: ConnectionController.update}}
+ */
 ConnectionController.prototype = {
     addConnection : function(socket){
         var conn = new Connection(socket,this.connected++);
@@ -30,13 +35,22 @@ ConnectionController.prototype = {
     }
 };
 
-
+/**
+ * 
+ * @param socket
+ * @param id
+ * @constructor
+ */
 function Connection(socket,id){
     this.socket = socket
     this.controller;
     this.id = id;
     this.name="";
 }
+/**
+ * 
+ * @type {{disconnect: Connection.disconnect, sendBirds: Connection.sendBirds}}
+ */
 Connection.prototype = {
     disconnect : function(bird){
         // num of disconnecteds ++
@@ -67,6 +81,9 @@ Connection.prototype = {
         });
         world.foods.forEach(function(food,i){
             socket.emit("addFood",svFood(food,i));
+        });
+        world.traps.forEach(function(trap,i){
+            socket.emit("addTrap",svTrap(trap,i));
         });
         this.socket.emit("youare",you);
 
