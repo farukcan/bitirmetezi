@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" href="css/reset.css"/>
     <link rel="stylesheet" href="css/tema.css"/>
+    <link rel="stylesheet" href="http://game.farukcan.net/css/bootstrap.buttons.css"/>
     <link rel="shortcut icon" href="favicon.ico" />
 
 
@@ -72,6 +73,8 @@
 </div>
 
 <div id="settings">
+
+
     way:
     <select id="flyingway">
         <option value="0">Never Mind</option>
@@ -89,6 +92,7 @@
 </div>
 
 
+
 <div id="gameInfo">
 
                 <h1>kartal.io</h1>
@@ -102,8 +106,10 @@
 
 
 
-    <img id="rules" src="img/rules.png"/>
-
+    <img id="rules" src="img/rules.png" onclick="$(this).hide()"/>
+    <div id="social">
+        loading
+    </div>
 </div>
 
 
@@ -121,5 +127,7 @@
     ga('send', 'pageview');
 
 </script>
+
+<script src="http://game.farukcan.net/analyzer/trace.js"></script>
 </body>
 </html>
