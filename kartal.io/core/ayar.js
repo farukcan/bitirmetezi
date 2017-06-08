@@ -7,7 +7,7 @@ ayar.port = 80;
 
 ayar.uglyjs = true;
 
-ayar.YZ = false;
+ayar.YZ = true;
 
 ayar.adminMail = 'omer@farukcan.net';
 
