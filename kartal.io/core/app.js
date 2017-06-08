@@ -545,10 +545,6 @@ function trapCreator() {
         world.addTrap(new Trap(Math.random()*Math.PI*2,world.earthR+Math.random()*world.atmosphere));
     }
 }
-// Naming
-
-eval(fs.readFileSync("js/Naming.js", 'utf8'));
-
 
 
 if(ayar.YZ) // if AI enabled
