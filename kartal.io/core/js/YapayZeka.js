@@ -63,11 +63,11 @@ var dogumFonksiyonu = function(member){
     });
     member.ysa.setWeights(genetic.W);
 
-    if(Math.random()>0.5)
+    /*if(Math.random()>0.5)
         bird.ad = createName().toUpperCase();
     else if(Math.random()>0.5)
         bird.ad = createName();
-    else
+    else*/
         bird.ad="YZ"+member.id+" G:"+member.generation+" NS:"+genetic.hiddenNN.toString().split(',').join('+');
 
     world.addBird(bird);
