@@ -6,6 +6,7 @@
 // @imports
 eval(fs.readFileSync("../../js/lib/ANN.js", 'utf8'));
 eval(fs.readFileSync("../../js/lib/evolution.js", 'utf8'));
+eval(fs.readFileSync("js/Naming.js", 'utf8'));
 
 GA.defaultParameters.mutation_rate = 0.1;
 eval(fs.readFileSync("../../js/Eve.js", 'utf8'));
